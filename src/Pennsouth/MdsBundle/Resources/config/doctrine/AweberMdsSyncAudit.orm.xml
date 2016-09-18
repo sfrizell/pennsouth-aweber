@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Pennsouth\MdsBundle\Entity\AweberMdsSyncAudit" table="Aweber_Mds_Sync_Audit">
+    <id name="syncAuditId" type="integer" column="Sync_Audit_Id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="aweberSubscriberListId" type="integer" column="Aweber_Subscriber_List_Id" nullable="true"/>
+    <field name="subscriberEmailAddress" type="string" column="Subscriber_Email_Address" length="100" nullable="true"/>
+    <field name="updateAction" type="string" column="Update_Action" length="45" nullable="true"/>
+    <field name="mdsBuilding" type="string" column="Mds_Building" length="2" nullable="true"/>
+    <field name="mdsFloorNumber" type="integer" column="Mds_Floor_Number" nullable="true"/>
+    <field name="mdsAptLine" type="string" column="Mds_Apt_Line" length="1" nullable="true"/>
+    <field name="aweberBuilding" type="string" column="Aweber_Building" length="2" nullable="true"/>
+    <field name="aweberFloorNumber" type="integer" column="Aweber_Floor_Number" nullable="true"/>
+    <field name="aweberAptLine" type="string" column="Aweber_Apt_Line" length="1" nullable="true"/>
+    <field name="actionReason" type="string" column="Action_Reason" length="45" nullable="true"/>
+    <field name="actionDate" type="datetime" column="Action_Date" nullable="true"/>
+  </entity>
+</doctrine-mapping>

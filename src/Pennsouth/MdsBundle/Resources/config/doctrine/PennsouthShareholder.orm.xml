@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Pennsouth\MdsBundle\Entity\PennsouthShareholder" table="Pennsouth_Shareholder">
+    <indexes>
+      <index name="fk_Internal_Applicant_Pennsouth_Apt1_idx" columns="Apartment_id"/>
+    </indexes>
+    <id name="shareholderId" type="integer" column="Shareholder_Id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="shareholderBldg" type="string" column="shareholder_bldg" length="4" nullable="true"/>
+    <field name="shareholderApt" type="string" column="shareholder_apt" length="4" nullable="true"/>
+    <field name="moveInDate" type="datetime" column="move_in_date" nullable="true"/>
+    <field name="firstName" type="string" column="first_name" length="45" nullable="true"/>
+    <field name="lastName" type="string" column="last_name" length="45" nullable="true"/>
+    <field name="emailAddress" type="string" column="email_address" length="45" nullable="true"/>
+    <field name="isPrimaryApplicant" type="string" column="is_primary_applicant" length="1" nullable="true"/>
+    <field name="homePhone" type="string" column="home_phone" length="10" nullable="true"/>
+    <field name="businessPhone" type="string" column="business_phone" length="10" nullable="true"/>
+    <field name="mobilePhone" type="string" column="mobile_phone" length="10" nullable="true"/>
+    <field name="buildinglinkShareableId" type="string" column="buildinglink_shareable_id" length="20" nullable="true"/>
+    <field name="yearOfBirth" type="integer" column="year_of_birth" nullable="true"/>
+    <field name="sex" type="string" column="sex" length="45" nullable="true"/>
+    <field name="transferReasonCode" type="string" column="Transfer_reason_code" length="20" nullable="false"/>
+    <many-to-one field="apartment" target-entity="PennsouthApt">
+      <join-columns>
+        <join-column name="Apartment_id" referenced-column-name="apartment_id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
