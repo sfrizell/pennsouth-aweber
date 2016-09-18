@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Pennsouth\MdsBundle\Entity\PennsouthApt" table="Pennsouth_Apt">
+    <indexes>
+      <index name="fk_Pennsouth_Apt_Apt_Availability_Status1_idx" columns="Apt_Availability_code"/>
+      <index name="fk_Pennsouth_Apt_Apt_Size1_idx" columns="Apt_Size_apt_size_code"/>
+      <index name="fk_Pennsouth_Apt_Pennsouth_Bldg1" columns="Buiilding_Id"/>
+    </indexes>
+    <id name="apartmentId" type="integer" column="apartment_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="floorNumber" type="integer" column="Floor_Number" nullable="false"/>
+    <field name="aptLine" type="string" column="Apt_Line" length="1" nullable="false"/>
+    <field name="apartmentName" type="string" column="apartment_name" length="4" nullable="false"/>
+    <field name="roomCount" type="decimal" column="Room_count" precision="2" scale="0" nullable="false"/>
+    <field name="bedroomCount" type="integer" column="Bedroom_Count" nullable="false"/>
+    <field name="hasDiningArea" type="string" column="Has_Dining_Area" length="1" nullable="true"/>
+    <field name="hasDressingRoom" type="string" column="Has_Dressing_Room" length="1" nullable="true"/>
+    <field name="balconyTerraceCode" type="string" column="Balcony_Terrace_Code" length="1" nullable="true"/>
+    <field name="hasAlcove" type="string" column="Has_Alcove" length="1" nullable="true"/>
+    <field name="has2ndBathroom" type="string" column="Has_2nd_Bathroom" length="1" nullable="true"/>
+    <field name="hasSouthExposure" type="string" column="Has_South_Exposure" length="1" nullable="true"/>
+    <field name="hasWestExposure" type="string" column="Has_West_Exposure" length="1" nullable="true"/>
+    <field name="hasEastExposure" type="string" column="Has_East_Exposure" length="1" nullable="true"/>
+    <field name="hasNorthExposure" type="string" column="Has_North_Exposure" length="1" nullable="true"/>
+    <field name="availabilityStatusDate" type="datetime" column="availability_status_date" nullable="true"/>
+    <many-to-one field="aptSizeAptSizeCode" target-entity="AptSize">
+      <join-columns>
+        <join-column name="Apt_Size_apt_size_code" referenced-column-name="apt_size_code"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="aptAvailabilityCode" target-entity="AptAvailabilityStatus">
+      <join-columns>
+        <join-column name="Apt_Availability_code" referenced-column-name="availability_code"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="buiilding" target-entity="PennsouthBldg">
+      <join-columns>
+        <join-column name="Buiilding_Id" referenced-column-name="Building_Id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

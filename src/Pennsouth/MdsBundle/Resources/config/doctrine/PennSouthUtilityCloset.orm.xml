@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Pennsouth\MdsBundle\Entity\PennSouthUtilityCloset" table="Penn_South_Utility_Closet">
+    <indexes>
+      <index name="fk_Penn_South_Utility_Closet_Pennsouth_Bldg1_idx" columns="Buiilding_Id"/>
+      <index name="fk_Penn_South_Utility_Closet_Availability_Status1_idx" columns="Availability_status_code"/>
+    </indexes>
+    <id name="utilityClosetId" type="integer" column="utility_closet_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="location" type="string" column="location" length="45" nullable="true"/>
+    <many-to-one field="availabilityStatusCode" target-entity="AvailabilityStatus">
+      <join-columns>
+        <join-column name="Availability_status_code" referenced-column-name="availability_status_code"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="buiilding" target-entity="PennsouthBldg">
+      <join-columns>
+        <join-column name="Buiilding_Id" referenced-column-name="Building_Id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
