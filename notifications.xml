@@ -1,0 +1,20 @@
+<application>
+  <component name="NotificationConfiguration">
+    <notification groupId="Browser Connection" displayType="STICKY_BALLOON" />
+    <notification groupId="Browser Extension requested to be installed" />
+    <notification groupId="External Executable Critical Failures" displayType="TOOL_WINDOW" />
+    <notification groupId="Git Important Messages" displayType="STICKY_BALLOON" />
+    <notification groupId="Git Messages" displayType="TOOL_WINDOW" />
+    <notification groupId="Git Minor Notifications" />
+    <notification groupId="IDE Fatal Errors" displayType="NONE" />
+    <notification groupId="IDE Usage Statistics" displayType="STICKY_BALLOON" shouldLog="false" />
+    <notification groupId="JavaScript Library Management" displayType="STICKY_BALLOON" />
+    <notification groupId="Notification group display Id" />
+    <notification groupId="PHP Debugger" displayType="TOOL_WINDOW" shouldLog="false" />
+    <notification groupId="PHPUnit" displayType="TOOL_WINDOW" shouldLog="false" />
+    <notification groupId="PHPUnit Generate Actions" />
+    <notification groupId="System Messages" displayType="STICKY_BALLOON" />
+    <notification groupId="update.available.group" />
+    <notification groupId="Upgrade Subscription Renewal" />
+  </component>
+</application>

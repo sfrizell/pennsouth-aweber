@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="efc3af3c-84e0-4213-8478-b4ed23d17abf" name="metcouncil_paypal_test" url="http://localhost:8085">
+        <fileTransfer accessType="LOCAL" />
+      </webServer>
+      <webServer id="75f06a62-1a1e-4ad3-a4bf-7ca2c8bb0425" name="cwtfhc" url="http://localhost:8086">
+        <fileTransfer accessType="LOCAL" />
+      </webServer>
+    </option>
+    <sftpAdvancedGlobalOptions>
+      <SftpAdvancedOptions />
+    </sftpAdvancedGlobalOptions>
+  </component>
+</application>
+
