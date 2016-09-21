@@ -1,0 +1,17 @@
+<!-- sfrizell copied block below from auth0 page: https://manage.auth0.com/#/applications/TmAxBciF2KFJVDOAQ1IguiQeFE8WjNln/quickstart   -->
+        <script src="https://cdn.auth0.com/js/lock/10.0/lock.min.js"></script>
+        <script type="text/javascript">
+          var lock = new Auth0Lock('TmAxBciF2KFJVDOAQ1IguiQeFE8WjNln', 'pennsouth.auth0.com', {
+            auth: {
+              redirectUrl: '',
+              responseType: 'code',
+              params: {
+                scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
+              }
+            }
+          });
+        </script>
+        <button onclick="lock.show();">Login</button>
+        <div><?php echo $userInfo['name'] ?></div>
+    <!-- sfrizell copied block above from auth0 page -->
+Hello World!
