@@ -8,6 +8,8 @@ use Composer\Autoload\ClassLoader;
  */
 $loader = require __DIR__.'/../vendor/autoload.php';
 
+$loader->add('Aweber', realpath(__DIR__.'/../vendor/aweber/aweber/aweber_api/'));
+
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
 return $loader;

@@ -3,6 +3,8 @@
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
+// sfrizell - added 10/2/2016 the AWeberAPI below ; after
+
 class AppKernel extends Kernel
 {
     public function registerBundles()

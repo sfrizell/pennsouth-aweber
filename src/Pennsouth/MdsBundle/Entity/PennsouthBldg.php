@@ -2,66 +2,47 @@
 
 namespace Pennsouth\MdsBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * PennsouthBldg
- *
- * @ORM\Table(name="Pennsouth_Bldg")
- * @ORM\Entity
  */
 class PennsouthBldg
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="Building_Name", type="string", length=45, nullable=true)
      */
     private $buildingName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="address", type="string", length=45, nullable=true)
      */
     private $address;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="City", type="string", length=45, nullable=true)
      */
     private $city;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="State", type="string", length=2, nullable=true)
      */
     private $state;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Zip", type="string", length=5, nullable=true)
      */
     private $zip;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Building_Id", type="string", length=4)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $buildingId;
-
 
 
     /**
      * Set buildingName
      *
      * @param string $buildingName
+     *
      * @return PennsouthBldg
      */
     public function setBuildingName($buildingName)
@@ -74,7 +55,7 @@ class PennsouthBldg
     /**
      * Get buildingName
      *
-     * @return string 
+     * @return string
      */
     public function getBuildingName()
     {
@@ -85,6 +66,7 @@ class PennsouthBldg
      * Set address
      *
      * @param string $address
+     *
      * @return PennsouthBldg
      */
     public function setAddress($address)
@@ -97,7 +79,7 @@ class PennsouthBldg
     /**
      * Get address
      *
-     * @return string 
+     * @return string
      */
     public function getAddress()
     {
@@ -108,6 +90,7 @@ class PennsouthBldg
      * Set city
      *
      * @param string $city
+     *
      * @return PennsouthBldg
      */
     public function setCity($city)
@@ -120,7 +103,7 @@ class PennsouthBldg
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -131,6 +114,7 @@ class PennsouthBldg
      * Set state
      *
      * @param string $state
+     *
      * @return PennsouthBldg
      */
     public function setState($state)
@@ -143,7 +127,7 @@ class PennsouthBldg
     /**
      * Get state
      *
-     * @return string 
+     * @return string
      */
     public function getState()
     {
@@ -154,6 +138,7 @@ class PennsouthBldg
      * Set zip
      *
      * @param string $zip
+     *
      * @return PennsouthBldg
      */
     public function setZip($zip)
@@ -166,7 +151,7 @@ class PennsouthBldg
     /**
      * Get zip
      *
-     * @return string 
+     * @return string
      */
     public function getZip()
     {
@@ -176,10 +161,11 @@ class PennsouthBldg
     /**
      * Get buildingId
      *
-     * @return string 
+     * @return string
      */
     public function getBuildingId()
     {
         return $this->buildingId;
     }
 }
+

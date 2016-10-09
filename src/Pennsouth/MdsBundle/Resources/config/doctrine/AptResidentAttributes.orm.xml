@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Pennsouth\MdsBundle\Entity\AptResidentAttributes" table="Apt_Resident_Attributes">
+    <id name="pennsouthAptApartment" association-key="true"/>
+    <field name="building" type="string" column="Building" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="floorNumber" type="integer" column="Floor_Number" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="aptLine" type="string" column="Apt_Line" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="lockerStorage" type="string" column="Locker_Storage" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="utilityCloset" type="string" column="Utility_Closet" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="smallCloset" type="string" column="Small_Closet" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="parking" type="string" column="Parking" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="windowGuardInstalled" type="string" column="Window_Guard_Installed" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="dogAllowed" type="string" column="Dog_Allowed" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="loanCreditUnion" type="string" column="Loan_Credit_Union" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="toddlerRoomMember" type="string" column="Toddler_Room_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="youthRoomMember" type="string" column="Youth_Room_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="ceramicsMember" type="string" column="Ceramics_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="woodworkingMember" type="string" column="Woodworking_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="gymMember" type="string" column="Gym_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="lastChangedDate" type="datetime" column="Last_Changed_Date" nullable="true"/>
+    <one-to-one field="pennsouthAptApartment" target-entity="PennsouthApt" fetch="LAZY">
+      <join-columns>
+        <join-column name="Pennsouth_Apt_apartment_id" referenced-column-name="apartment_id"/>
+      </join-columns>
+    </one-to-one>
+  </entity>
+</doctrine-mapping>
