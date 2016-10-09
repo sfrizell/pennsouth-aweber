@@ -4,37 +4,160 @@
     <id name="mdsExportId" type="integer" column="Mds_export_id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="building" type="string" column="Building" length="2" nullable="false"/>
-    <field name="mdsApt" type="string" column="MDS_Apt" length="4" nullable="false"/>
-    <field name="floorNumber" type="integer" column="Floor_Number" nullable="true"/>
-    <field name="aptLine" type="string" column="Apt_Line" length="1" nullable="true"/>
-    <field name="firstName" type="string" column="First_Name" length="45" nullable="true"/>
-    <field name="lastName" type="string" column="Last_Name" length="45" nullable="true"/>
-    <field name="emailAddress" type="string" column="Email_Address" length="70" nullable="true"/>
-    <field name="category" type="string" column="Category" length="45" nullable="true"/>
-    <field name="daytimePhone" type="string" column="Daytime_Phone" length="20" nullable="true"/>
-    <field name="eveningPhone" type="string" column="Evening_Phone" length="20" nullable="true"/>
-    <field name="cellPhone" type="string" column="Cell_Phone" length="20" nullable="true"/>
-    <field name="fax" type="string" column="Fax" length="20" nullable="true"/>
-    <field name="tenantId" type="string" column="Tenant_Id" length="20" nullable="true"/>
-    <field name="personId" type="string" column="Person_Id" length="20" nullable="true"/>
-    <field name="officePhone" type="string" column="Office_Phone" length="20" nullable="true"/>
-    <field name="statusCodes" type="string" column="Status_Codes" length="45" nullable="true"/>
-    <field name="standardLockboxTenantId" type="string" column="Standard_Lockbox_Tenant_Id" length="45" nullable="true"/>
+    <field name="building" type="string" column="Building" length="2" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsApt" type="string" column="MDS_Apt" length="4" nullable="false">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Format that MDS stores Apt combining floor and apartment line. E.g. 1A.</option>
+      </options>
+    </field>
+    <field name="floorNumber" type="integer" column="Floor_Number" nullable="true">
+      <options>
+        <option name="unsigned"/>
+        <option name="comment">Parsed value of MDS_Apt, extracting only Floor Number.</option>
+      </options>
+    </field>
+    <field name="aptLine" type="string" column="Apt_Line" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Parsed value of MDS_Apt, extracting only apartment line portion, i.e., A-J.</option>
+      </options>
+    </field>
+    <field name="firstName" type="string" column="First_Name" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="lastName" type="string" column="Last_Name" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="emailAddress" type="string" column="Email_Address" length="70" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="category" type="string" column="Category" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="daytimePhone" type="string" column="Daytime_Phone" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="eveningPhone" type="string" column="Evening_Phone" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="cellPhone" type="string" column="Cell_Phone" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="fax" type="string" column="Fax" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="tenantId" type="string" column="Tenant_Id" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="personId" type="string" column="Person_Id" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="officePhone" type="string" column="Office_Phone" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="statusCodes" type="string" column="Status_Codes" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="standardLockboxTenantId" type="string" column="Standard_Lockbox_Tenant_Id" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="moveInDate" type="datetime" column="Move_In_Date" nullable="true"/>
     <field name="lastChangedDate" type="datetime" column="Last_Changed_Date" nullable="true"/>
-    <field name="lockerStorage" type="string" column="Locker_Storage" length="1" nullable="true"/>
-    <field name="utilityCloset" type="string" column="Utility_Closet" length="1" nullable="true"/>
-    <field name="smallCloset" type="string" column="Small_Closet" length="1" nullable="true"/>
-    <field name="parking" type="string" column="Parking" length="1" nullable="true"/>
-    <field name="windowGuardInstalled" type="string" column="Window_Guard_Installed" length="1" nullable="true"/>
-    <field name="dogAllowed" type="string" column="Dog_Allowed" length="1" nullable="true"/>
-    <field name="loanCreditUnion" type="string" column="Loan_Credit_Union" length="1" nullable="true"/>
-    <field name="toddlerRoomMember" type="string" column="Toddler_Room_Member" length="1" nullable="true"/>
-    <field name="youthRoomMember" type="string" column="Youth_Room_Member" length="1" nullable="true"/>
-    <field name="ceramicsMember" type="string" column="Ceramics_Member" length="1" nullable="true"/>
-    <field name="gardenMember" type="string" column="Garden_Member" length="1" nullable="true"/>
-    <field name="woodworkingMember" type="string" column="Woodworking_Member" length="1" nullable="true"/>
-    <field name="gymMember" type="string" column="Gym_Member" length="1" nullable="true"/>
+    <field name="lockerStorage" type="string" column="Locker_Storage" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="utilityCloset" type="string" column="Utility_Closet" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="smallCloset" type="string" column="Small_Closet" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="parking" type="string" column="Parking" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="windowGuardInstalled" type="string" column="Window_Guard_Installed" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="dogAllowed" type="string" column="Dog_Allowed" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="loanCreditUnion" type="string" column="Loan_Credit_Union" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="toddlerRoomMember" type="string" column="Toddler_Room_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="youthRoomMember" type="string" column="Youth_Room_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="ceramicsMember" type="string" column="Ceramics_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="gardenMember" type="string" column="Garden_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="woodworkingMember" type="string" column="Woodworking_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="gymMember" type="string" column="Gym_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
   </entity>
 </doctrine-mapping>

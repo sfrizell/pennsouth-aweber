@@ -8,15 +8,19 @@
     <id name="storageLockerId" type="integer" column="storage_locker_id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="location" type="string" column="location" length="45" nullable="true"/>
-    <many-to-one field="availabilityStatusCode" target-entity="AvailabilityStatus">
-      <join-columns>
-        <join-column name="Availability_status_code" referenced-column-name="availability_status_code"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="buiilding" target-entity="PennsouthBldg">
+    <field name="location" type="string" column="location" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="buiilding" target-entity="PennsouthBldg" fetch="LAZY">
       <join-columns>
         <join-column name="Buiilding_Id" referenced-column-name="Building_Id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="availabilityStatusCode" target-entity="AvailabilityStatus" fetch="LAZY">
+      <join-columns>
+        <join-column name="Availability_status_code" referenced-column-name="availability_status_code"/>
       </join-columns>
     </many-to-one>
   </entity>

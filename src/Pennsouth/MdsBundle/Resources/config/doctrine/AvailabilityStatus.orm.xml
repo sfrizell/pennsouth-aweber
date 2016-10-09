@@ -4,6 +4,10 @@
     <id name="availabilityStatusCode" type="string" column="availability_status_code" length="25">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="statusDescription" type="string" column="status_description" length="45" nullable="true"/>
+    <field name="statusDescription" type="string" column="status_description" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
   </entity>
 </doctrine-mapping>

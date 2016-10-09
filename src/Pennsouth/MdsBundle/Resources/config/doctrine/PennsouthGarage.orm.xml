@@ -7,8 +7,12 @@
     <id name="garageId" type="integer" column="garage_id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="garageName" type="string" column="garage_name" length="45" nullable="true"/>
-    <many-to-one field="availabilityStatusCode" target-entity="AvailabilityStatus">
+    <field name="garageName" type="string" column="garage_name" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="availabilityStatusCode" target-entity="AvailabilityStatus" fetch="LAZY">
       <join-columns>
         <join-column name="Availability_status_code" referenced-column-name="availability_status_code"/>
       </join-columns>

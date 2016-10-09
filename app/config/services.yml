@@ -1,9 +1,17 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
+   #  orm.default.entity.manager: @doctrine.orm.default_entity_manager
 #    parameter_name: value
 
 services:
+     entity.manager:
+        class: Pennsouth\MdsBundle\Command\PennsouthResidentListReader
+        arguments: [ '@doctrine.orm.default_entity_manager' ]
+     sync.aweber.mds.command:
+        class: Pennsouth\MdsBundle\Command\SyncAweberMdsCommand
+        arguments: [ '@entity.manager' ]
+
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

@@ -2,108 +2,77 @@
 
 namespace Pennsouth\MdsBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * AweberMdsSyncAudit
- *
- * @ORM\Table(name="Aweber_Mds_Sync_Audit")
- * @ORM\Entity
  */
 class AweberMdsSyncAudit
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="Aweber_Subscriber_List_Id", type="integer", nullable=true)
      */
     private $aweberSubscriberListId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Subscriber_Email_Address", type="string", length=100, nullable=true)
      */
     private $subscriberEmailAddress;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Update_Action", type="string", length=45, nullable=true)
      */
     private $updateAction;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Mds_Building", type="string", length=2, nullable=true)
      */
     private $mdsBuilding;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="Mds_Floor_Number", type="integer", nullable=true)
      */
     private $mdsFloorNumber;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Mds_Apt_Line", type="string", length=1, nullable=true)
      */
     private $mdsAptLine;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Aweber_Building", type="string", length=2, nullable=true)
      */
     private $aweberBuilding;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="Aweber_Floor_Number", type="integer", nullable=true)
      */
     private $aweberFloorNumber;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Aweber_Apt_Line", type="string", length=1, nullable=true)
      */
     private $aweberAptLine;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Action_Reason", type="string", length=45, nullable=true)
      */
     private $actionReason;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="Action_Date", type="datetime", nullable=true)
      */
     private $actionDate;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="Sync_Audit_Id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $syncAuditId;
-
 
 
     /**
      * Set aweberSubscriberListId
      *
      * @param integer $aweberSubscriberListId
+     *
      * @return AweberMdsSyncAudit
      */
     public function setAweberSubscriberListId($aweberSubscriberListId)
@@ -116,7 +85,7 @@ class AweberMdsSyncAudit
     /**
      * Get aweberSubscriberListId
      *
-     * @return integer 
+     * @return integer
      */
     public function getAweberSubscriberListId()
     {
@@ -127,6 +96,7 @@ class AweberMdsSyncAudit
      * Set subscriberEmailAddress
      *
      * @param string $subscriberEmailAddress
+     *
      * @return AweberMdsSyncAudit
      */
     public function setSubscriberEmailAddress($subscriberEmailAddress)
@@ -139,7 +109,7 @@ class AweberMdsSyncAudit
     /**
      * Get subscriberEmailAddress
      *
-     * @return string 
+     * @return string
      */
     public function getSubscriberEmailAddress()
     {
@@ -150,6 +120,7 @@ class AweberMdsSyncAudit
      * Set updateAction
      *
      * @param string $updateAction
+     *
      * @return AweberMdsSyncAudit
      */
     public function setUpdateAction($updateAction)
@@ -162,7 +133,7 @@ class AweberMdsSyncAudit
     /**
      * Get updateAction
      *
-     * @return string 
+     * @return string
      */
     public function getUpdateAction()
     {
@@ -173,6 +144,7 @@ class AweberMdsSyncAudit
      * Set mdsBuilding
      *
      * @param string $mdsBuilding
+     *
      * @return AweberMdsSyncAudit
      */
     public function setMdsBuilding($mdsBuilding)
@@ -185,7 +157,7 @@ class AweberMdsSyncAudit
     /**
      * Get mdsBuilding
      *
-     * @return string 
+     * @return string
      */
     public function getMdsBuilding()
     {
@@ -196,6 +168,7 @@ class AweberMdsSyncAudit
      * Set mdsFloorNumber
      *
      * @param integer $mdsFloorNumber
+     *
      * @return AweberMdsSyncAudit
      */
     public function setMdsFloorNumber($mdsFloorNumber)
@@ -208,7 +181,7 @@ class AweberMdsSyncAudit
     /**
      * Get mdsFloorNumber
      *
-     * @return integer 
+     * @return integer
      */
     public function getMdsFloorNumber()
     {
@@ -219,6 +192,7 @@ class AweberMdsSyncAudit
      * Set mdsAptLine
      *
      * @param string $mdsAptLine
+     *
      * @return AweberMdsSyncAudit
      */
     public function setMdsAptLine($mdsAptLine)
@@ -231,7 +205,7 @@ class AweberMdsSyncAudit
     /**
      * Get mdsAptLine
      *
-     * @return string 
+     * @return string
      */
     public function getMdsAptLine()
     {
@@ -242,6 +216,7 @@ class AweberMdsSyncAudit
      * Set aweberBuilding
      *
      * @param string $aweberBuilding
+     *
      * @return AweberMdsSyncAudit
      */
     public function setAweberBuilding($aweberBuilding)
@@ -254,7 +229,7 @@ class AweberMdsSyncAudit
     /**
      * Get aweberBuilding
      *
-     * @return string 
+     * @return string
      */
     public function getAweberBuilding()
     {
@@ -265,6 +240,7 @@ class AweberMdsSyncAudit
      * Set aweberFloorNumber
      *
      * @param integer $aweberFloorNumber
+     *
      * @return AweberMdsSyncAudit
      */
     public function setAweberFloorNumber($aweberFloorNumber)
@@ -277,7 +253,7 @@ class AweberMdsSyncAudit
     /**
      * Get aweberFloorNumber
      *
-     * @return integer 
+     * @return integer
      */
     public function getAweberFloorNumber()
     {
@@ -288,6 +264,7 @@ class AweberMdsSyncAudit
      * Set aweberAptLine
      *
      * @param string $aweberAptLine
+     *
      * @return AweberMdsSyncAudit
      */
     public function setAweberAptLine($aweberAptLine)
@@ -300,7 +277,7 @@ class AweberMdsSyncAudit
     /**
      * Get aweberAptLine
      *
-     * @return string 
+     * @return string
      */
     public function getAweberAptLine()
     {
@@ -311,6 +288,7 @@ class AweberMdsSyncAudit
      * Set actionReason
      *
      * @param string $actionReason
+     *
      * @return AweberMdsSyncAudit
      */
     public function setActionReason($actionReason)
@@ -323,7 +301,7 @@ class AweberMdsSyncAudit
     /**
      * Get actionReason
      *
-     * @return string 
+     * @return string
      */
     public function getActionReason()
     {
@@ -334,6 +312,7 @@ class AweberMdsSyncAudit
      * Set actionDate
      *
      * @param \DateTime $actionDate
+     *
      * @return AweberMdsSyncAudit
      */
     public function setActionDate($actionDate)
@@ -346,7 +325,7 @@ class AweberMdsSyncAudit
     /**
      * Get actionDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getActionDate()
     {
@@ -356,10 +335,11 @@ class AweberMdsSyncAudit
     /**
      * Get syncAuditId
      *
-     * @return integer 
+     * @return integer
      */
     public function getSyncAuditId()
     {
         return $this->syncAuditId;
     }
 }
+

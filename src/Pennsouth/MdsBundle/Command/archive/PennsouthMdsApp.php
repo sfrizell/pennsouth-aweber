@@ -1,5 +1,10 @@
 <?php
-require('../vendor/AWeber-API-PHP-Library-master/aweber_api/aweber_api.php');
+
+//namespace Pennsouth\MdsBundle\Command; -- uncommenting this introduces errors - why?
+
+require('./../../../../vendor/aweber/aweber/aweber_api/aweber_api.php');
+//use AWeberAPI;
+
 
 class PennsouthMdsApp{
 
@@ -90,25 +95,86 @@ class PennsouthMdsApp{
 
               $i++;
               print ("\n" . "i: " . $i . "\n");
-              print_r($emailNotificationList);
+           //   print_r($emailNotificationList);
 
               //$listURL = $emailNotificationList["url"]; // Fatal error: Cannot use object of type AWeberEntry as array
               $listURL = $emailNotificationList->url;
-              print ( "\n" . "List url: " . $listURL);
+
+              print ( "\n" . "List url: " . $listURL . "\n");
+
+
               $list = $account->loadFromUrl($listURL);
 
               $subscribers = $list->subscribers;
-              print_r($subscribers);
+
 
 
               $listId = $emailNotificationList->data["id"]; // this is list-id - can use this as key for list maintained in
               $listName = $emailNotificationList->data["name"];
+              $totalSubscribedSubscribers = $emailNotificationList->data["total_subscribed_subscribers"];
+              $totalUnsubscribedSubscribers = $emailNotificationList->data["total_unsubscribed_subscribers"];
               print ( "\n" . "Subscriber list id: " . $listId);
               print ( "\n" . "Subscriber list name: " . $listName);
+              print ( "\n" . "Total Subscribed Subscribers: " . $totalSubscribedSubscribers . "\n");
+              print ( "\n" . "Total Unsubscribed Subscribers: " . $totalUnsubscribedSubscribers . "\n");
+
+              print ("\n" . "Following is list of subscribers for the above list id / name: " . "\n");
+
+                foreach ($subscribers as $subscriberData) {
+
+                    // here we're extracting one subscriber in a subscriber list...
+                  $subscriberDataEntries = $subscriberData->data;
+                   // $k = 1;
+                    print (" --------- subscriberDataEntries..." . "\n");
+                   // print_r($subscriberDataEntries);
+
+                    $customFields = $subscriberDataEntries["custom_fields"];
+
+                    // we check whether this subscriber is a member of a Pennsouth Resident list by examining whether one of the subscriber's
+                    //  custom_fields fields is "Penn_South_Building"
+                    $isResidentList = false;
+                    foreach ($customFields as $key => $value) {
+                         if ($key == "Penn_South_Building") {
+                             $isResidentList = true;
+                         }
+                    }
+
+                    if ($isResidentList) {
+                        foreach ($customFields as $key => $value) {
+                            print ("\n" . "key: " . $key . " value: " . $value); // returns key: Penn_South_Building value: 1 , etcetera
+                                                                                                    //  for each of custom fields...
+                        }
+
+                        print ("\n" . "Subscriber name: " . $subscriberDataEntries["name"] . "\n");
+                        print ("\n" . "Subscriber email: " . $subscriberDataEntries["email"] . "\n");
+                        print ("\n" . "Status: " . $subscriberDataEntries["status"] . "\n");
+                        print ("\n" . "Unsubscribed date/time: " . $subscriberDataEntries["unsubscribed_at"] . "\n");
+                        print ("\n" . "Subscription Method: " . $subscriberDataEntries["subscription_method"] . "\n");
+                        print ("\n" . "Unsubscribe method: " . $subscriberDataEntries["unsubscribe_method"] . "\n");
+                        $subscribedAt = $subscriberDataEntries["subscribed_at"];
+                        if (!empty($subscribedAt)) {
+                            $subscribedAt = substr($subscribedAt, 0, strpos($subscribedAt, "T"));
+                        }
+                        print ("\n" . "Subscribed at: " . $subscriberDataEntries["subscribed_at"] . "\n");
+                        print ("\n" . "Subscribed at parsed: " . $subscribedAt . "\n");
+                    }
+                    else {
+                        print ("\n" . "Not Resident list...");
+                    }
+
+
+                    break; // just for now, for testing looping through the data, so it is not too verbose...
+              }
+
+
+              // comment out the recursive printing of all subscriber data for now...
+              // print ( "\n" . "*******  sfrizell - print_r - subscribers...");
+              // print_r($subscribers);
+
              $j = 0;
 
               // the following foreach iterates through an
-              foreach ( $emailNotificationList as $entry) {
+ /*             foreach ( $emailNotificationList as $entry) {
                   $j++;
                   print ("\n" . "j: " . $j . "\n");
                 //  print_r($entry);
@@ -121,8 +187,7 @@ class PennsouthMdsApp{
                       print "\n" . "Not array..." . "\n";
                       print_r($entry);
                   }
-                 // print_r($entry[1]); // Fatal error: Cannot use object of type OAuthApplication as array
-              }
+              }*/
 
 
           }
