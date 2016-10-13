@@ -2,139 +2,97 @@
 
 namespace Pennsouth\MdsBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * PennsouthShareholder
- *
- * @ORM\Table(name="Pennsouth_Shareholder", indexes={@ORM\Index(name="fk_Internal_Applicant_Pennsouth_Apt1_idx", columns={"Apartment_id"})})
- * @ORM\Entity
  */
 class PennsouthShareholder
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="shareholder_bldg", type="string", length=4, nullable=true)
      */
     private $shareholderBldg;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="shareholder_apt", type="string", length=4, nullable=true)
      */
     private $shareholderApt;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="move_in_date", type="datetime", nullable=true)
      */
     private $moveInDate;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="first_name", type="string", length=45, nullable=true)
      */
     private $firstName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="last_name", type="string", length=45, nullable=true)
      */
     private $lastName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="email_address", type="string", length=45, nullable=true)
      */
     private $emailAddress;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="is_primary_applicant", type="string", length=1, nullable=true)
      */
     private $isPrimaryApplicant;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="home_phone", type="string", length=10, nullable=true)
      */
     private $homePhone;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="business_phone", type="string", length=10, nullable=true)
      */
     private $businessPhone;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="mobile_phone", type="string", length=10, nullable=true)
      */
     private $mobilePhone;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="buildinglink_shareable_id", type="string", length=20, nullable=true)
      */
     private $buildinglinkShareableId;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="year_of_birth", type="integer", nullable=true)
      */
     private $yearOfBirth;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="sex", type="string", length=45, nullable=true)
      */
     private $sex;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Transfer_reason_code", type="string", length=20, nullable=false)
      */
     private $transferReasonCode;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="Shareholder_Id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $shareholderId;
 
     /**
      * @var \Pennsouth\MdsBundle\Entity\PennsouthApt
-     *
-     * @ORM\ManyToOne(targetEntity="Pennsouth\MdsBundle\Entity\PennsouthApt")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Apartment_id", referencedColumnName="apartment_id")
-     * })
      */
     private $apartment;
-
 
 
     /**
      * Set shareholderBldg
      *
      * @param string $shareholderBldg
+     *
      * @return PennsouthShareholder
      */
     public function setShareholderBldg($shareholderBldg)
@@ -147,7 +105,7 @@ class PennsouthShareholder
     /**
      * Get shareholderBldg
      *
-     * @return string 
+     * @return string
      */
     public function getShareholderBldg()
     {
@@ -158,6 +116,7 @@ class PennsouthShareholder
      * Set shareholderApt
      *
      * @param string $shareholderApt
+     *
      * @return PennsouthShareholder
      */
     public function setShareholderApt($shareholderApt)
@@ -170,7 +129,7 @@ class PennsouthShareholder
     /**
      * Get shareholderApt
      *
-     * @return string 
+     * @return string
      */
     public function getShareholderApt()
     {
@@ -181,6 +140,7 @@ class PennsouthShareholder
      * Set moveInDate
      *
      * @param \DateTime $moveInDate
+     *
      * @return PennsouthShareholder
      */
     public function setMoveInDate($moveInDate)
@@ -193,7 +153,7 @@ class PennsouthShareholder
     /**
      * Get moveInDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getMoveInDate()
     {
@@ -204,6 +164,7 @@ class PennsouthShareholder
      * Set firstName
      *
      * @param string $firstName
+     *
      * @return PennsouthShareholder
      */
     public function setFirstName($firstName)
@@ -216,7 +177,7 @@ class PennsouthShareholder
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -227,6 +188,7 @@ class PennsouthShareholder
      * Set lastName
      *
      * @param string $lastName
+     *
      * @return PennsouthShareholder
      */
     public function setLastName($lastName)
@@ -239,7 +201,7 @@ class PennsouthShareholder
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -250,6 +212,7 @@ class PennsouthShareholder
      * Set emailAddress
      *
      * @param string $emailAddress
+     *
      * @return PennsouthShareholder
      */
     public function setEmailAddress($emailAddress)
@@ -262,7 +225,7 @@ class PennsouthShareholder
     /**
      * Get emailAddress
      *
-     * @return string 
+     * @return string
      */
     public function getEmailAddress()
     {
@@ -273,6 +236,7 @@ class PennsouthShareholder
      * Set isPrimaryApplicant
      *
      * @param string $isPrimaryApplicant
+     *
      * @return PennsouthShareholder
      */
     public function setIsPrimaryApplicant($isPrimaryApplicant)
@@ -285,7 +249,7 @@ class PennsouthShareholder
     /**
      * Get isPrimaryApplicant
      *
-     * @return string 
+     * @return string
      */
     public function getIsPrimaryApplicant()
     {
@@ -296,6 +260,7 @@ class PennsouthShareholder
      * Set homePhone
      *
      * @param string $homePhone
+     *
      * @return PennsouthShareholder
      */
     public function setHomePhone($homePhone)
@@ -308,7 +273,7 @@ class PennsouthShareholder
     /**
      * Get homePhone
      *
-     * @return string 
+     * @return string
      */
     public function getHomePhone()
     {
@@ -319,6 +284,7 @@ class PennsouthShareholder
      * Set businessPhone
      *
      * @param string $businessPhone
+     *
      * @return PennsouthShareholder
      */
     public function setBusinessPhone($businessPhone)
@@ -331,7 +297,7 @@ class PennsouthShareholder
     /**
      * Get businessPhone
      *
-     * @return string 
+     * @return string
      */
     public function getBusinessPhone()
     {
@@ -342,6 +308,7 @@ class PennsouthShareholder
      * Set mobilePhone
      *
      * @param string $mobilePhone
+     *
      * @return PennsouthShareholder
      */
     public function setMobilePhone($mobilePhone)
@@ -354,7 +321,7 @@ class PennsouthShareholder
     /**
      * Get mobilePhone
      *
-     * @return string 
+     * @return string
      */
     public function getMobilePhone()
     {
@@ -365,6 +332,7 @@ class PennsouthShareholder
      * Set buildinglinkShareableId
      *
      * @param string $buildinglinkShareableId
+     *
      * @return PennsouthShareholder
      */
     public function setBuildinglinkShareableId($buildinglinkShareableId)
@@ -377,7 +345,7 @@ class PennsouthShareholder
     /**
      * Get buildinglinkShareableId
      *
-     * @return string 
+     * @return string
      */
     public function getBuildinglinkShareableId()
     {
@@ -388,6 +356,7 @@ class PennsouthShareholder
      * Set yearOfBirth
      *
      * @param integer $yearOfBirth
+     *
      * @return PennsouthShareholder
      */
     public function setYearOfBirth($yearOfBirth)
@@ -400,7 +369,7 @@ class PennsouthShareholder
     /**
      * Get yearOfBirth
      *
-     * @return integer 
+     * @return integer
      */
     public function getYearOfBirth()
     {
@@ -411,6 +380,7 @@ class PennsouthShareholder
      * Set sex
      *
      * @param string $sex
+     *
      * @return PennsouthShareholder
      */
     public function setSex($sex)
@@ -423,7 +393,7 @@ class PennsouthShareholder
     /**
      * Get sex
      *
-     * @return string 
+     * @return string
      */
     public function getSex()
     {
@@ -434,6 +404,7 @@ class PennsouthShareholder
      * Set transferReasonCode
      *
      * @param string $transferReasonCode
+     *
      * @return PennsouthShareholder
      */
     public function setTransferReasonCode($transferReasonCode)
@@ -446,7 +417,7 @@ class PennsouthShareholder
     /**
      * Get transferReasonCode
      *
-     * @return string 
+     * @return string
      */
     public function getTransferReasonCode()
     {
@@ -456,7 +427,7 @@ class PennsouthShareholder
     /**
      * Get shareholderId
      *
-     * @return integer 
+     * @return integer
      */
     public function getShareholderId()
     {
@@ -467,6 +438,7 @@ class PennsouthShareholder
      * Set apartment
      *
      * @param \Pennsouth\MdsBundle\Entity\PennsouthApt $apartment
+     *
      * @return PennsouthShareholder
      */
     public function setApartment(\Pennsouth\MdsBundle\Entity\PennsouthApt $apartment = null)
@@ -479,10 +451,11 @@ class PennsouthShareholder
     /**
      * Get apartment
      *
-     * @return \Pennsouth\MdsBundle\Entity\PennsouthApt 
+     * @return \Pennsouth\MdsBundle\Entity\PennsouthApt
      */
     public function getApartment()
     {
         return $this->apartment;
     }
 }
+

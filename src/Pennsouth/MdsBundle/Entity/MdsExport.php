@@ -2,255 +2,182 @@
 
 namespace Pennsouth\MdsBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * MdsExport
- *
- * @ORM\Table(name="Mds_Export")
- * @ORM\Entity
  */
 class MdsExport
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="Building", type="string", length=2, nullable=false)
      */
     private $building;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="MDS_Apt", type="string", length=4, nullable=false)
      */
     private $mdsApt;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="Floor_Number", type="integer", nullable=true)
      */
     private $floorNumber;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Apt_Line", type="string", length=1, nullable=true)
      */
     private $aptLine;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="First_Name", type="string", length=45, nullable=true)
      */
     private $firstName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Last_Name", type="string", length=45, nullable=true)
      */
     private $lastName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Email_Address", type="string", length=70, nullable=true)
      */
     private $emailAddress;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Category", type="string", length=45, nullable=true)
      */
     private $category;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Daytime_Phone", type="string", length=20, nullable=true)
      */
     private $daytimePhone;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Evening_Phone", type="string", length=20, nullable=true)
      */
     private $eveningPhone;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Cell_Phone", type="string", length=20, nullable=true)
      */
     private $cellPhone;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Fax", type="string", length=20, nullable=true)
      */
     private $fax;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Tenant_Id", type="string", length=20, nullable=true)
      */
     private $tenantId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Person_Id", type="string", length=20, nullable=true)
      */
     private $personId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Office_Phone", type="string", length=20, nullable=true)
      */
     private $officePhone;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Status_Codes", type="string", length=45, nullable=true)
      */
     private $statusCodes;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Standard_Lockbox_Tenant_Id", type="string", length=45, nullable=true)
      */
     private $standardLockboxTenantId;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="Move_In_Date", type="datetime", nullable=true)
      */
     private $moveInDate;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="Last_Changed_Date", type="datetime", nullable=true)
      */
     private $lastChangedDate;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Locker_Storage", type="string", length=1, nullable=true)
      */
     private $lockerStorage;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Utility_Closet", type="string", length=1, nullable=true)
      */
     private $utilityCloset;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Small_Closet", type="string", length=1, nullable=true)
      */
     private $smallCloset;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Parking", type="string", length=1, nullable=true)
      */
     private $parking;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Window_Guard_Installed", type="string", length=1, nullable=true)
      */
     private $windowGuardInstalled;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Dog_Allowed", type="string", length=1, nullable=true)
      */
     private $dogAllowed;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Loan_Credit_Union", type="string", length=1, nullable=true)
      */
     private $loanCreditUnion;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Toddler_Room_Member", type="string", length=1, nullable=true)
      */
     private $toddlerRoomMember;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Youth_Room_Member", type="string", length=1, nullable=true)
      */
     private $youthRoomMember;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Ceramics_Member", type="string", length=1, nullable=true)
      */
     private $ceramicsMember;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Garden_Member", type="string", length=1, nullable=true)
      */
     private $gardenMember;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Woodworking_Member", type="string", length=1, nullable=true)
      */
     private $woodworkingMember;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Gym_Member", type="string", length=1, nullable=true)
      */
     private $gymMember;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="Mds_export_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $mdsExportId;
-
 
 
     /**
      * Set building
      *
      * @param string $building
+     *
      * @return MdsExport
      */
     public function setBuilding($building)
@@ -263,7 +190,7 @@ class MdsExport
     /**
      * Get building
      *
-     * @return string 
+     * @return string
      */
     public function getBuilding()
     {
@@ -274,6 +201,7 @@ class MdsExport
      * Set mdsApt
      *
      * @param string $mdsApt
+     *
      * @return MdsExport
      */
     public function setMdsApt($mdsApt)
@@ -286,7 +214,7 @@ class MdsExport
     /**
      * Get mdsApt
      *
-     * @return string 
+     * @return string
      */
     public function getMdsApt()
     {
@@ -297,6 +225,7 @@ class MdsExport
      * Set floorNumber
      *
      * @param integer $floorNumber
+     *
      * @return MdsExport
      */
     public function setFloorNumber($floorNumber)
@@ -309,7 +238,7 @@ class MdsExport
     /**
      * Get floorNumber
      *
-     * @return integer 
+     * @return integer
      */
     public function getFloorNumber()
     {
@@ -320,6 +249,7 @@ class MdsExport
      * Set aptLine
      *
      * @param string $aptLine
+     *
      * @return MdsExport
      */
     public function setAptLine($aptLine)
@@ -332,7 +262,7 @@ class MdsExport
     /**
      * Get aptLine
      *
-     * @return string 
+     * @return string
      */
     public function getAptLine()
     {
@@ -343,6 +273,7 @@ class MdsExport
      * Set firstName
      *
      * @param string $firstName
+     *
      * @return MdsExport
      */
     public function setFirstName($firstName)
@@ -355,7 +286,7 @@ class MdsExport
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -366,6 +297,7 @@ class MdsExport
      * Set lastName
      *
      * @param string $lastName
+     *
      * @return MdsExport
      */
     public function setLastName($lastName)
@@ -378,7 +310,7 @@ class MdsExport
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -389,6 +321,7 @@ class MdsExport
      * Set emailAddress
      *
      * @param string $emailAddress
+     *
      * @return MdsExport
      */
     public function setEmailAddress($emailAddress)
@@ -401,7 +334,7 @@ class MdsExport
     /**
      * Get emailAddress
      *
-     * @return string 
+     * @return string
      */
     public function getEmailAddress()
     {
@@ -412,6 +345,7 @@ class MdsExport
      * Set category
      *
      * @param string $category
+     *
      * @return MdsExport
      */
     public function setCategory($category)
@@ -424,7 +358,7 @@ class MdsExport
     /**
      * Get category
      *
-     * @return string 
+     * @return string
      */
     public function getCategory()
     {
@@ -435,6 +369,7 @@ class MdsExport
      * Set daytimePhone
      *
      * @param string $daytimePhone
+     *
      * @return MdsExport
      */
     public function setDaytimePhone($daytimePhone)
@@ -447,7 +382,7 @@ class MdsExport
     /**
      * Get daytimePhone
      *
-     * @return string 
+     * @return string
      */
     public function getDaytimePhone()
     {
@@ -458,6 +393,7 @@ class MdsExport
      * Set eveningPhone
      *
      * @param string $eveningPhone
+     *
      * @return MdsExport
      */
     public function setEveningPhone($eveningPhone)
@@ -470,7 +406,7 @@ class MdsExport
     /**
      * Get eveningPhone
      *
-     * @return string 
+     * @return string
      */
     public function getEveningPhone()
     {
@@ -481,6 +417,7 @@ class MdsExport
      * Set cellPhone
      *
      * @param string $cellPhone
+     *
      * @return MdsExport
      */
     public function setCellPhone($cellPhone)
@@ -493,7 +430,7 @@ class MdsExport
     /**
      * Get cellPhone
      *
-     * @return string 
+     * @return string
      */
     public function getCellPhone()
     {
@@ -504,6 +441,7 @@ class MdsExport
      * Set fax
      *
      * @param string $fax
+     *
      * @return MdsExport
      */
     public function setFax($fax)
@@ -516,7 +454,7 @@ class MdsExport
     /**
      * Get fax
      *
-     * @return string 
+     * @return string
      */
     public function getFax()
     {
@@ -527,6 +465,7 @@ class MdsExport
      * Set tenantId
      *
      * @param string $tenantId
+     *
      * @return MdsExport
      */
     public function setTenantId($tenantId)
@@ -539,7 +478,7 @@ class MdsExport
     /**
      * Get tenantId
      *
-     * @return string 
+     * @return string
      */
     public function getTenantId()
     {
@@ -550,6 +489,7 @@ class MdsExport
      * Set personId
      *
      * @param string $personId
+     *
      * @return MdsExport
      */
     public function setPersonId($personId)
@@ -562,7 +502,7 @@ class MdsExport
     /**
      * Get personId
      *
-     * @return string 
+     * @return string
      */
     public function getPersonId()
     {
@@ -573,6 +513,7 @@ class MdsExport
      * Set officePhone
      *
      * @param string $officePhone
+     *
      * @return MdsExport
      */
     public function setOfficePhone($officePhone)
@@ -585,7 +526,7 @@ class MdsExport
     /**
      * Get officePhone
      *
-     * @return string 
+     * @return string
      */
     public function getOfficePhone()
     {
@@ -596,6 +537,7 @@ class MdsExport
      * Set statusCodes
      *
      * @param string $statusCodes
+     *
      * @return MdsExport
      */
     public function setStatusCodes($statusCodes)
@@ -608,7 +550,7 @@ class MdsExport
     /**
      * Get statusCodes
      *
-     * @return string 
+     * @return string
      */
     public function getStatusCodes()
     {
@@ -619,6 +561,7 @@ class MdsExport
      * Set standardLockboxTenantId
      *
      * @param string $standardLockboxTenantId
+     *
      * @return MdsExport
      */
     public function setStandardLockboxTenantId($standardLockboxTenantId)
@@ -631,7 +574,7 @@ class MdsExport
     /**
      * Get standardLockboxTenantId
      *
-     * @return string 
+     * @return string
      */
     public function getStandardLockboxTenantId()
     {
@@ -642,6 +585,7 @@ class MdsExport
      * Set moveInDate
      *
      * @param \DateTime $moveInDate
+     *
      * @return MdsExport
      */
     public function setMoveInDate($moveInDate)
@@ -654,7 +598,7 @@ class MdsExport
     /**
      * Get moveInDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getMoveInDate()
     {
@@ -665,6 +609,7 @@ class MdsExport
      * Set lastChangedDate
      *
      * @param \DateTime $lastChangedDate
+     *
      * @return MdsExport
      */
     public function setLastChangedDate($lastChangedDate)
@@ -677,7 +622,7 @@ class MdsExport
     /**
      * Get lastChangedDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLastChangedDate()
     {
@@ -688,6 +633,7 @@ class MdsExport
      * Set lockerStorage
      *
      * @param string $lockerStorage
+     *
      * @return MdsExport
      */
     public function setLockerStorage($lockerStorage)
@@ -700,7 +646,7 @@ class MdsExport
     /**
      * Get lockerStorage
      *
-     * @return string 
+     * @return string
      */
     public function getLockerStorage()
     {
@@ -711,6 +657,7 @@ class MdsExport
      * Set utilityCloset
      *
      * @param string $utilityCloset
+     *
      * @return MdsExport
      */
     public function setUtilityCloset($utilityCloset)
@@ -723,7 +670,7 @@ class MdsExport
     /**
      * Get utilityCloset
      *
-     * @return string 
+     * @return string
      */
     public function getUtilityCloset()
     {
@@ -734,6 +681,7 @@ class MdsExport
      * Set smallCloset
      *
      * @param string $smallCloset
+     *
      * @return MdsExport
      */
     public function setSmallCloset($smallCloset)
@@ -746,7 +694,7 @@ class MdsExport
     /**
      * Get smallCloset
      *
-     * @return string 
+     * @return string
      */
     public function getSmallCloset()
     {
@@ -757,6 +705,7 @@ class MdsExport
      * Set parking
      *
      * @param string $parking
+     *
      * @return MdsExport
      */
     public function setParking($parking)
@@ -769,7 +718,7 @@ class MdsExport
     /**
      * Get parking
      *
-     * @return string 
+     * @return string
      */
     public function getParking()
     {
@@ -780,6 +729,7 @@ class MdsExport
      * Set windowGuardInstalled
      *
      * @param string $windowGuardInstalled
+     *
      * @return MdsExport
      */
     public function setWindowGuardInstalled($windowGuardInstalled)
@@ -792,7 +742,7 @@ class MdsExport
     /**
      * Get windowGuardInstalled
      *
-     * @return string 
+     * @return string
      */
     public function getWindowGuardInstalled()
     {
@@ -803,6 +753,7 @@ class MdsExport
      * Set dogAllowed
      *
      * @param string $dogAllowed
+     *
      * @return MdsExport
      */
     public function setDogAllowed($dogAllowed)
@@ -815,7 +766,7 @@ class MdsExport
     /**
      * Get dogAllowed
      *
-     * @return string 
+     * @return string
      */
     public function getDogAllowed()
     {
@@ -826,6 +777,7 @@ class MdsExport
      * Set loanCreditUnion
      *
      * @param string $loanCreditUnion
+     *
      * @return MdsExport
      */
     public function setLoanCreditUnion($loanCreditUnion)
@@ -838,7 +790,7 @@ class MdsExport
     /**
      * Get loanCreditUnion
      *
-     * @return string 
+     * @return string
      */
     public function getLoanCreditUnion()
     {
@@ -849,6 +801,7 @@ class MdsExport
      * Set toddlerRoomMember
      *
      * @param string $toddlerRoomMember
+     *
      * @return MdsExport
      */
     public function setToddlerRoomMember($toddlerRoomMember)
@@ -861,7 +814,7 @@ class MdsExport
     /**
      * Get toddlerRoomMember
      *
-     * @return string 
+     * @return string
      */
     public function getToddlerRoomMember()
     {
@@ -872,6 +825,7 @@ class MdsExport
      * Set youthRoomMember
      *
      * @param string $youthRoomMember
+     *
      * @return MdsExport
      */
     public function setYouthRoomMember($youthRoomMember)
@@ -884,7 +838,7 @@ class MdsExport
     /**
      * Get youthRoomMember
      *
-     * @return string 
+     * @return string
      */
     public function getYouthRoomMember()
     {
@@ -895,6 +849,7 @@ class MdsExport
      * Set ceramicsMember
      *
      * @param string $ceramicsMember
+     *
      * @return MdsExport
      */
     public function setCeramicsMember($ceramicsMember)
@@ -907,7 +862,7 @@ class MdsExport
     /**
      * Get ceramicsMember
      *
-     * @return string 
+     * @return string
      */
     public function getCeramicsMember()
     {
@@ -918,6 +873,7 @@ class MdsExport
      * Set gardenMember
      *
      * @param string $gardenMember
+     *
      * @return MdsExport
      */
     public function setGardenMember($gardenMember)
@@ -930,7 +886,7 @@ class MdsExport
     /**
      * Get gardenMember
      *
-     * @return string 
+     * @return string
      */
     public function getGardenMember()
     {
@@ -941,6 +897,7 @@ class MdsExport
      * Set woodworkingMember
      *
      * @param string $woodworkingMember
+     *
      * @return MdsExport
      */
     public function setWoodworkingMember($woodworkingMember)
@@ -953,7 +910,7 @@ class MdsExport
     /**
      * Get woodworkingMember
      *
-     * @return string 
+     * @return string
      */
     public function getWoodworkingMember()
     {
@@ -964,6 +921,7 @@ class MdsExport
      * Set gymMember
      *
      * @param string $gymMember
+     *
      * @return MdsExport
      */
     public function setGymMember($gymMember)
@@ -976,7 +934,7 @@ class MdsExport
     /**
      * Get gymMember
      *
-     * @return string 
+     * @return string
      */
     public function getGymMember()
     {
@@ -986,10 +944,11 @@ class MdsExport
     /**
      * Get mdsExportId
      *
-     * @return integer 
+     * @return integer
      */
     public function getMdsExportId()
     {
         return $this->mdsExportId;
     }
 }
+

@@ -4,10 +4,30 @@
     <id name="buildingId" type="string" column="Building_Id" length="4">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="buildingName" type="string" column="Building_Name" length="45" nullable="true"/>
-    <field name="address" type="string" column="address" length="45" nullable="true"/>
-    <field name="city" type="string" column="City" length="45" nullable="true"/>
-    <field name="state" type="string" column="State" length="2" nullable="true"/>
-    <field name="zip" type="string" column="Zip" length="5" nullable="true"/>
+    <field name="buildingName" type="string" column="Building_Name" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="address" type="string" column="address" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="city" type="string" column="City" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="state" type="string" column="State" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="zip" type="string" column="Zip" length="5" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
   </entity>
 </doctrine-mapping>

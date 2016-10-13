@@ -4,6 +4,8 @@
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;
+use Pennsouth\MdsBundle\Command\SyncAweberMdsCommand;
+//use Pennsouth\MdsBundle\Command\PennsouthResidentListReaderCommand;
 
 // if you don't want to setup permissions the proper way, just uncomment the following PHP line
 // read http://symfony.com/doc/current/book/installation.html#configuration-and-setup for more information
@@ -26,4 +28,6 @@ if ($debug) {
 
 $kernel = new AppKernel($env, $debug);
 $application = new Application($kernel);
+$application->add(new SyncAweberMdsCommand());
+//$application->add(new PennsouthResidentListReaderCommand());
 $application->run($input);

@@ -2,38 +2,27 @@
 
 namespace Pennsouth\MdsBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * AptSize
- *
- * @ORM\Table(name="Apt_Size")
- * @ORM\Entity
  */
 class AptSize
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="apt_size_description", type="string", length=20, nullable=true)
      */
     private $aptSizeDescription;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="apt_size_code", type="string", length=10)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @var integer
      */
-    private $aptSizeCode;
-
+    private $bedroomCount;
 
 
     /**
      * Set aptSizeDescription
      *
      * @param string $aptSizeDescription
+     *
      * @return AptSize
      */
     public function setAptSizeDescription($aptSizeDescription)
@@ -46,7 +35,7 @@ class AptSize
     /**
      * Get aptSizeDescription
      *
-     * @return string 
+     * @return string
      */
     public function getAptSizeDescription()
     {
@@ -54,12 +43,13 @@ class AptSize
     }
 
     /**
-     * Get aptSizeCode
+     * Get bedroomCount
      *
-     * @return string 
+     * @return integer
      */
-    public function getAptSizeCode()
+    public function getBedroomCount()
     {
-        return $this->aptSizeCode;
+        return $this->bedroomCount;
     }
 }
+

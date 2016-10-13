@@ -3,40 +3,105 @@
   <entity name="Pennsouth\MdsBundle\Entity\PennsouthApt" table="Pennsouth_Apt">
     <indexes>
       <index name="fk_Pennsouth_Apt_Apt_Availability_Status1_idx" columns="Apt_Availability_code"/>
-      <index name="fk_Pennsouth_Apt_Apt_Size1_idx" columns="Apt_Size_apt_size_code"/>
-      <index name="fk_Pennsouth_Apt_Pennsouth_Bldg1" columns="Buiilding_Id"/>
+      <index name="fk_Pennsouth_Apt_Apt_Size1_idx" columns="Bedroom_Count"/>
+      <index name="fk_Pennsouth_Apt_Pennsouth_Bldg1" columns="Building_Id"/>
     </indexes>
     <id name="apartmentId" type="integer" column="apartment_id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="floorNumber" type="integer" column="Floor_Number" nullable="false"/>
-    <field name="aptLine" type="string" column="Apt_Line" length="1" nullable="false"/>
-    <field name="apartmentName" type="string" column="apartment_name" length="4" nullable="false"/>
+    <field name="floorNumber" type="integer" column="Floor_Number" nullable="false">
+      <options>
+        <option name="unsigned"/>
+        <option name="comment">Valid Values 1 - 21</option>
+      </options>
+    </field>
+    <field name="aptLine" type="string" column="Apt_Line" length="1" nullable="false">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Valid Values: A, B, C, D, E, F, G, H, J </option>
+      </options>
+    </field>
+    <field name="apartmentName" type="string" column="apartment_name" length="6" nullable="false">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Ex: 1-A, 19-J. Value is a concatenation of Floor + hyphen + Apt_Line.</option>
+      </options>
+    </field>
     <field name="roomCount" type="decimal" column="Room_count" precision="2" scale="0" nullable="false"/>
-    <field name="bedroomCount" type="integer" column="Bedroom_Count" nullable="false"/>
-    <field name="hasDiningArea" type="string" column="Has_Dining_Area" length="1" nullable="true"/>
-    <field name="hasDressingRoom" type="string" column="Has_Dressing_Room" length="1" nullable="true"/>
-    <field name="balconyTerraceCode" type="string" column="Balcony_Terrace_Code" length="1" nullable="true"/>
-    <field name="hasAlcove" type="string" column="Has_Alcove" length="1" nullable="true"/>
-    <field name="has2ndBathroom" type="string" column="Has_2nd_Bathroom" length="1" nullable="true"/>
-    <field name="hasSouthExposure" type="string" column="Has_South_Exposure" length="1" nullable="true"/>
-    <field name="hasWestExposure" type="string" column="Has_West_Exposure" length="1" nullable="true"/>
-    <field name="hasEastExposure" type="string" column="Has_East_Exposure" length="1" nullable="true"/>
-    <field name="hasNorthExposure" type="string" column="Has_North_Exposure" length="1" nullable="true"/>
+    <field name="hasDiningArea" type="string" column="Has_Dining_Area" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Y/N</option>
+      </options>
+    </field>
+    <field name="hasDressingRoom" type="string" column="Has_Dressing_Room" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Y/N</option>
+      </options>
+    </field>
+    <field name="balconyTerraceCode" type="string" column="Balcony_Terrace_Code" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">B=Has Balcony, T=Has Terrace, N=Has neither</option>
+      </options>
+    </field>
+    <field name="hasAlcove" type="string" column="Has_Alcove" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Y/N</option>
+      </options>
+    </field>
+    <field name="has2ndBathroom" type="string" column="Has_2nd_Bathroom" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Y/N</option>
+      </options>
+    </field>
+    <field name="exposuresSummary" type="string" column="Exposures_Summary" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="hasSouthExposure" type="string" column="Has_South_Exposure" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Y/N</option>
+      </options>
+    </field>
+    <field name="hasWestExposure" type="string" column="Has_West_Exposure" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Y/N</option>
+      </options>
+    </field>
+    <field name="hasEastExposure" type="string" column="Has_East_Exposure" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Y/N</option>
+      </options>
+    </field>
+    <field name="hasNorthExposure" type="string" column="Has_North_Exposure" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Y/N</option>
+      </options>
+    </field>
     <field name="availabilityStatusDate" type="datetime" column="availability_status_date" nullable="true"/>
-    <many-to-one field="aptSizeAptSizeCode" target-entity="AptSize">
+    <field name="lastChangedDate" type="datetime" column="Last_Changed_Date" nullable="true"/>
+    <many-to-one field="building" target-entity="PennsouthBldg" fetch="LAZY">
       <join-columns>
-        <join-column name="Apt_Size_apt_size_code" referenced-column-name="apt_size_code"/>
+        <join-column name="Building_Id" referenced-column-name="Building_Id"/>
       </join-columns>
     </many-to-one>
-    <many-to-one field="aptAvailabilityCode" target-entity="AptAvailabilityStatus">
+    <many-to-one field="bedroomCount" target-entity="AptSize" fetch="LAZY">
+      <join-columns>
+        <join-column name="Bedroom_Count" referenced-column-name="Bedroom_Count"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="aptAvailabilityCode" target-entity="AptAvailabilityStatus" fetch="LAZY">
       <join-columns>
         <join-column name="Apt_Availability_code" referenced-column-name="availability_code"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="buiilding" target-entity="PennsouthBldg">
-      <join-columns>
-        <join-column name="Buiilding_Id" referenced-column-name="Building_Id"/>
       </join-columns>
     </many-to-one>
   </entity>
