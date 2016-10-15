@@ -110,4 +110,3 @@ class PennsouthStorageLocker
         return $this->availabilityStatusCode;
     }
 }
-

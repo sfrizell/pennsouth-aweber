@@ -168,4 +168,3 @@ class PennsouthBldg
         return $this->buildingId;
     }
 }
-

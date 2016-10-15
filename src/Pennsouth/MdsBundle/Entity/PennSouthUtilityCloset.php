@@ -110,4 +110,3 @@ class PennSouthUtilityCloset
         return $this->availabilityStatusCode;
     }
 }
-

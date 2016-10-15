@@ -574,4 +574,3 @@ class PennsouthApt
         return $this->aptAvailabilityCode;
     }
 }
-
