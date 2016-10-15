@@ -806,4 +806,3 @@ class PennsouthResident
         return $this->pennsouthAptApartment;
     }
 }
-

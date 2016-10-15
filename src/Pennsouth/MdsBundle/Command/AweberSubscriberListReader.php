@@ -84,10 +84,11 @@ class AweberSubscriberListReader
             return $account;
         }
         catch (AWeberAPIException $exc) {
-                         print "AWeberAPIException on attempt to connect to AWeber Account\n";
+                         print "AWeberAPIException in AweberSubscriberListReader on attempt to connect to AWeber Account\n";
                          print "Type: " . $exc->type . "\n";
                          print "Msg: " . $exc->message . "\n" ;
                          print "Docs: " . $exc->documentation_url . "\n";
+                         throw new \Exception($exc->type);
         }
 
 
@@ -113,17 +114,19 @@ class AweberSubscriberListReader
                  foreach ($emailNotificationlists as $emailNotificationlist) {
                      if ($emailNotificationlist->data['name'] == self::AWEBER_PENNSOUTH_NEWSLETTER_LIST or
                          $emailNotificationlist->data['name'] == self::EMERGENCY_NOTICES_FOR_RESIDENTS) {
-                         $selectedEmailNotificationLists[] = $emailNotificationlist;
+                         $selectedEmailNotificationLists[$emailNotificationlist->data['name']] = $emailNotificationlist;
                         // print ("\n" . "emailNotificationList Name: " . $emailNotificationlist->data['name']);
                      }
                  }
 
                  return $selectedEmailNotificationLists;
              } catch (AWeberAPIException $exc) {
-                 print "AWeberAPIException\n";
+                 print ".\n" . "AWeberAPIException in AweberSubscriberListReader.getEmailNotificationLists \n";
                  print "Type: " . $exc->type . "\n";
                  print "Msg: " . $exc->message . "\n" ;
                  print "Docs: " . $exc->documentation_url . "\n";
+                 throw new \Exception($exc->type);
+                // throw new AWeberAPIException();
              }
          }
 
@@ -137,90 +140,111 @@ class AweberSubscriberListReader
      public function getSubscribersToEmailNotificationList ($account, $emailNotificationList) {
 
 
-         $listURL = $emailNotificationList->url;
+         try {
+             sleep(65); // sleep 65 seconds to avoid Aweber Rate Limit Exception - status code 403
+             $listURL = $emailNotificationList->url;
 
-          print ( "\n" . "List url: " . $listURL . "\n");
-
-
-          $list = $account->loadFromUrl($listURL);
-
-          $subscribers = $list->subscribers;
+             print ("\n" . "List url: " . $listURL . "\n");
 
 
+             $list = $account->loadFromUrl($listURL);
 
-          $listId = $emailNotificationList->data["id"]; // this is list-id - can use this as key for list maintained in
-          $listName = $emailNotificationList->data["name"];
-          $totalSubscribedSubscribers = $emailNotificationList->data["total_subscribed_subscribers"];
-          $totalUnsubscribedSubscribers = $emailNotificationList->data["total_unsubscribed_subscribers"];
-          print ( "\n" . "Subscriber list id: " . $listId);
-          print ( "\n" . "Subscriber list name: " . $listName);
-          print ( "\n" . "Total Subscribed Subscribers: " . $totalSubscribedSubscribers . "\n");
-          print ( "\n" . "Total Unsubscribed Subscribers: " . $totalUnsubscribedSubscribers . "\n");
-
-          print ("\n" . "Following is list of subscribers for the above list id / name: " . "\n");
-
-            $i = 0;
-            foreach ($subscribers as $subscriberData) {
-                $i++;
-                // here we're extracting one subscriber in a subscriber list...
-              $subscriberDataEntries = $subscriberData->data;
-               // $k = 1;
-                print (" --------- subscriberDataEntries..." . "\n");
-               // print_r($subscriberDataEntries);
-
-                $customFields = $subscriberDataEntries["custom_fields"];
-
-                // we check whether this subscriber is a member of a Pennsouth Resident list by examining whether one of the subscriber's
-                //  custom_fields fields is "Penn_South_Building"
- /*               $isResidentList = false;
-                foreach ($customFields as $key => $value) {
-                     if ($key == "Penn_South_Building") {
-                         $isResidentList = true;
-                     }
-                }*/
-
-                    $aweberSubscriber = new AweberSubscriber();
-
-                    $aweberSubscriber->setEmail($subscriberDataEntries["email"]);
-                    $aweberSubscriber->setName($subscriberDataEntries["name"]);
-                    $aweberSubscriber->setStatus($subscriberDataEntries["status"]);
-                   // $subscriberCustomFields = array();
-                    $aweberSubscriber->setPennSouthBuilding($customFields[self::BUILDING]);
-                    $aweberSubscriber->setFloorNumber($customFields[self::FLOOR_NUMBER]);
-                    $aweberSubscriber->setApartment($customFields[self::APARTMENT]);
-                    foreach ($customFields as $key => $value) {
-                        print ("\n" . "key: " . $key . " value: " . $value); // returns key: Penn_South_Building value: 1 , etcetera
-                                                                                                //  for each of custom fields...
-
-                     /*   foreach ($this->customFieldNames as $customFieldName ) {
-                             if ($key == $customFieldName) {
-                                 $subscriberCustomFields[$key] = $value;
-                                 break;
-                             }
-                        }*/
-                    }
-
-                    print ("\n" . "Subscriber name: " . $aweberSubscriber->getName() . "\n");
-                //print ("\n" . "Subscriber name: " . $subscriberDataEntries["name"] . "\n");
-                    print ("\n" . "Subscriber email: " . $subscriberDataEntries["email"] . "\n");
-                    print ("\n" . "Status: " . $subscriberDataEntries["status"] . "\n");
-                    print ("\n" . "Unsubscribed date/time: " . $subscriberDataEntries["unsubscribed_at"] . "\n");
-                    print ("\n" . "Subscription Method: " . $subscriberDataEntries["subscription_method"] . "\n");
-                    print ("\n" . "Unsubscribe method: " . $subscriberDataEntries["unsubscribe_method"] . "\n");
-                    $subscribedAt = $subscriberDataEntries["subscribed_at"];
-                    if (!empty($subscribedAt)) {
-                        $subscribedAt = substr($subscribedAt, 0, strpos($subscribedAt, "T"));
-                    }
-                    print ("\n" . "Subscribed at: " . $subscriberDataEntries["subscribed_at"] . "\n");
-                    print ("\n" . "Subscribed at parsed: " . $subscribedAt . "\n");
+             $subscribers = $list->subscribers;
 
 
+             $listId = $emailNotificationList->data["id"]; // this is list-id - can use this as key for list maintained in
 
-                if ($i > 4) {
+             $totalSubscribedSubscribers = $emailNotificationList->data["total_subscribed_subscribers"];
+             $totalUnsubscribedSubscribers = $emailNotificationList->data["total_unsubscribed_subscribers"];
+             print ("\n" . "Subscriber list id: " . $listId);
+             print ("\n" . "Total Subscribed Subscribers: " . $totalSubscribedSubscribers . "\n");
+             print ("\n" . "Total Unsubscribed Subscribers: " . $totalUnsubscribedSubscribers . "\n");
 
-                    break; // just for now, for testing looping through the data, so it is not too verbose...
-                }
-          }
+             print ("\n" . "Following is list of subscribers for the above list id / name: " . "\n");
+
+
+             $aweberSubscribersWithListNameKey = array(); // associative array: key = list-name, value = array of AweberSubscriber objects
+             $listName = $emailNotificationList->data["name"];
+             print ("\n" . "Subscriber list name: " . $listName);
+             $aweberSubscribers = array();
+             $i = 0;
+             foreach ($subscribers as $subscriberData) {
+                 $i++;
+                 // here we're extracting one subscriber in a subscriber list...
+                 $subscriberDataEntries = $subscriberData->data;
+                 // $k = 1;
+                 //  print (" --------- subscriberDataEntries..." . "\n");
+                 // print_r($subscriberDataEntries);
+
+                 $customFields = $subscriberDataEntries["custom_fields"];
+
+                 // we check whether this subscriber is a member of a Pennsouth Resident list by examining whether one of the subscriber's
+                 //  custom_fields fields is "Penn_South_Building"
+                 /*               $isResidentList = false;
+                                foreach ($customFields as $key => $value) {
+                                     if ($key == "Penn_South_Building") {
+                                         $isResidentList = true;
+                                     }
+                                }*/
+
+                 // Create and populate an AweberSubscriber...
+                 $aweberSubscriber = new AweberSubscriber();
+
+                 $aweberSubscriber->setEmail($subscriberDataEntries["email"]);
+                 $aweberSubscriber->setName($subscriberDataEntries["name"]);
+                 $aweberSubscriber->setStatus($subscriberDataEntries["status"]);
+                 $subscribedAt = $subscriberDataEntries["subscribed_at"];
+                 if (!empty($subscribedAt)) {
+                     $subscribedAt = substr($subscribedAt, 0, strpos($subscribedAt, "T"));
+                     $aweberSubscriber->setSubscribedAt($subscribedAt);
+                 }
+                // print("\n" . " !!!!!!!!!!  AweberSubscriberListReader->getSubscribersToEmailNotificationList subscribedAt: " . $subscribedAt . "!!!!!!!! ");
+                // throw new \Exception("Just a test!");
+                 $unsubscribedAt = $subscriberDataEntries["unsubscribed_at"];
+                 if (!empty($unsubscribedAt)) {
+                     $unsubscribedAt = substr($unsubscribedAt, 0, strpos($unsubscribedAt, "T"));
+                     $aweberSubscriber->setUnsubscribedAt($unsubscribedAt);
+                 }
+                 $aweberSubscriber->setSubscriptionMethod($subscriberDataEntries["subscription_method"]);
+
+                 $aweberSubscriber->setPennSouthBuilding($customFields[self::BUILDING]);
+                 $aweberSubscriber->setFloorNumber($customFields[self::FLOOR_NUMBER]);
+                 $aweberSubscriber->setApartment($customFields[self::APARTMENT]);
+
+                 // Add the AweberSubscriber to the $aweberSubscribers array...
+                 $aweberSubscribers[] = $aweberSubscriber;
+
+                 /*                  foreach ($customFields as $key => $value) {
+                                       print ("\n" . "key: " . $key . " value: " . $value); // returns key: Penn_South_Building value: 1 , etcetera
+                                                                                                               //  for each of custom fields...
+                                   }*/
+
+//                    print ("\n" . "Subscriber name: " . $aweberSubscriber->getName() . "\n");
+//                    print ("\n" . "Subscriber email: " . $subscriberDataEntries["email"] . "\n");
+//                    print ("\n" . "Status: " . $subscriberDataEntries["status"] . "\n");
+//                    print ("\n" . "Unsubscribed date/time: " . $subscriberDataEntries["unsubscribed_at"] . "\n");
+//                    print ("\n" . "Subscription Method: " . $subscriberDataEntries["subscription_method"] . "\n");
+//                    print ("\n" . "Unsubscribe method: " . $subscriberDataEntries["unsubscribe_method"] . "\n");
+//                    if (!empty($subscribedAt)) {
+//                        $subscribedAt = substr($subscribedAt, 0, strpos($subscribedAt, "T"));
+//                    }
+//                    print ("\n" . "Subscribed at: " . $subscriberDataEntries["subscribed_at"] . "\n");
+//                    print ("\n" . "Subscribed at parsed: " . $subscribedAt . "\n");
+
+
+             } // end of iteration through the $subscribers
+
+             $aweberSubscribersWithListNameKey[$listName] = $aweberSubscribers;
+
+             return $aweberSubscribersWithListNameKey;
+         }
+         catch (AWeberAPIException $exc) {
+                  print "\n" . "AWeberAPIException in AweberSubscriberListReader.getSubscribersToEmailNotificationList \n";
+                  print "Type: " . $exc->type . "\n";
+                  print "Msg: " . $exc->message . "\n" ;
+                  print "Docs: " . $exc->documentation_url . "\n";
+                  throw new \Exception($exc->type);
+         }
      }
 
       public function getSubscribersToEmailNotificationLists( $account, $emailNotificationLists ) {
@@ -327,6 +351,7 @@ class AweberSubscriberListReader
 
 
          } // end of function: getSubscribersToEmailNotificationLists
+
 
 
 }

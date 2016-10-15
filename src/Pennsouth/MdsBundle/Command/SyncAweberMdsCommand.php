@@ -13,7 +13,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Pennsouth\MdsBundle\Command\AweberSubscriberListReader;
-//use Pennsouth\MdsBundle\Command\PennsouthResidentListReaderCommand;
 
 use Pennsouth\MdsBundle\Command\PennsouthResidentListReader;
 
@@ -71,15 +70,14 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 '',
             ]);
 
-       // $app = new PennsouthMdsApp();
 
-        print ( "\n !!!!!!!!!!!!!  root directory: " . $this->getContainer()->getParameter('kernel.root_dir') . "\n");
+    //    print ( "\n !!!!!!!!!!!!!  root directory: " . $this->getContainer()->getParameter('kernel.root_dir') . "\n");
 
         $rootDir = $this->getContainer()->getParameter('kernel.root_dir');
 
         $rootDir = rtrim($rootDir, "/app");
 
-        print ("\n @@@@@@@@@  rootDir trimmed: " .  $rootDir . "\n");
+   //     print ("\n @@@@@@@@@  rootDir trimmed: " .  $rootDir . "\n");
 
         // sfrizell - 10/7/2016 -- following block of code not working get a ContextErrorException running it...
 //        $input = new ArgvInput();
@@ -106,7 +104,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         $pennsouthResidentListReader = new PennsouthResidentListReader($entityManager);
 
-        //$pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddresses();
+
         $residentsWithEmailAddressesArray = $pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddressAssociativeArray();
 
   /*      $i = 0;
@@ -121,32 +119,87 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         $aweberSubscriberListReader = new AweberSubscriberListReader($rootDir);
 
-        $account = $aweberSubscriberListReader->connectToAWeberAccount();
+        $success = FALSE;
+        $j = 0;
+        $emailNotificationLists = array();
+        while (!$success) {
+            try {
+                $account = $aweberSubscriberListReader->connectToAWeberAccount();
 
-        $emailNotificationLists = $aweberSubscriberListReader->getEmailNotificationLists($account);
+                $emailNotificationLists = $aweberSubscriberListReader->getEmailNotificationLists($account);
+                $success = TRUE;
+            }
+            catch (\Exception $exception) {
+                if ($exception->getMessage() == "ServiceUnavailableError") {
+                    $j++;
+                    if ($j < 6) {
+                        print("\n" . "AweberAPI Service temporarily unavailable while trying to call AweberSubscriberListReader->getEmailNotificationLists. ");
+                        print ("\n" . "Going to sleep for 2 minutes; then will try again.");
+                        sleep(120);
+                    }
+                }
+                else {
+                    print("\n" . "Exception occurred! Exception->getMessage() : " . $exception->getMessage());
+                    print("\n" . "Exiting from program.");
+                    exit(1);
+                }
+            }
+        }
 
-        $aweberSubscriberListReader->getSubscribersToEmailNotificationLists($account, $emailNotificationLists);
+       // $aweberSubscriberListReader->getSubscribersToEmailNotificationLists($account, $emailNotificationLists);
        // print("\n" . "0");
 
-        foreach ($emailNotificationLists as $emailNotificationList ) {
+        $aweberSubscribersWithListNameKeys = array();
+        $success = FALSE;
+        $j = 0;
+        while (!$success) {
+            try {
+                foreach ($emailNotificationLists as $emailNotificationList) {
 
-            print("\n" . "0");
-          //  $aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList);
+                    print("\n" . "1");
+                    $listName = $emailNotificationList->data["name"];
 
-            print("\n" . "1");
-            $listName = $emailNotificationList->data["name"];
+                    // returns associative array : key = name of aWeberSubscriberList ; value = array of AweberSubscriber objects
+                    $aweberSubscribersWithListNameKeys[$listName] = $aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList);
+                    $success = TRUE;
 
-            print("\n" . " List Name: " . $listName . "\n");
-     /*       if ($listName == "frizell_test") {
-                print("\n" . "2");
-                $aweberSubscriberWriter = new AweberSubscriberWriter($rootDir);
+                    print("\n" . " List Name: " . $listName . "\n");
+                    /*       if ($listName == "frizell_test") {
+                               print("\n" . "2");
+                               $aweberSubscriberWriter = new AweberSubscriberWriter($rootDir);
 
-                print("\n" . "3");
-                $subscriber = $aweberSubscriberWriter->createAweberSubscriber($account, $emailNotificationList);
-                print ("\n" . "!!!!!!!!!!!   subscriber: " . "\n");
-                print_r($subscriber);
-            }*/
+                               print("\n" . "3");
+                               $subscriber = $aweberSubscriberWriter->createAweberSubscriber($account, $emailNotificationList);
+                               print ("\n" . "!!!!!!!!!!!   subscriber: " . "\n");
+                               print_r($subscriber);
+                           }*/
 
+                }
+            }
+            catch (\Exception $exception){
+                    if ($exception->getMessage() == "ServiceUnavailableError") {
+                        $j++;
+                        if ($j < 6) {
+                            print("\n" . "AweberAPI Service temporarily unavailable when trying to call AweberSubscriberListReader->getSubscribersToEmailNotificationList. ");
+                            print ("\n" . "Going to sleep for 2 minutes; then will try again.");
+                            sleep(120);
+                        }
+                    }
+                    else {
+                        print("\n" . "Exception occurred! Exception->getMessage() : " . $exception->getMessage());
+                        print("\n" . "Exiting from program.");
+                        exit(1);
+                    }
+            }
+        }
+
+        if ($success) {
+            $mdsToAweberUpdater = new MdsToAweberUpdater($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersWithListNameKeys);
+            $mdsToAweberUpdater->reportOnAweberSubscribersWithNoMatchInMds();
+            print("\n" . "Processing completed successfully.");
+        }
+        else {
+            print("\n" . "An error occurred in the Sync Aweber from MDS program. Processing did not complete successfully!");
         }
 
     //    $account = $app->connectToAWeberAccount();
