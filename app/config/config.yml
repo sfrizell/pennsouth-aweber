@@ -72,12 +72,21 @@ doctrine:
         auto_mapping: true
 
 # Swiftmailer Configuration
+# the spool: type: file... parameter is recommended here: http://stackoverflow.com/questions/13122096/unable-to-send-e-mail-from-within-custom-symfony2-command-but-can-from-elsewhere
+# ran composer install which overwrote the following parameters that I had defined in parameters.yml
+#  mailer_port: 465
+#  mailer_encryption: ssl
+#  mailer_auth_mode: login
 swiftmailer:
     transport: "%mailer_transport%"
     host:      "%mailer_host%"
+    port:      465
+    auth_mode: login
+    encryption: ssl
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+  ##  spool:     { type: file, path: %kernel.root_dir%/spool }
 
         # an optional setting to configure a query string parameter which can be used to redirect
         # the user after authentication, e.g. /connect/facebook?_destination=/my/destination will
