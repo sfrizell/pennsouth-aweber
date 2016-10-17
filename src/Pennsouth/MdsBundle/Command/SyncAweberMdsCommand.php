@@ -91,14 +91,34 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 //
 //        $pennsouthResidentListReader->run($input, $output);
 
-        //$entityManager = $this->get('entity.manager');
 
+        //  test sending email
 
-       // $pennsouthResidentListReader = new PennsouthResidentListReader($entityManager);
+        $body = "Yet another test email message";
+        $message = \Swift_Message::newInstance()
+                   ->setSubject('Test Email Again!')
+                   ->setFrom('DoNotReply@sfnyc.net')
+                   ->setTo('steve.frizell@gmail.com')
+                   ->setBody($body);
 
-        //$pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddresses();
+        $mailer = $this->getContainer()->get('mailer');
+        $result = $mailer->send($message);
+        $output->writeln($result);
 
-       // $this->pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddresses();
+        $transport = $this->getContainer()->get('mailer')->getTransport();
+        if (!$transport instanceof \Swift_Transport_SpoolTransport) {
+            return;
+        }
+
+        $spool = $transport->getSpool();
+        if (!$spool instanceof \Swift_MemorySpool) {
+            return;
+        }
+
+        $spool->flushQueue($this->getContainer()->get('swiftmailer.transport.real'));
+
+        exit;
+        // test sending email above
 
         $entityManager = $this->getEntityManager();
 
