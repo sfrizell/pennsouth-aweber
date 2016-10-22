@@ -32,6 +32,15 @@ class MdsToAweberUpdater
     }
 
     /**
+     *
+     */
+    public function compareAndUpdateAweberFromMds() {
+        // todo: write this function!! Loop through pennsouthResidents : if match found in either aweber subscriber list, update the custom fields - what if currently unsuscribed??
+        // todo:     if no match found, insert subscriber to pennsouth newsletter list  */
+
+    }
+
+    /**
      *  find all subscribers with email addresses in Aweber where there is no match on email address in MDS Export.
      *  For each such instance write a row to the Aweber_Mds_Sync_Audit table
      *
@@ -39,7 +48,6 @@ class MdsToAweberUpdater
     public function reportOnAweberSubscribersWithNoMatchInMds() {
         $currDate = new \DateTime("now");
         $j = 0;
-        $flush = FALSE;
         foreach ($this->aweberSubscribersWithListNameKeys as $listName => $aweberSubscribers) {
             $j++;
             print("\n" . "MdsToAweberUpdater - listname: " . $listName);
@@ -84,6 +92,7 @@ class MdsToAweberUpdater
 
     private function createAweberMdsSyncAuditNoMdsSubscriber(AweberSubscriber $aweberSubscriber, $listName, $currDate, $flush) {
 
+        // todo: add subscriber name to AweberMdsSyncAudit... 10/18/2016
         $aweberMdsSyncAudit = new AweberMdsSyncAudit();
         // set attributes of $aweberMdsSyncAudit...
         $aweberMdsSyncAudit->setAweberSubscriberListName($listName);
