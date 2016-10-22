@@ -30,7 +30,7 @@ use Pennsouth\MdsBundle\AweberEntity\AweberSubscriber;
 class AweberSubscriberListReader
 {
     const AWEBER_PENNSOUTH_NEWSLETTER_LIST = 'Penn South Newsletter'; // Unique List ID: awlist3774632
-    const EMERGENCY_NOTICES_FOR_RESIDENTS = 'Emergency Notices for Residents'; // Unique List ID: awlist3926140
+    const EMERGENCY_NOTICES_FOR_RESIDENTS = 'Emergency Notices for Residents'; // Unique List ID: awlist3926140 ; list_id is stripped of the 'awlist' prefix, just the # portion
 
     const CUSTOM_FIELDS = array('BUILDING' => 'Penn_South_Building',
                                 'FLOOR_NUMBER' => 'Floor_Number',
@@ -39,6 +39,8 @@ class AweberSubscriberListReader
     const BUILDING      = 'Penn_South_Building';
     const FLOOR_NUMBER  = 'Floor_Number';
     const APARTMENT     = 'Apartment';
+    const ADMINS_MDS_TO_AWEBER_LIST_ID = 4459191;
+    const PENN_SOUTH_AWEBER_ACCOUNT = 936765;
 
     public function __construct($rootDir) {
 
@@ -115,8 +117,11 @@ class AweberSubscriberListReader
                      if ($emailNotificationlist->data['name'] == self::AWEBER_PENNSOUTH_NEWSLETTER_LIST or
                          $emailNotificationlist->data['name'] == self::EMERGENCY_NOTICES_FOR_RESIDENTS) {
                          $selectedEmailNotificationLists[$emailNotificationlist->data['name']] = $emailNotificationlist;
-                        // print ("\n" . "emailNotificationList Name: " . $emailNotificationlist->data['name']);
+                       //  print ("\n" . "emailNotificationList Name: " . $emailNotificationlist->data['name']);
+                       //  print ("\n" . "emailNotificationList Id: " . $emailNotificationlist->data['id']);
                      }
+                    // print ("\n" . "emailNotificationList Name: " . $emailNotificationlist->data['name'] . "\n");
+                    // print ("\n" . "emailNotificationList Id: " . $emailNotificationlist->data['id'] . "\n" );
                  }
 
                  return $selectedEmailNotificationLists;
@@ -129,6 +134,31 @@ class AweberSubscriberListReader
                 // throw new AWeberAPIException();
              }
          }
+
+    /**
+     * the getSubscribersToAdminsMdsToAweberList reads the Aweber subscriber list 'admin_mds_to_aweber'
+     * This list was created to provide Penn South Administrators an ability to manage the list of email
+     * recipients to the automated email messages that are generated from this application. The emails
+     * notify about success or failure of the running of this program.
+     * The url of the subscriber list name 'admins_mds_to_aweber_update' is: awlist4459191
+     */
+     public function getSubscribersToAdminsMdsToAweberList($account) {
+
+        $listId =  $account->loadFromUrl(self::ADMINS_MDS_TO_AWEBER_LIST_ID); // this unique list id - is this the same as the 'list_id' called for in Aweber API?
+         $accountId = self::PENN_SOUTH_AWEBER_ACCOUNT;
+         $listURL = "/accounts/{$accountId}/lists/{$listId}"; //
+         $list = $account->loadFromUrl($listURL);
+
+         $subscribers = $list->subscribers;
+
+         $emailAddresses = array();
+         foreach ($subscribers as $subscriberData) {
+             $subscriberDataEntries = $subscriberData->data;
+             $emailAddresses[] = $subscriberDataEntries["email"];
+         }
+
+         return $emailAddresses;
+     }
 
     /**
      * @param $account
