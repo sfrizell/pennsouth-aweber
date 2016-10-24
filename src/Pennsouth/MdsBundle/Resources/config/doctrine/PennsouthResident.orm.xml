@@ -72,16 +72,6 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="windowGuardInstalled" type="string" column="Window_Guard_Installed" length="1" nullable="true">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
-    <field name="dogAllowed" type="string" column="Dog_Allowed" length="1" nullable="true">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
     <field name="toddlerRoomMember" type="string" column="Toddler_Room_Member" length="1" nullable="true">
       <options>
         <option name="fixed"/>
@@ -112,22 +102,75 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="smallCloset" type="string" column="Small_Closet" length="45" nullable="true">
+    <field name="decalNum" type="string" column="Decal_Num" length="5" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Decal Number for Parking Lot.</option>
+      </options>
+    </field>
+    <field name="parkingLotLocation" type="string" column="Parking_Lot_Location" length="5" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Values: LOWER/UPPER</option>
+      </options>
+    </field>
+    <field name="vehicleRegExpDate" type="datetime" column="Vehicle_Reg_Exp_Date" nullable="true"/>
+    <field name="vehicleRegExpCountdown" type="integer" column="Vehicle_Reg_Exp_Countdown" nullable="true">
+      <options>
+        <option name="unsigned"/>
+        <option name="comment">Number of Days till Expiration of vehicle registration. 0=has expired.</option>
+      </options>
+    </field>
+    <field name="homeownerInsExpDate" type="datetime" column="Homeowner_Ins_Exp_Date" nullable="true">
+      <options>
+        <option name="comment">Date of Expiration of Homeowners insurance.</option>
+      </options>
+    </field>
+    <field name="homeownerInsExpCountdown" type="integer" column="Homeowner_Ins_Exp_Countdown" nullable="true">
+      <options>
+        <option name="unsigned"/>
+        <option name="comment">Number of Days till Expiration. 0=has expired.</option>
+      </options>
+    </field>
+    <field name="birthDate" type="datetime" column="Birth_Date" nullable="true"/>
+    <field name="moveInDate" type="datetime" column="Move_In_Date" nullable="true"/>
+    <field name="storageLockerClosetBldgNum" type="string" column="Storage_Locker_Closet_Bldg_Num" length="20" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="parking" type="string" column="Parking" length="45" nullable="true">
+    <field name="storageLockerNum" type="string" column="Storage_Locker_Num" length="10" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="utilityCloset" type="string" column="Utility_Closet" length="45" nullable="true">
+    <field name="storageClosetFloorNum" type="string" column="Storage_Closet_Floor_Num" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="lockerStorage" type="string" column="Locker_Storage" length="45" nullable="true">
+    <field name="dogTagNum" type="string" column="Dog_Tag_Num" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="isDogInApt" type="string" column="Is_Dog_In_Apt" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Values: Y/N</option>
+      </options>
+    </field>
+    <field name="bikeRackLocation" type="string" column="Bike_Rack_Location" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="bikeRackBldg" type="string" column="Bike_Rack_Bldg" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="bikeRackRoom" type="string" column="Bike_Rack_Room" length="2" nullable="true">
       <options>
         <option name="fixed"/>
       </options>

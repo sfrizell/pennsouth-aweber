@@ -38,6 +38,11 @@ class MdsToAweberUpdater
         // todo: write this function!! Loop through pennsouthResidents : if match found in either aweber subscriber list, update the custom fields - what if currently unsuscribed??
         // todo:     if no match found, insert subscriber to pennsouth newsletter list  */
 
+        foreach ($this->pennsouthResidents as $pennsouthResident) {
+
+        }
+
+
     }
 
     /**
@@ -101,6 +106,7 @@ class MdsToAweberUpdater
         $aweberMdsSyncAudit->setAweberFloorNumber($aweberSubscriber->getFloorNumber());
         $aweberMdsSyncAudit->setAweberAptLine($aweberSubscriber->getApartment());
         $aweberMdsSyncAudit->setAweberSubscriberStatus($aweberSubscriber->getStatus());
+        $aweberMdsSyncAudit->setAweberSubscriberName($aweberSubscriber->getName());
         if ($aweberSubscriber->getSubscribedAt() != null ) {
             $subscribedAtDate = \DateTime::createFromFormat('Y-m-d', $aweberSubscriber->getSubscribedAt()); // need the backward slash to address namespace issue.
             $aweberMdsSyncAudit->setAweberSubscribedAt($subscribedAtDate);

@@ -35,6 +35,16 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="mdsResidentFirstName" type="string" column="Mds_Resident_First_Name" length="40" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsResidentLastName" type="string" column="Mds_Resident_Last_Name" length="40" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="aweberBuilding" type="string" column="Aweber_Building" length="2" nullable="true">
       <options>
         <option name="fixed"/>
@@ -46,6 +56,11 @@
       </options>
     </field>
     <field name="aweberAptLine" type="string" column="Aweber_Apt_Line" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberSubscriberName" type="string" column="Aweber_Subscriber_Name" length="90" nullable="true">
       <options>
         <option name="fixed"/>
       </options>

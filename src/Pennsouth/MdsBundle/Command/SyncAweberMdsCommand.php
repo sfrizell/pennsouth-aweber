@@ -116,6 +116,10 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
        // exit;
 
+        /** In block below, invoke Aweber API to obtain the following:
+         *   a) list of Penn South Admin email recipients, to notify about the status of the running of the MDS to Aweber update process: $adminEmailRecipients
+         *   b) the two Penn South Resident subscriber lists (Penn South Newsletter and Emergency Notifications): $emailNotificationLists
+        **/
         $aweberSubscriberListReader = new AweberSubscriberListReader($rootDir);
 
         $success = FALSE;
@@ -165,6 +169,10 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
        // $aweberSubscriberListReader->getSubscribersToEmailNotificationLists($account, $emailNotificationLists);
        // print("\n" . "0");
 
+        /**
+         *   In block below, obtain the list of Penn South Subscribers to each of the Penn South Resident subscriber lists obtained from the block above
+         */
+
         $aweberSubscribersWithListNameKeys = array();
         $success = FALSE;
         $j = 0;
@@ -172,7 +180,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             try {
                 foreach ($emailNotificationLists as $emailNotificationList) {
 
-                    print("\n" . "1");
+                   // print("\n" . "1");
                     $listName = $emailNotificationList->data["name"];
 
                     // returns associative array : key = name of aWeberSubscriberList ; value = array of AweberSubscriber objects

@@ -40,6 +40,16 @@ class AweberMdsSyncAudit
     /**
      * @var string
      */
+    private $mdsResidentFirstName;
+
+    /**
+     * @var string
+     */
+    private $mdsResidentLastName;
+
+    /**
+     * @var string
+     */
     private $aweberBuilding;
 
     /**
@@ -51,6 +61,11 @@ class AweberMdsSyncAudit
      * @var string
      */
     private $aweberAptLine;
+
+    /**
+     * @var string
+     */
+    private $aweberSubscriberName;
 
     /**
      * @var string
@@ -233,6 +248,54 @@ class AweberMdsSyncAudit
     }
 
     /**
+     * Set mdsResidentFirstName
+     *
+     * @param string $mdsResidentFirstName
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsResidentFirstName($mdsResidentFirstName)
+    {
+        $this->mdsResidentFirstName = $mdsResidentFirstName;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsResidentFirstName
+     *
+     * @return string
+     */
+    public function getMdsResidentFirstName()
+    {
+        return $this->mdsResidentFirstName;
+    }
+
+    /**
+     * Set mdsResidentLastName
+     *
+     * @param string $mdsResidentLastName
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsResidentLastName($mdsResidentLastName)
+    {
+        $this->mdsResidentLastName = $mdsResidentLastName;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsResidentLastName
+     *
+     * @return string
+     */
+    public function getMdsResidentLastName()
+    {
+        return $this->mdsResidentLastName;
+    }
+
+    /**
      * Set aweberBuilding
      *
      * @param string $aweberBuilding
@@ -302,6 +365,30 @@ class AweberMdsSyncAudit
     public function getAweberAptLine()
     {
         return $this->aweberAptLine;
+    }
+
+    /**
+     * Set aweberSubscriberName
+     *
+     * @param string $aweberSubscriberName
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberSubscriberName($aweberSubscriberName)
+    {
+        $this->aweberSubscriberName = $aweberSubscriberName;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberSubscriberName
+     *
+     * @return string
+     */
+    public function getAweberSubscriberName()
+    {
+        return $this->aweberSubscriberName;
     }
 
     /**
