@@ -30,17 +30,28 @@ use Pennsouth\MdsBundle\AweberEntity\AweberSubscriber;
 class AweberSubscriberListReader
 {
     const AWEBER_PENNSOUTH_NEWSLETTER_LIST = 'Penn South Newsletter'; // Unique List ID: awlist3774632
-    const EMERGENCY_NOTICES_FOR_RESIDENTS = 'Emergency Notices for Residents'; // Unique List ID: awlist3926140 ; list_id is stripped of the 'awlist' prefix, just the # portion
+    const EMERGENCY_NOTICES_FOR_RESIDENTS = 'Penn South Emergency Info Only'; // Unique List ID: awlist4464610 ; list_id is stripped of the 'awlist' prefix, just the # portion
 
     const CUSTOM_FIELDS = array('BUILDING' => 'Penn_South_Building',
                                 'FLOOR_NUMBER' => 'Floor_Number',
                                 'APARTMENT' => 'Apartment');
 
-    const BUILDING      = 'Penn_South_Building';
-    const FLOOR_NUMBER  = 'Floor_Number';
-    const APARTMENT     = 'Apartment';
-    const ADMINS_MDS_TO_AWEBER_LIST_ID = 4459191;
-    const PENN_SOUTH_AWEBER_ACCOUNT = 936765;
+    const BUILDING                      = 'Penn_South_Building';
+    const FLOOR_NUMBER                  = 'Floor_Number';
+    const APARTMENT                     = 'Apartment';
+    const RESIDENT_CATEGORY             = 'resident_category';
+    const TODDLER_ROOM_MEMBER           = 'toddler_room_member';
+    const YOUTH_ROOM_MEMBER             = 'youth_room_member';
+    const CERAMICS_MEMBER               = 'ceramics_member';
+    const WOODWORKING_MEMBER            = 'woodworking_member';
+    const GYM_MEMBER                    = 'gym_member';
+    const GARDEN_MEMBER                 = 'garden_member';
+    const PARKING_LOT_LOCATION          = 'parking_lot_location';
+    const VEHICLE_REG_EXP_DAYS_LEFT     = 'vehicle_reg_exp_days_left';
+    const HOMEOWNER_INS_EXP_DAYS_LEFT   = 'homeowner_ins_exp_days_left';
+    const IS_DOG_IN_APT                 = 'is_dog_in_apt';
+    const ADMINS_MDS_TO_AWEBER_LIST_ID  = 4459191;
+    const PENN_SOUTH_AWEBER_ACCOUNT     = 936765;
 
     public function __construct($rootDir) {
 
@@ -240,6 +251,17 @@ class AweberSubscriberListReader
                  $aweberSubscriber->setPennSouthBuilding($customFields[self::BUILDING]);
                  $aweberSubscriber->setFloorNumber($customFields[self::FLOOR_NUMBER]);
                  $aweberSubscriber->setApartment($customFields[self::APARTMENT]);
+                 $aweberSubscriber->setCeramicsMember($customFields[self::CERAMICS_MEMBER]);
+                 $aweberSubscriber->setGardenMember($customFields[self::GARDEN_MEMBER]);
+                 $aweberSubscriber->setGymMember($customFields[self::GYM_MEMBER]);
+                 $aweberSubscriber->setHomeownerInsExpDateLeft($customFields[self::HOMEOWNER_INS_EXP_DAYS_LEFT]);
+                 $aweberSubscriber->setVehicleRegExpDaysLeft($customFields[self::VEHICLE_REG_EXP_DAYS_LEFT]);
+                 $aweberSubscriber->setIsDogInApt($customFields[self::IS_DOG_IN_APT]);
+                 $aweberSubscriber->setParkingLotLocation($customFields[self::PARKING_LOT_LOCATION]);
+                 $aweberSubscriber->setToddlerRoomMember($customFields[self::TODDLER_ROOM_MEMBER]);
+                 $aweberSubscriber->setYouthRoomMember($customFields[self::YOUTH_ROOM_MEMBER]);
+                 $aweberSubscriber->setWoodworkingMember($customFields[self::WOODWORKING_MEMBER]);
+                 $aweberSubscriber->setResidentCategory($customFields[self::RESIDENT_CATEGORY]);
 
                  // Add the AweberSubscriber to the $aweberSubscribers array...
                  $aweberSubscribers[] = $aweberSubscriber;

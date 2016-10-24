@@ -77,6 +77,49 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="dateOfBirth" type="datetime" column="Date_Of_Birth" nullable="true"/>
+    <field name="decalNum" type="string" column="Decal_Num" length="5" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="vehicleRegExpDate" type="datetime" column="Vehicle_Reg_Exp_Date" nullable="true"/>
+    <field name="homeownerInsuranceExpDate" type="datetime" column="Homeowner_Insurance_Exp_Date" nullable="true"/>
+    <field name="storageLockerClosetBldgNum" type="string" column="Storage_Locker_Closet_Bldg_Num" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="storageLockerNum" type="string" column="Storage_Locker_Num" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="storageClosetFloorNum" type="integer" column="Storage_Closet_Floor_Num" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="dogTagNum" type="string" column="Dog_Tag_Num" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="bikeRackLocation" type="string" column="Bike_Rack_Location" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="bikeRackBldg" type="string" column="Bike_Rack_Bldg" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="bikeRackRoom" type="string" column="Bike_Rack_Room" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="officePhone" type="string" column="Office_Phone" length="20" nullable="true">
       <options>
         <option name="fixed"/>
@@ -93,42 +136,6 @@
       </options>
     </field>
     <field name="moveInDate" type="datetime" column="Move_In_Date" nullable="true"/>
-    <field name="lastChangedDate" type="datetime" column="Last_Changed_Date" nullable="true"/>
-    <field name="lockerStorage" type="string" column="Locker_Storage" length="1" nullable="true">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
-    <field name="utilityCloset" type="string" column="Utility_Closet" length="1" nullable="true">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
-    <field name="smallCloset" type="string" column="Small_Closet" length="1" nullable="true">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
-    <field name="parking" type="string" column="Parking" length="1" nullable="true">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
-    <field name="windowGuardInstalled" type="string" column="Window_Guard_Installed" length="1" nullable="true">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
-    <field name="dogAllowed" type="string" column="Dog_Allowed" length="1" nullable="true">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
-    <field name="loanCreditUnion" type="string" column="Loan_Credit_Union" length="1" nullable="true">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
     <field name="toddlerRoomMember" type="string" column="Toddler_Room_Member" length="1" nullable="true">
       <options>
         <option name="fixed"/>
@@ -159,5 +166,6 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="lastChangedDate" type="datetime" column="Last_Changed_Date" nullable="true"/>
   </entity>
 </doctrine-mapping>

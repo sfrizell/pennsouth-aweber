@@ -75,16 +75,6 @@ class PennsouthResident
     /**
      * @var string
      */
-    private $windowGuardInstalled;
-
-    /**
-     * @var string
-     */
-    private $dogAllowed;
-
-    /**
-     * @var string
-     */
     private $toddlerRoomMember;
 
     /**
@@ -115,22 +105,82 @@ class PennsouthResident
     /**
      * @var string
      */
-    private $smallCloset;
+    private $decalNum;
 
     /**
      * @var string
      */
-    private $parking;
+    private $parkingLotLocation;
+
+    /**
+     * @var \DateTime
+     */
+    private $vehicleRegExpDate;
+
+    /**
+     * @var integer
+     */
+    private $vehicleRegExpCountdown;
+
+    /**
+     * @var \DateTime
+     */
+    private $homeownerInsExpDate;
+
+    /**
+     * @var integer
+     */
+    private $homeownerInsExpCountdown;
+
+    /**
+     * @var \DateTime
+     */
+    private $birthDate;
+
+    /**
+     * @var \DateTime
+     */
+    private $moveInDate;
 
     /**
      * @var string
      */
-    private $utilityCloset;
+    private $storageLockerClosetBldgNum;
 
     /**
      * @var string
      */
-    private $lockerStorage;
+    private $storageLockerNum;
+
+    /**
+     * @var integer
+     */
+    private $storageClosetFloorNum;
+
+    /**
+     * @var string
+     */
+    private $dogTagNum;
+
+    /**
+     * @var string
+     */
+    private $isDogInApt;
+
+    /**
+     * @var string
+     */
+    private $bikeRackLocation;
+
+    /**
+     * @var string
+     */
+    private $bikeRackBldg;
+
+    /**
+     * @var string
+     */
+    private $bikeRackRoom;
 
     /**
      * @var \DateTime
@@ -461,54 +511,6 @@ class PennsouthResident
     }
 
     /**
-     * Set windowGuardInstalled
-     *
-     * @param string $windowGuardInstalled
-     *
-     * @return PennsouthResident
-     */
-    public function setWindowGuardInstalled($windowGuardInstalled)
-    {
-        $this->windowGuardInstalled = $windowGuardInstalled;
-
-        return $this;
-    }
-
-    /**
-     * Get windowGuardInstalled
-     *
-     * @return string
-     */
-    public function getWindowGuardInstalled()
-    {
-        return $this->windowGuardInstalled;
-    }
-
-    /**
-     * Set dogAllowed
-     *
-     * @param string $dogAllowed
-     *
-     * @return PennsouthResident
-     */
-    public function setDogAllowed($dogAllowed)
-    {
-        $this->dogAllowed = $dogAllowed;
-
-        return $this;
-    }
-
-    /**
-     * Get dogAllowed
-     *
-     * @return string
-     */
-    public function getDogAllowed()
-    {
-        return $this->dogAllowed;
-    }
-
-    /**
      * Set toddlerRoomMember
      *
      * @param string $toddlerRoomMember
@@ -653,99 +655,387 @@ class PennsouthResident
     }
 
     /**
-     * Set smallCloset
+     * Set decalNum
      *
-     * @param string $smallCloset
+     * @param string $decalNum
      *
      * @return PennsouthResident
      */
-    public function setSmallCloset($smallCloset)
+    public function setDecalNum($decalNum)
     {
-        $this->smallCloset = $smallCloset;
+        $this->decalNum = $decalNum;
 
         return $this;
     }
 
     /**
-     * Get smallCloset
+     * Get decalNum
      *
      * @return string
      */
-    public function getSmallCloset()
+    public function getDecalNum()
     {
-        return $this->smallCloset;
+        return $this->decalNum;
     }
 
     /**
-     * Set parking
+     * Set parkingLotLocation
      *
-     * @param string $parking
+     * @param string $parkingLotLocation
      *
      * @return PennsouthResident
      */
-    public function setParking($parking)
+    public function setParkingLotLocation($parkingLotLocation)
     {
-        $this->parking = $parking;
+        $this->parkingLotLocation = $parkingLotLocation;
 
         return $this;
     }
 
     /**
-     * Get parking
+     * Get parkingLotLocation
      *
      * @return string
      */
-    public function getParking()
+    public function getParkingLotLocation()
     {
-        return $this->parking;
+        return $this->parkingLotLocation;
     }
 
     /**
-     * Set utilityCloset
+     * Set vehicleRegExpDate
      *
-     * @param string $utilityCloset
+     * @param \DateTime $vehicleRegExpDate
      *
      * @return PennsouthResident
      */
-    public function setUtilityCloset($utilityCloset)
+    public function setVehicleRegExpDate($vehicleRegExpDate)
     {
-        $this->utilityCloset = $utilityCloset;
+        $this->vehicleRegExpDate = $vehicleRegExpDate;
 
         return $this;
     }
 
     /**
-     * Get utilityCloset
+     * Get vehicleRegExpDate
      *
-     * @return string
+     * @return \DateTime
      */
-    public function getUtilityCloset()
+    public function getVehicleRegExpDate()
     {
-        return $this->utilityCloset;
+        return $this->vehicleRegExpDate;
     }
 
     /**
-     * Set lockerStorage
+     * Set vehicleRegExpCountdown
      *
-     * @param string $lockerStorage
+     * @param integer $vehicleRegExpCountdown
      *
      * @return PennsouthResident
      */
-    public function setLockerStorage($lockerStorage)
+    public function setVehicleRegExpCountdown($vehicleRegExpCountdown)
     {
-        $this->lockerStorage = $lockerStorage;
+        $this->vehicleRegExpCountdown = $vehicleRegExpCountdown;
 
         return $this;
     }
 
     /**
-     * Get lockerStorage
+     * Get vehicleRegExpCountdown
+     *
+     * @return integer
+     */
+    public function getVehicleRegExpCountdown()
+    {
+        return $this->vehicleRegExpCountdown;
+    }
+
+    /**
+     * Set homeownerInsExpDate
+     *
+     * @param \DateTime $homeownerInsExpDate
+     *
+     * @return PennsouthResident
+     */
+    public function setHomeownerInsExpDate($homeownerInsExpDate)
+    {
+        $this->homeownerInsExpDate = $homeownerInsExpDate;
+
+        return $this;
+    }
+
+    /**
+     * Get homeownerInsExpDate
+     *
+     * @return \DateTime
+     */
+    public function getHomeownerInsExpDate()
+    {
+        return $this->homeownerInsExpDate;
+    }
+
+    /**
+     * Set homeownerInsExpCountdown
+     *
+     * @param integer $homeownerInsExpCountdown
+     *
+     * @return PennsouthResident
+     */
+    public function setHomeownerInsExpCountdown($homeownerInsExpCountdown)
+    {
+        $this->homeownerInsExpCountdown = $homeownerInsExpCountdown;
+
+        return $this;
+    }
+
+    /**
+     * Get homeownerInsExpCountdown
+     *
+     * @return integer
+     */
+    public function getHomeownerInsExpCountdown()
+    {
+        return $this->homeownerInsExpCountdown;
+    }
+
+    /**
+     * Set birthDate
+     *
+     * @param \DateTime $birthDate
+     *
+     * @return PennsouthResident
+     */
+    public function setBirthDate($birthDate)
+    {
+        $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    /**
+     * Get birthDate
+     *
+     * @return \DateTime
+     */
+    public function getBirthDate()
+    {
+        return $this->birthDate;
+    }
+
+    /**
+     * Set moveInDate
+     *
+     * @param \DateTime $moveInDate
+     *
+     * @return PennsouthResident
+     */
+    public function setMoveInDate($moveInDate)
+    {
+        $this->moveInDate = $moveInDate;
+
+        return $this;
+    }
+
+    /**
+     * Get moveInDate
+     *
+     * @return \DateTime
+     */
+    public function getMoveInDate()
+    {
+        return $this->moveInDate;
+    }
+
+    /**
+     * Set storageLockerClosetBldgNum
+     *
+     * @param string $storageLockerClosetBldgNum
+     *
+     * @return PennsouthResident
+     */
+    public function setStorageLockerClosetBldgNum($storageLockerClosetBldgNum)
+    {
+        $this->storageLockerClosetBldgNum = $storageLockerClosetBldgNum;
+
+        return $this;
+    }
+
+    /**
+     * Get storageLockerClosetBldgNum
      *
      * @return string
      */
-    public function getLockerStorage()
+    public function getStorageLockerClosetBldgNum()
     {
-        return $this->lockerStorage;
+        return $this->storageLockerClosetBldgNum;
+    }
+
+    /**
+     * Set storageLockerNum
+     *
+     * @param string $storageLockerNum
+     *
+     * @return PennsouthResident
+     */
+    public function setStorageLockerNum($storageLockerNum)
+    {
+        $this->storageLockerNum = $storageLockerNum;
+
+        return $this;
+    }
+
+    /**
+     * Get storageLockerNum
+     *
+     * @return string
+     */
+    public function getStorageLockerNum()
+    {
+        return $this->storageLockerNum;
+    }
+
+    /**
+     * Set storageClosetFloorNum
+     *
+     * @param string $storageClosetFloorNum
+     *
+     * @return PennsouthResident
+     */
+    public function setStorageClosetFloorNum($storageClosetFloorNum)
+    {
+        $this->storageClosetFloorNum = $storageClosetFloorNum;
+
+        return $this;
+    }
+
+    /**
+     * Get storageClosetFloorNum
+     *
+     * @return string
+     */
+    public function getStorageClosetFloorNum()
+    {
+        return $this->storageClosetFloorNum;
+    }
+
+    /**
+     * Set dogTagNum
+     *
+     * @param string $dogTagNum
+     *
+     * @return PennsouthResident
+     */
+    public function setDogTagNum($dogTagNum)
+    {
+        $this->dogTagNum = $dogTagNum;
+
+        return $this;
+    }
+
+    /**
+     * Get dogTagNum
+     *
+     * @return string
+     */
+    public function getDogTagNum()
+    {
+        return $this->dogTagNum;
+    }
+
+    /**
+     * Set isDogInApt
+     *
+     * @param string $isDogInApt
+     *
+     * @return PennsouthResident
+     */
+    public function setIsDogInApt($isDogInApt)
+    {
+        $this->isDogInApt = $isDogInApt;
+
+        return $this;
+    }
+
+    /**
+     * Get isDogInApt
+     *
+     * @return string
+     */
+    public function getIsDogInApt()
+    {
+        return $this->isDogInApt;
+    }
+
+    /**
+     * Set bikeRackLocation
+     *
+     * @param string $bikeRackLocation
+     *
+     * @return PennsouthResident
+     */
+    public function setBikeRackLocation($bikeRackLocation)
+    {
+        $this->bikeRackLocation = $bikeRackLocation;
+
+        return $this;
+    }
+
+    /**
+     * Get bikeRackLocation
+     *
+     * @return string
+     */
+    public function getBikeRackLocation()
+    {
+        return $this->bikeRackLocation;
+    }
+
+    /**
+     * Set bikeRackBldg
+     *
+     * @param string $bikeRackBldg
+     *
+     * @return PennsouthResident
+     */
+    public function setBikeRackBldg($bikeRackBldg)
+    {
+        $this->bikeRackBldg = $bikeRackBldg;
+
+        return $this;
+    }
+
+    /**
+     * Get bikeRackBldg
+     *
+     * @return string
+     */
+    public function getBikeRackBldg()
+    {
+        return $this->bikeRackBldg;
+    }
+
+    /**
+     * Set bikeRackRoom
+     *
+     * @param string $bikeRackRoom
+     *
+     * @return PennsouthResident
+     */
+    public function setBikeRackRoom($bikeRackRoom)
+    {
+        $this->bikeRackRoom = $bikeRackRoom;
+
+        return $this;
+    }
+
+    /**
+     * Get bikeRackRoom
+     *
+     * @return string
+     */
+    public function getBikeRackRoom()
+    {
+        return $this->bikeRackRoom;
     }
 
     /**
@@ -806,3 +1096,4 @@ class PennsouthResident
         return $this->pennsouthAptApartment;
     }
 }
+

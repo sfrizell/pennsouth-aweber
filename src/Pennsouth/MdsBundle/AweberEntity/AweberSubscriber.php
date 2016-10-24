@@ -66,6 +66,61 @@ class AweberSubscriber
     private $customFields = array();
 
     /**
+     * @var string
+     */
+    private $residentCategory;
+
+    /**
+     * @var string
+     */
+    private $toddlerRoomMember;
+
+    /**
+     * @var string
+     */
+    private $youthRoomMember;
+
+    /**
+     * @var string
+     */
+    private $ceramicsMember;
+
+    /**
+     * @var string
+     */
+    private $woodworkingMember;
+
+    /**
+     * @var string
+     */
+    private $gymMember;
+
+    /**
+     * @var string
+     */
+    private $gardenMember;
+
+    /**
+     * @var string
+     */
+    private $parkingLotLocation;
+
+    /**
+     * @var integer
+     */
+    private $vehicleRegExpDaysLeft;
+
+    /**
+     * @var integer
+     */
+    private $homeownerInsExpDateLeft;
+
+    /**
+     * @var string
+     */
+    private $isDogInApt;
+
+    /**
      * @return int
      */
     public function getId()
@@ -80,6 +135,8 @@ class AweberSubscriber
     {
         $this->id = $id;
     }
+
+
 
     /**
      * @return string
@@ -239,6 +296,182 @@ class AweberSubscriber
     public function setCustomFields($customFields)
     {
         $this->customFields = $customFields;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResidentCategory()
+    {
+        return $this->residentCategory;
+    }
+
+    /**
+     * @param string $residentCategory
+     */
+    public function setResidentCategory($residentCategory)
+    {
+        $this->residentCategory = $residentCategory;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToddlerRoomMember()
+    {
+        return $this->toddlerRoomMember;
+    }
+
+    /**
+     * @param string $toddlerRoomMember
+     */
+    public function setToddlerRoomMember($toddlerRoomMember)
+    {
+        $this->toddlerRoomMember = $toddlerRoomMember;
+    }
+
+    /**
+     * @return string
+     */
+    public function getYouthRoomMember()
+    {
+        return $this->youthRoomMember;
+    }
+
+    /**
+     * @param string $youthRoomMember
+     */
+    public function setYouthRoomMember($youthRoomMember)
+    {
+        $this->youthRoomMember = $youthRoomMember;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCeramicsMember()
+    {
+        return $this->ceramicsMember;
+    }
+
+    /**
+     * @param string $ceramicsMember
+     */
+    public function setCeramicsMember($ceramicsMember)
+    {
+        $this->ceramicsMember = $ceramicsMember;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWoodworkingMember()
+    {
+        return $this->woodworkingMember;
+    }
+
+    /**
+     * @param string $woodworkingMember
+     */
+    public function setWoodworkingMember($woodworkingMember)
+    {
+        $this->woodworkingMember = $woodworkingMember;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGymMember()
+    {
+        return $this->gymMember;
+    }
+
+    /**
+     * @param string $gymMember
+     */
+    public function setGymMember($gymMember)
+    {
+        $this->gymMember = $gymMember;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGardenMember()
+    {
+        return $this->gardenMember;
+    }
+
+    /**
+     * @param string $gardenMember
+     */
+    public function setGardenMember($gardenMember)
+    {
+        $this->gardenMember = $gardenMember;
+    }
+
+    /**
+     * @return string
+     */
+    public function getParkingLotLocation()
+    {
+        return $this->parkingLotLocation;
+    }
+
+    /**
+     * @param string $parkingLotLocation
+     */
+    public function setParkingLotLocation($parkingLotLocation)
+    {
+        $this->parkingLotLocation = $parkingLotLocation;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVehicleRegExpDaysLeft()
+    {
+        return $this->vehicleRegExpDaysLeft;
+    }
+
+    /**
+     * @param int $vehicleRegExpDaysLeft
+     */
+    public function setVehicleRegExpDaysLeft($vehicleRegExpDaysLeft)
+    {
+        $this->vehicleRegExpDaysLeft = $vehicleRegExpDaysLeft;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHomeownerInsExpDateLeft()
+    {
+        return $this->homeownerInsExpDateLeft;
+    }
+
+    /**
+     * @param int $homeownerInsExpDateLeft
+     */
+    public function setHomeownerInsExpDateLeft($homeownerInsExpDateLeft)
+    {
+        $this->homeownerInsExpDateLeft = $homeownerInsExpDateLeft;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIsDogInApt()
+    {
+        return $this->isDogInApt;
+    }
+
+    /**
+     * @param string $isDogInApt
+     */
+    public function setIsDogInApt($isDogInApt)
+    {
+        $this->isDogInApt = $isDogInApt;
     }
 
 
