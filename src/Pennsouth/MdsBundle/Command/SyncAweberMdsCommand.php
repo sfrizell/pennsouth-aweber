@@ -173,7 +173,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
          *   In block below, obtain the list of Penn South Subscribers to each of the Penn South Resident subscriber lists obtained from the block above
          */
 
-        $aweberSubscribersWithListNameKeys = array();
+        $aweberSubscribersByListNames = array();
         $success = FALSE;
         $j = 0;
         while (!$success) {
@@ -184,7 +184,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                     $listName = $emailNotificationList->data["name"];
 
                     // returns associative array : key = name of aWeberSubscriberList ; value = array of AweberSubscriber objects
-                    $aweberSubscribersWithListNameKeys[$listName] = $aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList);
+                    $aweberSubscribersByListNames[] = $aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList);
                     $success = TRUE;
 
                     print("\n" . " List Name: " . $listName . "\n");
@@ -221,8 +221,9 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         }
 
         if ($success) {
-            $mdsToAweberUpdater = new MdsToAweberUpdater($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersWithListNameKeys);
-            $mdsToAweberUpdater->reportOnAweberSubscribersWithNoMatchInMds();
+           // $mdsToAweberComparator = new MdsToAweberUpdater($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersWithListNameKeys);
+            $mdsToAweberComparator = new MdsToAweberComparator($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersByListNames);
+            $mdsToAweberComparator->reportOnAweberSubscribersWithNoMatchInMds();
             print("\n" . "Processing completed successfully.");
             $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
             $messageBody =  "Processing completed successfully in MDS to AWeber Update program.";
@@ -257,7 +258,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
           $mailer = $this->getContainer()->get('mailer');
           $emailSubjectLine = $subjectLine;
           $emailRecipients = null;
-          if ($this->adminEmailRecipients != null) {
+          if (!is_null($this->adminEmailRecipients)) {
               $emailRecipients = $this->adminEmailRecipients;
               print("\n" . "Sending to recipients obtained from Aweber subscriber list admin_mds_to_aweber ");
           }

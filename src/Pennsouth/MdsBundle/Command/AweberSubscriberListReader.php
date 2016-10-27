@@ -94,6 +94,8 @@ class AweberSubscriberListReader
 
             $account = $this->aWeberApi->getAccount($this->accessToken, $this->accessSecret);
 
+            //print("\n" . "In connectToAweberAccount.");
+
             return $account;
         }
         catch (AWeberAPIException $exc) {
@@ -155,7 +157,10 @@ class AweberSubscriberListReader
      */
      public function getSubscribersToAdminsMdsToAweberList($account) {
 
-        $listId =  $account->loadFromUrl(self::ADMINS_MDS_TO_AWEBER_LIST_ID); // this unique list id - is this the same as the 'list_id' called for in Aweber API?
+
+      //   print ".\n" . "getSubscribersToAdminsMdsToAweberList - 0 \n";
+
+         $listId = self::ADMINS_MDS_TO_AWEBER_LIST_ID;
          $accountId = self::PENN_SOUTH_AWEBER_ACCOUNT;
          $listURL = "/accounts/{$accountId}/lists/{$listId}"; //
          $list = $account->loadFromUrl($listURL);
@@ -200,8 +205,6 @@ class AweberSubscriberListReader
              print ("\n" . "Subscriber list id: " . $listId);
              print ("\n" . "Total Subscribed Subscribers: " . $totalSubscribedSubscribers . "\n");
              print ("\n" . "Total Unsubscribed Subscribers: " . $totalUnsubscribedSubscribers . "\n");
-
-             print ("\n" . "Following is list of subscribers for the above list id / name: " . "\n");
 
 
              $aweberSubscribersWithListNameKey = array(); // associative array: key = list-name, value = array of AweberSubscriber objects
