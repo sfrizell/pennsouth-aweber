@@ -78,6 +78,61 @@ class MdsExport
     private $personId;
 
     /**
+     * @var \DateTime
+     */
+    private $dateOfBirth;
+
+    /**
+     * @var string
+     */
+    private $decalNum;
+
+    /**
+     * @var \DateTime
+     */
+    private $vehicleRegExpDate;
+
+    /**
+     * @var \DateTime
+     */
+    private $homeownerInsuranceExpDate;
+
+    /**
+     * @var string
+     */
+    private $storageLockerClosetBldgNum;
+
+    /**
+     * @var string
+     */
+    private $storageLockerNum;
+
+    /**
+     * @var integer
+     */
+    private $storageClosetFloorNum;
+
+    /**
+     * @var string
+     */
+    private $dogTagNum;
+
+    /**
+     * @var string
+     */
+    private $bikeRackLocation;
+
+    /**
+     * @var string
+     */
+    private $bikeRackBldg;
+
+    /**
+     * @var string
+     */
+    private $bikeRackRoom;
+
+    /**
      * @var string
      */
     private $officePhone;
@@ -96,46 +151,6 @@ class MdsExport
      * @var \DateTime
      */
     private $moveInDate;
-
-    /**
-     * @var \DateTime
-     */
-    private $lastChangedDate;
-
-    /**
-     * @var string
-     */
-    private $lockerStorage;
-
-    /**
-     * @var string
-     */
-    private $utilityCloset;
-
-    /**
-     * @var string
-     */
-    private $smallCloset;
-
-    /**
-     * @var string
-     */
-    private $parking;
-
-    /**
-     * @var string
-     */
-    private $windowGuardInstalled;
-
-    /**
-     * @var string
-     */
-    private $dogAllowed;
-
-    /**
-     * @var string
-     */
-    private $loanCreditUnion;
 
     /**
      * @var string
@@ -166,6 +181,11 @@ class MdsExport
      * @var string
      */
     private $gymMember;
+
+    /**
+     * @var \DateTime
+     */
+    private $lastChangedDate;
 
     /**
      * @var integer
@@ -510,6 +530,270 @@ class MdsExport
     }
 
     /**
+     * Set dateOfBirth
+     *
+     * @param \DateTime $dateOfBirth
+     *
+     * @return MdsExport
+     */
+    public function setDateOfBirth($dateOfBirth)
+    {
+        $this->dateOfBirth = $dateOfBirth;
+
+        return $this;
+    }
+
+    /**
+     * Get dateOfBirth
+     *
+     * @return \DateTime
+     */
+    public function getDateOfBirth()
+    {
+        return $this->dateOfBirth;
+    }
+
+    /**
+     * Set decalNum
+     *
+     * @param string $decalNum
+     *
+     * @return MdsExport
+     */
+    public function setDecalNum($decalNum)
+    {
+        $this->decalNum = $decalNum;
+
+        return $this;
+    }
+
+    /**
+     * Get decalNum
+     *
+     * @return string
+     */
+    public function getDecalNum()
+    {
+        return $this->decalNum;
+    }
+
+    /**
+     * Set vehicleRegExpDate
+     *
+     * @param \DateTime $vehicleRegExpDate
+     *
+     * @return MdsExport
+     */
+    public function setVehicleRegExpDate($vehicleRegExpDate)
+    {
+        $this->vehicleRegExpDate = $vehicleRegExpDate;
+
+        return $this;
+    }
+
+    /**
+     * Get vehicleRegExpDate
+     *
+     * @return \DateTime
+     */
+    public function getVehicleRegExpDate()
+    {
+        return $this->vehicleRegExpDate;
+    }
+
+    /**
+     * Set homeownerInsuranceExpDate
+     *
+     * @param \DateTime $homeownerInsuranceExpDate
+     *
+     * @return MdsExport
+     */
+    public function setHomeownerInsuranceExpDate($homeownerInsuranceExpDate)
+    {
+        $this->homeownerInsuranceExpDate = $homeownerInsuranceExpDate;
+
+        return $this;
+    }
+
+    /**
+     * Get homeownerInsuranceExpDate
+     *
+     * @return \DateTime
+     */
+    public function getHomeownerInsuranceExpDate()
+    {
+        return $this->homeownerInsuranceExpDate;
+    }
+
+    /**
+     * Set storageLockerClosetBldgNum
+     *
+     * @param string $storageLockerClosetBldgNum
+     *
+     * @return MdsExport
+     */
+    public function setStorageLockerClosetBldgNum($storageLockerClosetBldgNum)
+    {
+        $this->storageLockerClosetBldgNum = $storageLockerClosetBldgNum;
+
+        return $this;
+    }
+
+    /**
+     * Get storageLockerClosetBldgNum
+     *
+     * @return string
+     */
+    public function getStorageLockerClosetBldgNum()
+    {
+        return $this->storageLockerClosetBldgNum;
+    }
+
+    /**
+     * Set storageLockerNum
+     *
+     * @param string $storageLockerNum
+     *
+     * @return MdsExport
+     */
+    public function setStorageLockerNum($storageLockerNum)
+    {
+        $this->storageLockerNum = $storageLockerNum;
+
+        return $this;
+    }
+
+    /**
+     * Get storageLockerNum
+     *
+     * @return string
+     */
+    public function getStorageLockerNum()
+    {
+        return $this->storageLockerNum;
+    }
+
+    /**
+     * Set storageClosetFloorNum
+     *
+     * @param integer $storageClosetFloorNum
+     *
+     * @return MdsExport
+     */
+    public function setStorageClosetFloorNum($storageClosetFloorNum)
+    {
+        $this->storageClosetFloorNum = $storageClosetFloorNum;
+
+        return $this;
+    }
+
+    /**
+     * Get storageClosetFloorNum
+     *
+     * @return integer
+     */
+    public function getStorageClosetFloorNum()
+    {
+        return $this->storageClosetFloorNum;
+    }
+
+    /**
+     * Set dogTagNum
+     *
+     * @param string $dogTagNum
+     *
+     * @return MdsExport
+     */
+    public function setDogTagNum($dogTagNum)
+    {
+        $this->dogTagNum = $dogTagNum;
+
+        return $this;
+    }
+
+    /**
+     * Get dogTagNum
+     *
+     * @return string
+     */
+    public function getDogTagNum()
+    {
+        return $this->dogTagNum;
+    }
+
+    /**
+     * Set bikeRackLocation
+     *
+     * @param string $bikeRackLocation
+     *
+     * @return MdsExport
+     */
+    public function setBikeRackLocation($bikeRackLocation)
+    {
+        $this->bikeRackLocation = $bikeRackLocation;
+
+        return $this;
+    }
+
+    /**
+     * Get bikeRackLocation
+     *
+     * @return string
+     */
+    public function getBikeRackLocation()
+    {
+        return $this->bikeRackLocation;
+    }
+
+    /**
+     * Set bikeRackBldg
+     *
+     * @param string $bikeRackBldg
+     *
+     * @return MdsExport
+     */
+    public function setBikeRackBldg($bikeRackBldg)
+    {
+        $this->bikeRackBldg = $bikeRackBldg;
+
+        return $this;
+    }
+
+    /**
+     * Get bikeRackBldg
+     *
+     * @return string
+     */
+    public function getBikeRackBldg()
+    {
+        return $this->bikeRackBldg;
+    }
+
+    /**
+     * Set bikeRackRoom
+     *
+     * @param string $bikeRackRoom
+     *
+     * @return MdsExport
+     */
+    public function setBikeRackRoom($bikeRackRoom)
+    {
+        $this->bikeRackRoom = $bikeRackRoom;
+
+        return $this;
+    }
+
+    /**
+     * Get bikeRackRoom
+     *
+     * @return string
+     */
+    public function getBikeRackRoom()
+    {
+        return $this->bikeRackRoom;
+    }
+
+    /**
      * Set officePhone
      *
      * @param string $officePhone
@@ -603,198 +887,6 @@ class MdsExport
     public function getMoveInDate()
     {
         return $this->moveInDate;
-    }
-
-    /**
-     * Set lastChangedDate
-     *
-     * @param \DateTime $lastChangedDate
-     *
-     * @return MdsExport
-     */
-    public function setLastChangedDate($lastChangedDate)
-    {
-        $this->lastChangedDate = $lastChangedDate;
-
-        return $this;
-    }
-
-    /**
-     * Get lastChangedDate
-     *
-     * @return \DateTime
-     */
-    public function getLastChangedDate()
-    {
-        return $this->lastChangedDate;
-    }
-
-    /**
-     * Set lockerStorage
-     *
-     * @param string $lockerStorage
-     *
-     * @return MdsExport
-     */
-    public function setLockerStorage($lockerStorage)
-    {
-        $this->lockerStorage = $lockerStorage;
-
-        return $this;
-    }
-
-    /**
-     * Get lockerStorage
-     *
-     * @return string
-     */
-    public function getLockerStorage()
-    {
-        return $this->lockerStorage;
-    }
-
-    /**
-     * Set utilityCloset
-     *
-     * @param string $utilityCloset
-     *
-     * @return MdsExport
-     */
-    public function setUtilityCloset($utilityCloset)
-    {
-        $this->utilityCloset = $utilityCloset;
-
-        return $this;
-    }
-
-    /**
-     * Get utilityCloset
-     *
-     * @return string
-     */
-    public function getUtilityCloset()
-    {
-        return $this->utilityCloset;
-    }
-
-    /**
-     * Set smallCloset
-     *
-     * @param string $smallCloset
-     *
-     * @return MdsExport
-     */
-    public function setSmallCloset($smallCloset)
-    {
-        $this->smallCloset = $smallCloset;
-
-        return $this;
-    }
-
-    /**
-     * Get smallCloset
-     *
-     * @return string
-     */
-    public function getSmallCloset()
-    {
-        return $this->smallCloset;
-    }
-
-    /**
-     * Set parking
-     *
-     * @param string $parking
-     *
-     * @return MdsExport
-     */
-    public function setParking($parking)
-    {
-        $this->parking = $parking;
-
-        return $this;
-    }
-
-    /**
-     * Get parking
-     *
-     * @return string
-     */
-    public function getParking()
-    {
-        return $this->parking;
-    }
-
-    /**
-     * Set windowGuardInstalled
-     *
-     * @param string $windowGuardInstalled
-     *
-     * @return MdsExport
-     */
-    public function setWindowGuardInstalled($windowGuardInstalled)
-    {
-        $this->windowGuardInstalled = $windowGuardInstalled;
-
-        return $this;
-    }
-
-    /**
-     * Get windowGuardInstalled
-     *
-     * @return string
-     */
-    public function getWindowGuardInstalled()
-    {
-        return $this->windowGuardInstalled;
-    }
-
-    /**
-     * Set dogAllowed
-     *
-     * @param string $dogAllowed
-     *
-     * @return MdsExport
-     */
-    public function setDogAllowed($dogAllowed)
-    {
-        $this->dogAllowed = $dogAllowed;
-
-        return $this;
-    }
-
-    /**
-     * Get dogAllowed
-     *
-     * @return string
-     */
-    public function getDogAllowed()
-    {
-        return $this->dogAllowed;
-    }
-
-    /**
-     * Set loanCreditUnion
-     *
-     * @param string $loanCreditUnion
-     *
-     * @return MdsExport
-     */
-    public function setLoanCreditUnion($loanCreditUnion)
-    {
-        $this->loanCreditUnion = $loanCreditUnion;
-
-        return $this;
-    }
-
-    /**
-     * Get loanCreditUnion
-     *
-     * @return string
-     */
-    public function getLoanCreditUnion()
-    {
-        return $this->loanCreditUnion;
     }
 
     /**
@@ -939,6 +1031,30 @@ class MdsExport
     public function getGymMember()
     {
         return $this->gymMember;
+    }
+
+    /**
+     * Set lastChangedDate
+     *
+     * @param \DateTime $lastChangedDate
+     *
+     * @return MdsExport
+     */
+    public function setLastChangedDate($lastChangedDate)
+    {
+        $this->lastChangedDate = $lastChangedDate;
+
+        return $this;
+    }
+
+    /**
+     * Get lastChangedDate
+     *
+     * @return \DateTime
+     */
+    public function getLastChangedDate()
+    {
+        return $this->lastChangedDate;
     }
 
     /**

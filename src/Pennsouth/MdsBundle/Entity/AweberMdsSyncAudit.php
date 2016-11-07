@@ -8,9 +8,9 @@ namespace Pennsouth\MdsBundle\Entity;
 class AweberMdsSyncAudit
 {
     /**
-     * @var integer
+     * @var string
      */
-    private $aweberSubscriberListId;
+    private $aweberSubscriberListName;
 
     /**
      * @var string
@@ -40,6 +40,16 @@ class AweberMdsSyncAudit
     /**
      * @var string
      */
+    private $mdsResidentFirstName;
+
+    /**
+     * @var string
+     */
+    private $mdsResidentLastName;
+
+    /**
+     * @var string
+     */
     private $aweberBuilding;
 
     /**
@@ -55,12 +65,37 @@ class AweberMdsSyncAudit
     /**
      * @var string
      */
+    private $aweberSubscriberName;
+
+    /**
+     * @var string
+     */
     private $actionReason;
+
+    /**
+     * @var string
+     */
+    private $aweberSubscriberStatus;
 
     /**
      * @var \DateTime
      */
-    private $actionDate;
+    private $aweberSubscribedAt;
+
+    /**
+     * @var \DateTime
+     */
+    private $aweberUnsubscribedAt;
+
+    /**
+     * @var string
+     */
+    private $aweberSubscriptionMethod;
+
+    /**
+     * @var \DateTime
+     */
+    private $lastChangedDate;
 
     /**
      * @var integer
@@ -69,27 +104,27 @@ class AweberMdsSyncAudit
 
 
     /**
-     * Set aweberSubscriberListId
+     * Set aweberSubscriberListName
      *
-     * @param integer $aweberSubscriberListId
+     * @param string $aweberSubscriberListName
      *
      * @return AweberMdsSyncAudit
      */
-    public function setAweberSubscriberListId($aweberSubscriberListId)
+    public function setAweberSubscriberListName($aweberSubscriberListName)
     {
-        $this->aweberSubscriberListId = $aweberSubscriberListId;
+        $this->aweberSubscriberListName = $aweberSubscriberListName;
 
         return $this;
     }
 
     /**
-     * Get aweberSubscriberListId
+     * Get aweberSubscriberListName
      *
-     * @return integer
+     * @return string
      */
-    public function getAweberSubscriberListId()
+    public function getAweberSubscriberListName()
     {
-        return $this->aweberSubscriberListId;
+        return $this->aweberSubscriberListName;
     }
 
     /**
@@ -213,6 +248,54 @@ class AweberMdsSyncAudit
     }
 
     /**
+     * Set mdsResidentFirstName
+     *
+     * @param string $mdsResidentFirstName
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsResidentFirstName($mdsResidentFirstName)
+    {
+        $this->mdsResidentFirstName = $mdsResidentFirstName;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsResidentFirstName
+     *
+     * @return string
+     */
+    public function getMdsResidentFirstName()
+    {
+        return $this->mdsResidentFirstName;
+    }
+
+    /**
+     * Set mdsResidentLastName
+     *
+     * @param string $mdsResidentLastName
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsResidentLastName($mdsResidentLastName)
+    {
+        $this->mdsResidentLastName = $mdsResidentLastName;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsResidentLastName
+     *
+     * @return string
+     */
+    public function getMdsResidentLastName()
+    {
+        return $this->mdsResidentLastName;
+    }
+
+    /**
      * Set aweberBuilding
      *
      * @param string $aweberBuilding
@@ -285,6 +368,30 @@ class AweberMdsSyncAudit
     }
 
     /**
+     * Set aweberSubscriberName
+     *
+     * @param string $aweberSubscriberName
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberSubscriberName($aweberSubscriberName)
+    {
+        $this->aweberSubscriberName = $aweberSubscriberName;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberSubscriberName
+     *
+     * @return string
+     */
+    public function getAweberSubscriberName()
+    {
+        return $this->aweberSubscriberName;
+    }
+
+    /**
      * Set actionReason
      *
      * @param string $actionReason
@@ -309,27 +416,123 @@ class AweberMdsSyncAudit
     }
 
     /**
-     * Set actionDate
+     * Set aweberSubscriberStatus
      *
-     * @param \DateTime $actionDate
+     * @param string $aweberSubscriberStatus
      *
      * @return AweberMdsSyncAudit
      */
-    public function setActionDate($actionDate)
+    public function setAweberSubscriberStatus($aweberSubscriberStatus)
     {
-        $this->actionDate = $actionDate;
+        $this->aweberSubscriberStatus = $aweberSubscriberStatus;
 
         return $this;
     }
 
     /**
-     * Get actionDate
+     * Get aweberSubscriberStatus
+     *
+     * @return string
+     */
+    public function getAweberSubscriberStatus()
+    {
+        return $this->aweberSubscriberStatus;
+    }
+
+    /**
+     * Set aweberSubscribedAt
+     *
+     * @param \DateTime $aweberSubscribedAt
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberSubscribedAt($aweberSubscribedAt)
+    {
+        $this->aweberSubscribedAt = $aweberSubscribedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberSubscribedAt
      *
      * @return \DateTime
      */
-    public function getActionDate()
+    public function getAweberSubscribedAt()
     {
-        return $this->actionDate;
+        return $this->aweberSubscribedAt;
+    }
+
+    /**
+     * Set aweberUnsubscribedAt
+     *
+     * @param \DateTime $aweberUnsubscribedAt
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberUnsubscribedAt($aweberUnsubscribedAt)
+    {
+        $this->aweberUnsubscribedAt = $aweberUnsubscribedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberUnsubscribedAt
+     *
+     * @return \DateTime
+     */
+    public function getAweberUnsubscribedAt()
+    {
+        return $this->aweberUnsubscribedAt;
+    }
+
+    /**
+     * Set aweberSubscriptionMethod
+     *
+     * @param string $aweberSubscriptionMethod
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberSubscriptionMethod($aweberSubscriptionMethod)
+    {
+        $this->aweberSubscriptionMethod = $aweberSubscriptionMethod;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberSubscriptionMethod
+     *
+     * @return string
+     */
+    public function getAweberSubscriptionMethod()
+    {
+        return $this->aweberSubscriptionMethod;
+    }
+
+    /**
+     * Set lastChangedDate
+     *
+     * @param \DateTime $lastChangedDate
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setLastChangedDate($lastChangedDate)
+    {
+        $this->lastChangedDate = $lastChangedDate;
+
+        return $this;
+    }
+
+    /**
+     * Get lastChangedDate
+     *
+     * @return \DateTime
+     */
+    public function getLastChangedDate()
+    {
+        return $this->lastChangedDate;
     }
 
     /**

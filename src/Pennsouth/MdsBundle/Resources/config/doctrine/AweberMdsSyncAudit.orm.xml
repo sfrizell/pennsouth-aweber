@@ -4,9 +4,9 @@
     <id name="syncAuditId" type="integer" column="Sync_Audit_Id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="aweberSubscriberListId" type="integer" column="Aweber_Subscriber_List_Id" nullable="true">
+    <field name="aweberSubscriberListName" type="string" column="Aweber_Subscriber_List_Name" length="32" nullable="true">
       <options>
-        <option name="unsigned"/>
+        <option name="fixed"/>
       </options>
     </field>
     <field name="subscriberEmailAddress" type="string" column="Subscriber_Email_Address" length="100" nullable="true">
@@ -35,6 +35,16 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="mdsResidentFirstName" type="string" column="Mds_Resident_First_Name" length="40" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsResidentLastName" type="string" column="Mds_Resident_Last_Name" length="40" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="aweberBuilding" type="string" column="Aweber_Building" length="2" nullable="true">
       <options>
         <option name="fixed"/>
@@ -50,11 +60,28 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="aweberSubscriberName" type="string" column="Aweber_Subscriber_Name" length="90" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="actionReason" type="string" column="Action_Reason" length="45" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="actionDate" type="datetime" column="Action_Date" nullable="true"/>
+    <field name="aweberSubscriberStatus" type="string" column="Aweber_Subscriber_Status" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberSubscribedAt" type="datetime" column="Aweber_Subscribed_At" nullable="true"/>
+    <field name="aweberUnsubscribedAt" type="datetime" column="Aweber_Unsubscribed_At" nullable="true"/>
+    <field name="aweberSubscriptionMethod" type="string" column="Aweber_Subscription_Method" length="30" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="lastChangedDate" type="datetime" column="Last_Changed_Date" nullable="true"/>
   </entity>
 </doctrine-mapping>

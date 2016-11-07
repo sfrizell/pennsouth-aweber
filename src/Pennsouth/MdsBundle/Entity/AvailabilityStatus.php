@@ -52,4 +52,3 @@ class AvailabilityStatus
         return $this->availabilityStatusCode;
     }
 }
-

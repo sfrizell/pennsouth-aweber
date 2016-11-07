@@ -458,4 +458,3 @@ class PennsouthShareholder
         return $this->apartment;
     }
 }
-

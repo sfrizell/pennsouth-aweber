@@ -52,4 +52,3 @@ class AptSize
         return $this->bedroomCount;
     }
 }
-

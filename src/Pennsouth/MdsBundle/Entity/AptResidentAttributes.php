@@ -501,4 +501,3 @@ class AptResidentAttributes
         return $this->pennsouthAptApartment;
     }
 }
-

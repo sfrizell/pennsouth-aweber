@@ -13,7 +13,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Pennsouth\MdsBundle\Command\AweberSubscriberListReader;
-//use Pennsouth\MdsBundle\Command\PennsouthResidentListReaderCommand;
 
 use Pennsouth\MdsBundle\Command\PennsouthResidentListReader;
 
@@ -41,6 +40,9 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 //        $this->pennsouthResidentListReader = $pennsouthResidentListReader;
 //
 //   }
+    const DEFAULT_ADMINS = "steve.frizell@gmail.com";
+
+    private $adminEmailRecipients;
 
     protected function configure() {
         $this
@@ -71,15 +73,14 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 '',
             ]);
 
-       // $app = new PennsouthMdsApp();
 
-        print ( "\n !!!!!!!!!!!!!  root directory: " . $this->getContainer()->getParameter('kernel.root_dir') . "\n");
+    //    print ( "\n !!!!!!!!!!!!!  root directory: " . $this->getContainer()->getParameter('kernel.root_dir') . "\n");
 
         $rootDir = $this->getContainer()->getParameter('kernel.root_dir');
 
         $rootDir = rtrim($rootDir, "/app");
 
-        print ("\n @@@@@@@@@  rootDir trimmed: " .  $rootDir . "\n");
+   //     print ("\n @@@@@@@@@  rootDir trimmed: " .  $rootDir . "\n");
 
         // sfrizell - 10/7/2016 -- following block of code not working get a ContextErrorException running it...
 //        $input = new ArgvInput();
@@ -93,21 +94,17 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 //
 //        $pennsouthResidentListReader->run($input, $output);
 
-        //$entityManager = $this->get('entity.manager');
 
-
-       // $pennsouthResidentListReader = new PennsouthResidentListReader($entityManager);
-
-        //$pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddresses();
-
-       // $this->pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddresses();
+        // sfrizell - comment out block just for now (10/18/2016):
 
         $entityManager = $this->getEntityManager();
 
         $pennsouthResidentListReader = new PennsouthResidentListReader($entityManager);
 
-        //$pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddresses();
+
         $residentsWithEmailAddressesArray = $pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddressAssociativeArray();
+
+        // sfrizell - comment out block above just for now (10/18/2016)
 
   /*      $i = 0;
         foreach ($residentsWithEmailAddressesArray as $emailAddress => $resident) {
@@ -119,34 +116,126 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
        // exit;
 
+        /** In block below, invoke Aweber API to obtain the following:
+         *   a) list of Penn South Admin email recipients, to notify about the status of the running of the MDS to Aweber update process: $adminEmailRecipients
+         *   b) the two Penn South Resident subscriber lists (Penn South Newsletter and Emergency Notifications): $emailNotificationLists
+        **/
         $aweberSubscriberListReader = new AweberSubscriberListReader($rootDir);
 
-        $account = $aweberSubscriberListReader->connectToAWeberAccount();
+        $success = FALSE;
+        $j = 0;
+        $emailNotificationLists = array();
+        while (!$success) {
+            try {
+                $account = $aweberSubscriberListReader->connectToAWeberAccount();
 
-        $emailNotificationLists = $aweberSubscriberListReader->getEmailNotificationLists($account);
+                $emailRecipientsList = $aweberSubscriberListReader->getSubscribersToAdminsMdsToAweberList($account);
+                foreach ($emailRecipientsList as $emailRecipient) {
+                    $this->adminEmailRecipients .= $emailRecipient . ",";
+                }
+                rtrim($this->adminEmailRecipients,",");
 
-        $aweberSubscriberListReader->getSubscribersToEmailNotificationLists($account, $emailNotificationLists);
+                $emailNotificationLists = $aweberSubscriberListReader->getEmailNotificationLists($account);
+                $success = TRUE;
+            }
+            catch (\Exception $exception) {
+                if ($exception->getMessage() == "ServiceUnavailableError") {
+                    $j++;
+                    $maxJ= 6;
+                    if ($j < $maxJ) {
+                        print("\n" . "AweberAPI Service temporarily unavailable while trying to call AweberSubscriberListReader->getEmailNotificationLists. ");
+                        print ("\n" . "Going to sleep for 2 minutes; then will try again.");
+                        sleep(120);
+                    }
+                    else {
+                        $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program";
+                        $messageBody =  "\n" . "Aweber API ServiceUnavailableError Exception occurred! Exception->getMessage() : " . $exception->getMessage() . "\n";
+                        $messageBody .= "Failed even after trying and trying again after going to sleep {$maxJ} - 1 times.";
+                        $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                        throw $exception;
+                    }
+                }
+                else {
+                    print("\n" . "Exception occurred! Exception->getMessage() : " . $exception->getMessage());
+                    print("\n" . "Exiting from program.");
+                    $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program";
+                    $messageBody =  "\n" . "Exception occurred! Exception->getMessage() : " . $exception->getMessage() . "\n";
+                    $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                    throw $exception;
+                }
+            }
+        }
+
+       // $aweberSubscriberListReader->getSubscribersToEmailNotificationLists($account, $emailNotificationLists);
        // print("\n" . "0");
 
-        foreach ($emailNotificationLists as $emailNotificationList ) {
+        /**
+         *   In block below, obtain the list of Penn South Subscribers to each of the Penn South Resident subscriber lists obtained from the block above
+         */
 
-            print("\n" . "0");
-          //  $aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList);
+        $aweberSubscribersByListNames = array();
+        $success = FALSE;
+        $j = 0;
+        while (!$success) {
+            try {
+                foreach ($emailNotificationLists as $emailNotificationList) {
 
-            print("\n" . "1");
-            $listName = $emailNotificationList->data["name"];
+                   // print("\n" . "1");
+                    $listName = $emailNotificationList->data["name"];
 
-            print("\n" . " List Name: " . $listName . "\n");
-     /*       if ($listName == "frizell_test") {
-                print("\n" . "2");
-                $aweberSubscriberWriter = new AweberSubscriberWriter($rootDir);
+                    // returns associative array : key = name of aWeberSubscriberList ; value = array of AweberSubscriber objects
+                    $aweberSubscribersByListNames[] = $aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList);
+                    $success = TRUE;
 
-                print("\n" . "3");
-                $subscriber = $aweberSubscriberWriter->createAweberSubscriber($account, $emailNotificationList);
-                print ("\n" . "!!!!!!!!!!!   subscriber: " . "\n");
-                print_r($subscriber);
-            }*/
+                    print("\n" . " List Name: " . $listName . "\n");
+                    /*       if ($listName == "frizell_test") {
+                               print("\n" . "2");
+                               $aweberSubscriberWriter = new AweberSubscriberWriter($rootDir);
 
+                               print("\n" . "3");
+                               $subscriber = $aweberSubscriberWriter->createAweberSubscriber($account, $emailNotificationList);
+                               print ("\n" . "!!!!!!!!!!!   subscriber: " . "\n");
+                               print_r($subscriber);
+                           }*/
+
+                }
+            }
+            catch (\Exception $exception){
+                    if ($exception->getMessage() == "ServiceUnavailableError") {
+                        $j++;
+                        if ($j < 6) { // 6 is arbitrary number of tries...
+                            print("\n" . "AweberAPI Service temporarily unavailable when trying to call AweberSubscriberListReader->getSubscribersToEmailNotificationList. ");
+                            print ("\n" . "Going to sleep for 2 minutes; then will try again.");
+                            sleep(120);
+                        }
+                    }
+                    else {
+                        print("\n" . "Exception occurred! Exception->getMessage() : " . $exception->getMessage());
+                        print("\n" . "Exiting from program.");
+                        $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program";
+                        $messageBody =  "\n" . "Exception occurred! Exception->getMessage() : " . $exception->getMessage();
+                        $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                        throw $exception;
+                    }
+            }
+        }
+
+        if ($success) {
+           // $mdsToAweberComparator = new MdsToAweberUpdater($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersWithListNameKeys);
+            $mdsToAweberComparator = new MdsToAweberComparator($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersByListNames);
+            $mdsToAweberComparator->reportOnAweberSubscribersWithNoMatchInMds();
+            print("\n" . "Processing completed successfully.");
+            $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
+            $messageBody =  "Processing completed successfully in MDS to AWeber Update program.";
+            $this->sendEmailtoAdmins($subjectLine, $messageBody);
+        }
+        else {
+            print("\n" . "An error occurred in the Sync Aweber from MDS program. Processing did not complete successfully!");
+            $subjectLine = "MDS -> AWeber Update Program did NOT complete successfully. ";
+            $messageBody =  "\n" . "Processing failed in MDS to AWeber Update program." . "\n" . "\$success flag was not set to true. An undetermined error occurred.";
+            $this->sendEmailtoAdmins($subjectLine, $messageBody);
+
+            throw new \Exception("End of program. \$success flag not set to true. An error occurred in the Sync Aweber from MDS program. Processing did not complete successfully!");
         }
 
     //    $account = $app->connectToAWeberAccount();
@@ -162,6 +251,26 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             // outputs a message without adding a "\n" at the end of the line
           //  $output->write('You are about to ');
            // $output->write('create a user.');
+
+    }
+
+    private function sendEmailtoAdmins( $subjectLine, $messageBody) {
+          $mailer = $this->getContainer()->get('mailer');
+          $emailSubjectLine = $subjectLine;
+          $emailRecipients = null;
+          if (!is_null($this->adminEmailRecipients)) {
+              $emailRecipients = $this->adminEmailRecipients;
+              print("\n" . "Sending to recipients obtained from Aweber subscriber list admin_mds_to_aweber ");
+          }
+          else {
+              $emailRecipients = self::DEFAULT_ADMINS;
+          }
+          $emailBody = $messageBody;
+
+          $emailer = new Emailer($mailer, $this->getContainer()->get('swiftmailer.transport.real'), $emailSubjectLine, $emailBody, $emailRecipients);
+
+
+          $emailer->sendEmailMessage();
 
     }
 

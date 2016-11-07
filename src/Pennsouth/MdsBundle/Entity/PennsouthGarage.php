@@ -81,4 +81,3 @@ class PennsouthGarage
         return $this->availabilityStatusCode;
     }
 }
-
