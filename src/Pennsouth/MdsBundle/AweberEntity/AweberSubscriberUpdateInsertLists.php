@@ -14,8 +14,8 @@ class AweberSubscriberUpdateInsertLists
     const INSERT = 'INSERT';
     const UPDATE = 'UPDATE';
 
-    private $aweberSubscriberInsertList = array(); // associative array of AweberSubscriber list name => AweberSubscriber objects to be used to update Aweber Subscriber list
-    private $aweberSubscriberUpdateList = array(); // associative array of AweberSubscriber list name => AweberSubscriber objects to be used to update Aweber Subscriber list
+    private $aweberSubscriberInsertList = array(); // associative array of AweberSubscribers consisting of array of list name => AweberSubscriber object to be used to insert new subscribers into Aweber Subscriber list
+    private $aweberSubscriberUpdateList = array(); // associative array of AweberSubscribers consisting of array of list name => AweberSubscriber object to be used to update existing subscribers in Aweber Subscriber list
 
     /**
      * @return array
@@ -47,6 +47,37 @@ class AweberSubscriberUpdateInsertLists
     public function setAweberSubscriberUpdateList($aweberSubscriberUpdateList)
     {
         $this->aweberSubscriberUpdateList = $aweberSubscriberUpdateList;
+    }
+
+    public function isAweberSubscriberUpdateListEmpty() {
+
+        if (is_null($this->aweberSubscriberUpdateList) or empty($this->aweberSubscriberUpdateList) ) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    public function isAweberSubscriberInsertListEmpty() {
+
+        if (is_null($this->aweberSubscriberInsertList) or empty($this->aweberSubscriberInsertList) ) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    public function isUpdateListAndInsertListEmpty() {
+        if ($this->isAweberSubscriberUpdateListEmpty() and $this->isAweberSubscriberInsertListEmpty()) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 
