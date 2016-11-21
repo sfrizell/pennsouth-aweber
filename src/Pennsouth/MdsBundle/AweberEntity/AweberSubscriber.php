@@ -43,6 +43,16 @@ class AweberSubscriber
     /**
      * @var string
      */
+    private $firstName;
+
+    /**
+     * @var string
+     */
+    private $lastName;
+
+    /**
+     * @var string
+     */
     private $subscriptionMethod;
 
     /**
@@ -119,6 +129,32 @@ class AweberSubscriber
      * @var string
      */
     private $isDogInApt;
+
+    /**
+     * @var string
+     */
+    private $storageLockerClosetBldg;
+
+    /**
+     * @var string
+     */
+    private $storageLockerNum;
+
+    /**
+     * @var string
+     */
+    private $storageClosetFloorNum;
+
+    /**
+     * @var string
+     */
+    private $bikeRackBldg;
+
+    /**
+     * @var string
+     */
+    private $bikeRackRoom;
+
 
     /**
      * @return int
@@ -216,6 +252,38 @@ class AweberSubscriber
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param string $lastName
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
     }
 
     /**
@@ -472,6 +540,86 @@ class AweberSubscriber
     public function setIsDogInApt($isDogInApt)
     {
         $this->isDogInApt = $isDogInApt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStorageLockerClosetBldg()
+    {
+        return $this->storageLockerClosetBldg;
+    }
+
+    /**
+     * @param mixed $storageLockerClosetBldg
+     */
+    public function setStorageLockerClosetBldg($storageLockerClosetBldg)
+    {
+        $this->storageLockerClosetBldg = $storageLockerClosetBldg;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStorageLockerNum()
+    {
+        return $this->storageLockerNum;
+    }
+
+    /**
+     * @param mixed $storageLockerNum
+     */
+    public function setStorageLockerNum($storageLockerNum)
+    {
+        $this->storageLockerNum = $storageLockerNum;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStorageClosetFloorNum()
+    {
+        return $this->storageClosetFloorNum;
+    }
+
+    /**
+     * @param mixed $storageClosetFloorNum
+     */
+    public function setStorageClosetFloorNum($storageClosetFloorNum)
+    {
+        $this->storageClosetFloorNum = $storageClosetFloorNum;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBikeRackBldg()
+    {
+        return $this->bikeRackBldg;
+    }
+
+    /**
+     * @param mixed $bikeRackBldg
+     */
+    public function setBikeRackBldg($bikeRackBldg)
+    {
+        $this->bikeRackBldg = $bikeRackBldg;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBikeRackRoom()
+    {
+        return $this->bikeRackRoom;
+    }
+
+    /**
+     * @param mixed $bikeRackRoom
+     */
+    public function setBikeRackRoom($bikeRackRoom)
+    {
+        $this->bikeRackRoom = $bikeRackRoom;
     }
 
 
