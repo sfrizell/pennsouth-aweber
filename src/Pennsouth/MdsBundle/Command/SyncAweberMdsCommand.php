@@ -10,9 +10,14 @@ namespace Pennsouth\MdsBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Pennsouth\MdsBundle\Command\AweberSubscriberListReader;
+use Pennsouth\MdsBundle\Command\AweberSubscriberListsUpdater;
+use Pennsouth\MdsBundle\AweberEntity\AweberFieldsConstants;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Input\InputOption;
 
 use Pennsouth\MdsBundle\Command\PennsouthResidentListReader;
 
@@ -27,22 +32,19 @@ use Symfony\Component\Debug\DebugClassLoader;
  *      php app/console app:sync-mds-aweber
  */
 
-//class SyncAweberMdsCommand extends ContainerAwareCommand
-
-// class SyncAweberMdsCommand extends Command
 
 class SyncAweberMdsCommand extends ContainerAwareCommand {
 
-//    protected $pennsouthResidentListReader;
-//
-//    public function __construct ( PennsouthResidentListReader $pennsouthResidentListReader ) {
-//
-//        $this->pennsouthResidentListReader = $pennsouthResidentListReader;
-//
-//   }
-    const DEFAULT_ADMINS = "steve.frizell@gmail.com";
+
+    const DEFAULT_ADMINS                    = "steve.frizell@gmail.com";
+    const UPDATE_AWEBER_FROM_MDS            = 'update-aweber-from-mds';
+    const REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS = 'report-on-aweber-email-not-in-mds';
+    const LIST_MANAGEMENT_REPORTS           = 'list-management-reports';
 
     private $adminEmailRecipients;
+    private $runReportOnAweberEmailsNotInMds;
+    private $runUpdateAweberFromMds;
+    private $runListManagementReports;
 
     protected function configure() {
         $this
@@ -54,7 +56,16 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
                 // the full command description shown when running the command with
                 // the "--help" option
-                ->setHelp("This command runs the process that updates the Pennsouth Aweber.com subscriber email lists using as input the MDS_Export table...")
+                ->setHelp("This command runs the process that updates the Pennsouth Aweber.com subscriber email lists using as input the MDS_Export table..." . "\n"
+                            . " The command has required arguments.")
+
+                ->setDefinition(
+                    new InputDefinition(array(
+                        new InputOption(self::UPDATE_AWEBER_FROM_MDS, 'u', InputOption::VALUE_REQUIRED),
+                        new InputOption(self::REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS, 'r', InputOption::VALUE_REQUIRED),
+                        new InputOption(self::LIST_MANAGEMENT_REPORTS, 'l', InputOption::VALUE_REQUIRED),
+                    ))
+                )
             ;
 
 
@@ -74,11 +85,30 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             ]);
 
 
-    //    print ( "\n !!!!!!!!!!!!!  root directory: " . $this->getContainer()->getParameter('kernel.root_dir') . "\n");
-
         $rootDir = $this->getContainer()->getParameter('kernel.root_dir');
 
         $rootDir = rtrim($rootDir, "/app");
+
+        $fullPathToAweber = $rootDir . AweberFieldsConstants::PATH_TO_AWEBER_UNDER_VENDOR;
+
+
+        // sample run of the program from the command line shown below:
+        // php app/console app:sync-mds-aweber --update-aweber-from-mds true --report-on-aweber-email-not-in-mds false --list-management-reports true
+
+        $this->runReportOnAweberEmailsNotInMds = $input->getOption(self::REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS);
+
+        $this->runUpdateAweberFromMds           = $input->getOption(self::UPDATE_AWEBER_FROM_MDS);
+
+        $this->runListManagementReports         = $input->getOption(self::LIST_MANAGEMENT_REPORTS);
+
+
+        print("\n" . "\$this->runReportOnAweberEmailsNotInMds: " . $this->runReportOnAweberEmailsNotInMds . "\n");
+        print("\n" . "\$this->runUpdateAweberFromMds : " . $this->runUpdateAweberFromMds . "\n");
+
+        print("\n" . "\$this->runListManagementReports: " . $this->runListManagementReports . "\n");
+       // print_r($input->getOptions());
+
+        exit(0);
 
    //     print ("\n @@@@@@@@@  rootDir trimmed: " .  $rootDir . "\n");
 
@@ -120,11 +150,17 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
          *   a) list of Penn South Admin email recipients, to notify about the status of the running of the MDS to Aweber update process: $adminEmailRecipients
          *   b) the two Penn South Resident subscriber lists (Penn South Newsletter and Emergency Notifications): $emailNotificationLists
         **/
-        $aweberSubscriberListReader = new AweberSubscriberListReader($rootDir);
+        $aweberSubscriberListReader = new AweberSubscriberListReader($fullPathToAweber);
+
+        $aweberApiInstance = $aweberSubscriberListReader->getAweberApiInstance();
 
         $success = FALSE;
         $j = 0;
         $emailNotificationLists = array();
+        // todo: check if the declaration of $account here below breaks functionality?
+        $account = null; // added this declaration 11/4/2016 when code was working without it - but then
+                         // how could call to$aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList) work without this declaration?
+                         // question is does the variable declaration here break anything???
         while (!$success) {
             try {
                 $account = $aweberSubscriberListReader->connectToAWeberAccount();
@@ -133,7 +169,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 foreach ($emailRecipientsList as $emailRecipient) {
                     $this->adminEmailRecipients .= $emailRecipient . ",";
                 }
-                rtrim($this->adminEmailRecipients,",");
+                $this->adminEmailRecipients = rtrim($this->adminEmailRecipients,",");
 
                 $emailNotificationLists = $aweberSubscriberListReader->getEmailNotificationLists($account);
                 $success = TRUE;
@@ -193,7 +229,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                                $aweberSubscriberWriter = new AweberSubscriberWriter($rootDir);
 
                                print("\n" . "3");
-                               $subscriber = $aweberSubscriberWriter->createAweberSubscriber($account, $emailNotificationList);
+                               $subscriber = $aweberSubscriberWriter->createAweberSubscriberTest($account, $emailNotificationList);
                                print ("\n" . "!!!!!!!!!!!   subscriber: " . "\n");
                                print_r($subscriber);
                            }*/
@@ -220,16 +256,39 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             }
         }
 
+        $checkForAweberSubscribersNotInMDS = false;
         if ($success) {
-           // $mdsToAweberComparator = new MdsToAweberUpdater($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersWithListNameKeys);
             $mdsToAweberComparator = new MdsToAweberComparator($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersByListNames);
-            $mdsToAweberComparator->reportOnAweberSubscribersWithNoMatchInMds();
-            print("\n" . "Processing completed successfully.");
-            $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
-            $messageBody =  "Processing completed successfully in MDS to AWeber Update program.";
-            $this->sendEmailtoAdmins($subjectLine, $messageBody);
+            // todo: a) invoke the compareAweberToMds function - done
+            // todo: (b) write new method to perform the Aweber inserts/updates to subscriber lists - done
+            // todo: (c) write new method to insert into AweberMdsSyncAudit what has been inserted/updated
+            // todo: (d) generate summary statistics in email to admins
+            // todo:  (e) write requested list management spreadsheets from the application.
+            if ($this->runReportOnAweberEmailsNotInMds) { // following method invoked just to allow Penn South Management Office to sync up Aweber with MDS; once done,
+                                                      // we should not need to run the following any longer...
+                $mdsToAweberComparator->reportOnAweberSubscribersWithNoMatchInMds();
+                print("\n" . "Report on Aweber Subscribers with No Match in MDS. Processing completed successfully.");
+                $subjectLine = "Report on Aweber Subscribers with No Match in MDS: Processing Successfully Completed.";
+                $messageBody =  "Results of comparison of Aweber subscriber lists with MDS are stored in the pennsouth_db database.";
+                $this->sendEmailtoAdmins($subjectLine, $messageBody);
+            }
+            if ($this->runUpdateAweberFromMds) { // once in production, this should always be true...
+                $aweberSubscriberUpdateInsertLists = $mdsToAweberComparator->compareAweberWithMds();
+                if (!$aweberSubscriberUpdateInsertLists->isUpdateListAndInsertListEmpty()) { // MDS has data that is not yet reflected in Aweber; need to insert/update Aweber from MDS...
+                    // - invoke method to insert/update Aweber subscriber lists from MDS
+                    // - invoke method to create an audit trail of the inserts/updates to Aweber
+                    // - send summary statistics to Penn South Admins
+                    $aweberSubscriberListsUpdater = new AweberSubscriberListsUpdater($fullPathToAweber, $aweberApiInstance);
+                    $aweberSubscriberListsUpdater->updateAweberSubscriberLists($account, $aweberSubscriberUpdateInsertLists);
+                    $aweberUpdateSummary = $mdsToAweberComparator->storeAuditTrailofUpdatesToAweberSubscribers($aweberSubscriberUpdateInsertLists);
+                }
+                print("\n" . "Processing completed successfully.");
+                $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
+                $messageBody =  "Processing completed successfully in MDS to AWeber Update program.";
+                $this->sendEmailtoAdmins($subjectLine, $messageBody);
+            }
         }
-        else {
+        else { // not $success
             print("\n" . "An error occurred in the Sync Aweber from MDS program. Processing did not complete successfully!");
             $subjectLine = "MDS -> AWeber Update Program did NOT complete successfully. ";
             $messageBody =  "\n" . "Processing failed in MDS to AWeber Update program." . "\n" . "\$success flag was not set to true. An undetermined error occurred.";
