@@ -102,7 +102,7 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="decalNum" type="string" column="Decal_Num" length="5" nullable="true">
+    <field name="decalNum" type="integer" column="Decal_Num"  nullable="true">
       <options>
         <option name="fixed"/>
         <option name="comment">Decal Number for Parking Lot.</option>

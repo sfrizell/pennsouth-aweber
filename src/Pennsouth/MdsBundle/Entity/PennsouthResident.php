@@ -103,7 +103,7 @@ class PennsouthResident
     private $gardenMember;
 
     /**
-     * @var string
+     * @var integer
      */
     private $decalNum;
 
@@ -657,7 +657,7 @@ class PennsouthResident
     /**
      * Set decalNum
      *
-     * @param string $decalNum
+     * @param integer $decalNum
      *
      * @return PennsouthResident
      */
@@ -671,7 +671,7 @@ class PennsouthResident
     /**
      * Get decalNum
      *
-     * @return string
+     * @return integer
      */
     public function getDecalNum()
     {

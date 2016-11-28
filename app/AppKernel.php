@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
             new Pennsouth\MdsBundle\PennsouthMdsBundle(),
         );
 

@@ -32,15 +32,22 @@ class Emailer
 
     public function sendEmailMessage() {
 
+
+
                $message = \Swift_Message::newInstance()
                           ->setSubject($this->emailSubjectLine)
                           ->setFrom('DoNotReply@sfnyc.net')
-                          ->setTo($this->emailRecipients)
                           ->setBody($this->emailBody);
+
+                foreach ($this->emailRecipients as $emailRecipient) {
+                    foreach ($emailRecipient as $emailAddress => $emailRecipientName) {
+                        $message->addTo($emailAddress, $emailRecipientName);
+                    }
+                }
 
                 $result = $this->mailer->send($message); // success returns 1
 
-            //    print("\n" . "result of mailer->send message: " . $result);
+                //print("\n" . "result of mailer->send message: " . $result);
                 //$output->writeln($result);
 
 

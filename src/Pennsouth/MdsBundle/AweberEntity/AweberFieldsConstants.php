@@ -11,9 +11,10 @@ namespace Pennsouth\MdsBundle\AweberEntity;
 
 class AweberFieldsConstants
 {
-        const PATH_TO_AWEBER_UNDER_VENDOR                    = '/vendor/aweber/aweber/aweber_api/aweber_api.php';
-       const AWEBER_PENNSOUTH_NEWSLETTER_LIST = 'Penn South Newsletter'; // Unique List ID: awlist3774632
-       const EMERGENCY_NOTICES_FOR_RESIDENTS = 'Penn South Emergency Info Only'; // Unique List ID: awlist4464610 ; list_id is stripped of the 'awlist' prefix, just the # portion
+       const PATH_TO_AWEBER_UNDER_VENDOR                    = '/vendor/aweber/aweber/aweber_api/aweber_api.php';
+       const PRIMARY_RESIDENT_LIST              = 'Primary Resident List'; // Unique List ID: awlist3774632
+       const EMERGENCY_NOTICES_FOR_RESIDENTS    = 'Penn South Emergency Info Only'; // Unique List ID: awlist4464610 ; list_id is stripped of the 'awlist' prefix, just the # portion
+       const FRIZELL_TEST_LIST                  = 'frizell_test';
 
        const CUSTOM_FIELDS                  = array('BUILDING' => 'Penn_South_Building',
                                                     'FLOOR_NUMBER' => 'Floor_Number',
@@ -33,17 +34,21 @@ class AweberFieldsConstants
        const VEHICLE_REG_EXP_DAYS_LEFT                          = 'vehicle_reg_exp_days_left';
        const HOMEOWNER_INS_EXP_DAYS_LEFT                        = 'homeowner_ins_exp_days_left';
        const IS_DOG_IN_APT                                      = 'is_dog_in_apt';
-       const STORAGE_LOCKER_CLOSET_BLDG_NUM                     = 'storage_locker_closet_bldg_num';
+       const STORAGE_LOCKER_CLOSET_BLDG_NUM                     = 'storage_locker_closet_bldg';
        const STORAGE_LOCKER_NUM                                 = 'storage_locker_num';
        const STORAGE_CLOSET_FLOOR_NUM                           = 'storage_closet_floor_num';
        const BIKE_RACK_BLDG                                     = 'bike_rack_bldg';
        const BIKE_RACK_ROOM                                     = 'bike_rack_room';
        const PENN_SOUTH_AWEBER_ACCOUNT                          = 936765;
        const ADMINS_MDS_TO_AWEBER_LIST_ID                       = 4459191; // Aweber subscriber list of Penn South Administrators to receive emails about the running of this program to sync Aweber to MDS
-       const PENNSOUTH_NEWSLETTER_LIST_ID                       = 3774632;
+       const PRIMARY_RESIDENT_LIST_ID                           = 3774632;
        const PENNSOUTH_EMERGENCY_NOTICES_FOR_RESIDENTS_LIST_ID  = 4464610;
+       const FRIZELL_SUBSCRIBER_LIST_TEST_ID                    = 4390097; // just for testing...
 
-       const PENNSOUTH_NEWSLETTER_LIST_URL                      = "/accounts/" . self::PENN_SOUTH_AWEBER_ACCOUNT . "/lists/" . self::PENNSOUTH_NEWSLETTER_LIST_ID;
+       const PRIMARY_RESIDENT_LIST_URL                      = "/accounts/" . self::PENN_SOUTH_AWEBER_ACCOUNT . "/lists/" . self::PRIMARY_RESIDENT_LIST_ID;
        const PENNSOUTH_EMERGENCY_NOTICES_LIST_URL               = "/accounts/" . self::PENN_SOUTH_AWEBER_ACCOUNT . "/lists/" . self::PENNSOUTH_EMERGENCY_NOTICES_FOR_RESIDENTS_LIST_ID;
+       const FRIZELL_SUBSCRIBER_LIST_TEST_URL               = "/accounts/" . self::PENN_SOUTH_AWEBER_ACCOUNT . "/lists/" . self::FRIZELL_SUBSCRIBER_LIST_TEST_ID;
+       const AWEBER_MDS_SYNC_AUDIT_TABLE_NAME               = 'Aweber_Mds_Sync_Audit';
+
 
 }

@@ -16,17 +16,8 @@ class AweberUpdateSummary
     private $listInsertArrayCtr = array();
 
 
-
-    public function insertIntoListUpdateArrayCtr($key, $value) {
-        $this->listUpdateArrayCtr[$key] = $value;
-    }
-
     public function getListUpdateArrayCtr(){
         return $this->listUpdateArrayCtr;
-    }
-
-    public function insertIntoListInsertArrayCtr($key, $value) {
-        $this->listInsertArrayCtr[$key] = $value;
     }
 
     public function getListInsertArrayCtr() {
@@ -34,7 +25,7 @@ class AweberUpdateSummary
     }
 
     public function incrementListInsertArrayCtr($listName) {
-        $this->listInsertArrayCtr[$listName]++;
+        $this->listInsertArrayCtr[$listName] = $this->listInsertArrayCtr[$listName]++;
     }
 
     public function initializeListInsertArrayCtr($listName) {
@@ -42,7 +33,7 @@ class AweberUpdateSummary
     }
 
     public function incrementListUpdateArrayCtr($listName) {
-        $this->listUpdateArrayCtr[$listName]++;
+        $this->listUpdateArrayCtr[$listName] = $this->listUpdateArrayCtr[$listName]++;
     }
 
     public function initializeListUpdateArrayCtr($listName) {

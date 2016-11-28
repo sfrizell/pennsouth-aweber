@@ -23,15 +23,6 @@ class PennsouthResidentListReader
 
     private $entityManager;
 
-//    private $pennsouthResidentsHavingEmailAddresses;
-
-    /**
-     * @param mixed $pennsouthResidentsHavingEmailAddresses
-     */
-/*    public function setPennsouthResidentsHavingEmailAddresses($pennsouthResidentsHavingEmailAddresses)
-    {
-        $this->pennsouthResidentsHavingEmailAddresses = $pennsouthResidentsHavingEmailAddresses;
-    }*/
 
     public function __construct (EntityManager $entityManager ) {
 
@@ -43,38 +34,6 @@ class PennsouthResidentListReader
         return $this->entityManager;
     }
 
-    // see: http://stackoverflow.com/questions/19855251/symfony2-getdoctrine-outside-of-model-controller
-    //  there is better solution is same linke above than is implemented here...
-  //  protected $em;
-
-/*    protected function configure()
-      {
-          $this->setName('Pennsouth:MdsBundle:update') ;
-      }*/
-
-/*    protected function execute(InputInterface $input, OutputInterface $output)
-        {
-            $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
-
-
-
-
-                  $query = $this->em->getDoctrine()->getManager->createQuery(
-                      'Select pr 
-                       from PennsouthMdsBundle:PennsouthResident pr 
-                       where pr.email is not NULL'
-                  );
-
-                  $pennsouthResidents = $query->getResult();
-
-                  $pennsouthResidentsArray = array ( $pennsouthResidents->getData() );
-
-                  $countOfResidentsWithEmailAddresses = count($pennsouthResidentsArray);
-
-
-
-                  print ("@@@@@@@@   pennsouthresidents count: " . $countOfResidentsWithEmailAddresses);
-        }*/
 
         public function getPennsouthResidentsHavingEmailAddresses() {
 
