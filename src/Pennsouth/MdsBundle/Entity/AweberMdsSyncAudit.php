@@ -93,6 +93,166 @@ class AweberMdsSyncAudit
     private $aweberSubscriptionMethod;
 
     /**
+     * @var string
+     */
+    private $mdsToddlerRmMember;
+
+    /**
+     * @var string
+     */
+    private $mdsYouthRmMember;
+
+    /**
+     * @var string
+     */
+    private $mdsCeramicsMember;
+
+    /**
+     * @var string
+     */
+    private $mdsWoodworkingMember;
+
+    /**
+     * @var string
+     */
+    private $mdsGymMember;
+
+    /**
+     * @var string
+     */
+    private $mdsGardenMember;
+
+    /**
+     * @var string
+     */
+    private $mdsParkingLotLocation;
+
+    /**
+     * @var integer
+     */
+    private $mdsVehicleRegExpDaysLeft;
+
+    /**
+     * @var integer
+     */
+    private $mdsHomeownerInsExpDaysLeft;
+
+    /**
+     * @var string
+     */
+    private $mdsStorageLkrClBldg;
+
+    /**
+     * @var string
+     */
+    private $mdsStorageLkrNum;
+
+    /**
+     * @var string
+     */
+    private $mdsStorageClFloorNum;
+
+    /**
+     * @var string
+     */
+    private $mdsIsDogInApt;
+
+    /**
+     * @var string
+     */
+    private $mdsBikeRackBldg;
+
+    /**
+     * @var string
+     */
+    private $mdsBikeRackLocation;
+
+    /**
+     * @var string
+     */
+    private $mdsResidentCategory;
+
+    /**
+     * @var string
+     */
+    private $aweberToddlerRmMember;
+
+    /**
+     * @var string
+     */
+    private $aweberYouthRmMember;
+
+    /**
+     * @var string
+     */
+    private $aweberCeramicsMember;
+
+    /**
+     * @var string
+     */
+    private $aweberWoodworkingMember;
+
+    /**
+     * @var string
+     */
+    private $aweberGymMember;
+
+    /**
+     * @var string
+     */
+    private $aweberGardenMember;
+
+    /**
+     * @var string
+     */
+    private $aweberParkingLotLocation;
+
+    /**
+     * @var integer
+     */
+    private $aweberVehicleRegExpDaysLeft;
+
+    /**
+     * @var integer
+     */
+    private $aweberHomeownerInsExpDaysLeft;
+
+    /**
+     * @var string
+     */
+    private $aweberStorageLkrClBldg;
+
+    /**
+     * @var string
+     */
+    private $aweberStorageLkrNum;
+
+    /**
+     * @var string
+     */
+    private $aweberStorageClFloorNum;
+
+    /**
+     * @var string
+     */
+    private $aweberIsDogInApt;
+
+    /**
+     * @var string
+     */
+    private $aweberBikeRackBldg;
+
+    /**
+     * @var string
+     */
+    private $aweberBikeRackLocation;
+
+    /**
+     * @var string
+     */
+    private $aweberResidentCategory;
+
+    /**
      * @var \DateTime
      */
     private $lastChangedDate;
@@ -510,6 +670,775 @@ class AweberMdsSyncAudit
     {
         return $this->aweberSubscriptionMethod;
     }
+
+    /**
+     * Set mdsToddlerRmMember
+     *
+     * @param string $mdsToddlerRmMember
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsToddlerRmMember($mdsToddlerRmMember)
+    {
+        $this->mdsToddlerRmMember = $mdsToddlerRmMember;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsToddlerRmMember
+     *
+     * @return string
+     */
+    public function getMdsToddlerRmMember()
+    {
+        return $this->mdsToddlerRmMember;
+    }
+
+    /**
+     * Set mdsYouthRmMember
+     *
+     * @param string $mdsYouthRmMember
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsYouthRmMember($mdsYouthRmMember)
+    {
+        $this->mdsYouthRmMember = $mdsYouthRmMember;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsYouthRmMember
+     *
+     * @return string
+     */
+    public function getMdsYouthRmMember()
+    {
+        return $this->mdsYouthRmMember;
+    }
+
+    /**
+     * Set mdsCeramicsMember
+     *
+     * @param string $mdsCeramicsMember
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsCeramicsMember($mdsCeramicsMember)
+    {
+        $this->mdsCeramicsMember = $mdsCeramicsMember;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsCeramicsMember
+     *
+     * @return string
+     */
+    public function getMdsCeramicsMember()
+    {
+        return $this->mdsCeramicsMember;
+    }
+
+    /**
+     * Set mdsWoodworkingMember
+     *
+     * @param string $mdsWoodworkingMember
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsWoodworkingMember($mdsWoodworkingMember)
+    {
+        $this->mdsWoodworkingMember = $mdsWoodworkingMember;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsWoodworkingMember
+     *
+     * @return string
+     */
+    public function getMdsWoodworkingMember()
+    {
+        return $this->mdsWoodworkingMember;
+    }
+
+    /**
+     * Set mdsGymMember
+     *
+     * @param string $mdsGymMember
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsGymMember($mdsGymMember)
+    {
+        $this->mdsGymMember = $mdsGymMember;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsGymMember
+     *
+     * @return string
+     */
+    public function getMdsGymMember()
+    {
+        return $this->mdsGymMember;
+    }
+
+    /**
+     * Set mdsGardenMember
+     *
+     * @param string $mdsGardenMember
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsGardenMember($mdsGardenMember)
+    {
+        $this->mdsGardenMember = $mdsGardenMember;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsGardenMember
+     *
+     * @return string
+     */
+    public function getMdsGardenMember()
+    {
+        return $this->mdsGardenMember;
+    }
+
+    /**
+     * Set mdsParkingLotLocation
+     *
+     * @param string $mdsParkingLotLocation
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsParkingLotLocation($mdsParkingLotLocation)
+    {
+        $this->mdsParkingLotLocation = $mdsParkingLotLocation;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsParkingLotLocation
+     *
+     * @return string
+     */
+    public function getMdsParkingLotLocation()
+    {
+        return $this->mdsParkingLotLocation;
+    }
+
+    /**
+     * Set mdsVehicleRegExpDaysLeft
+     *
+     * @param integer $mdsVehicleRegExpDaysLeft
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsVehicleRegExpDaysLeft($mdsVehicleRegExpDaysLeft)
+    {
+        $this->mdsVehicleRegExpDaysLeft = $mdsVehicleRegExpDaysLeft;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsVehicleRegExpDaysLeft
+     *
+     * @return integer
+     */
+    public function getMdsVehicleRegExpDaysLeft()
+    {
+        return $this->mdsVehicleRegExpDaysLeft;
+    }
+
+    /**
+     * Set mdsHomeownerInsExpDaysLeft
+     *
+     * @param integer $mdsHomeownerInsExpDaysLeft
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsHomeownerInsExpDaysLeft($mdsHomeownerInsExpDaysLeft)
+    {
+        $this->mdsHomeownerInsExpDaysLeft = $mdsHomeownerInsExpDaysLeft;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsHomeownerInsExpDaysLeft
+     *
+     * @return integer
+     */
+    public function getMdsHomeownerInsExpDaysLeft()
+    {
+        return $this->mdsHomeownerInsExpDaysLeft;
+    }
+
+    /**
+     * Set mdsStorageLkrClBldg
+     *
+     * @param string $mdsStorageLkrClBldg
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsStorageLkrClBldg($mdsStorageLkrClBldg)
+    {
+        $this->mdsStorageLkrClBldg = $mdsStorageLkrClBldg;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsStorageLkrClBldg
+     *
+     * @return string
+     */
+    public function getMdsStorageLkrClBldg()
+    {
+        return $this->mdsStorageLkrClBldg;
+    }
+
+    /**
+     * Set mdsStorageLkrNum
+     *
+     * @param string $mdsStorageLkrNum
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsStorageLkrNum($mdsStorageLkrNum)
+    {
+        $this->mdsStorageLkrNum = $mdsStorageLkrNum;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsStorageLkrNum
+     *
+     * @return string
+     */
+    public function getMdsStorageLkrNum()
+    {
+        return $this->mdsStorageLkrNum;
+    }
+
+    /**
+     * Set mdsStorageClFloorNum
+     *
+     * @param string $mdsStorageClFloorNum
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsStorageClFloorNum($mdsStorageClFloorNum)
+    {
+        $this->mdsStorageClFloorNum = $mdsStorageClFloorNum;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsStorageClFloorNum
+     *
+     * @return string
+     */
+    public function getMdsStorageClFloorNum()
+    {
+        return $this->mdsStorageClFloorNum;
+    }
+
+    /**
+     * Set mdsIsDogInApt
+     *
+     * @param string $mdsIsDogInApt
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsIsDogInApt($mdsIsDogInApt)
+    {
+        $this->mdsIsDogInApt = $mdsIsDogInApt;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsIsDogInApt
+     *
+     * @return string
+     */
+    public function getMdsIsDogInApt()
+    {
+        return $this->mdsIsDogInApt;
+    }
+
+    /**
+     * Set mdsBikeRackBldg
+     *
+     * @param string $mdsBikeRackBldg
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsBikeRackBldg($mdsBikeRackBldg)
+    {
+        $this->mdsBikeRackBldg = $mdsBikeRackBldg;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsBikeRackBldg
+     *
+     * @return string
+     */
+    public function getMdsBikeRackBldg()
+    {
+        return $this->mdsBikeRackBldg;
+    }
+
+    /**
+     * Set mdsBikeRackLocation
+     *
+     * @param string $mdsBikeRackLocation
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsBikeRackLocation($mdsBikeRackLocation)
+    {
+        $this->mdsBikeRackLocation = $mdsBikeRackLocation;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsBikeRackLocation
+     *
+     * @return string
+     */
+    public function getMdsBikeRackLocation()
+    {
+        return $this->mdsBikeRackLocation;
+    }
+
+    /**
+     * Set mdsResidentCategory
+     *
+     * @param string $mdsResidentCategory
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setMdsResidentCategory($mdsResidentCategory)
+    {
+        $this->mdsResidentCategory = $mdsResidentCategory;
+
+        return $this;
+    }
+
+    /**
+     * Get mdsResidentCategory
+     *
+     * @return string
+     */
+    public function getMdsResidentCategory()
+    {
+        return $this->mdsResidentCategory;
+    }
+
+    /**
+     * Set aweberToddlerRmMember
+     *
+     * @param string $aweberToddlerRmMember
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberToddlerRmMember($aweberToddlerRmMember)
+    {
+        $this->aweberToddlerRmMember = $aweberToddlerRmMember;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberToddlerRmMember
+     *
+     * @return string
+     */
+    public function getAweberToddlerRmMember()
+    {
+        return $this->aweberToddlerRmMember;
+    }
+
+    /**
+     * Set aweberYouthRmMember
+     *
+     * @param string $aweberYouthRmMember
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberYouthRmMember($aweberYouthRmMember)
+    {
+        $this->aweberYouthRmMember = $aweberYouthRmMember;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberYouthRmMember
+     *
+     * @return string
+     */
+    public function getAweberYouthRmMember()
+    {
+        return $this->aweberYouthRmMember;
+    }
+
+    /**
+     * Set aweberCeramicsMember
+     *
+     * @param string $aweberCeramicsMember
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberCeramicsMember($aweberCeramicsMember)
+    {
+        $this->aweberCeramicsMember = $aweberCeramicsMember;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberCeramicsMember
+     *
+     * @return string
+     */
+    public function getAweberCeramicsMember()
+    {
+        return $this->aweberCeramicsMember;
+    }
+
+    /**
+     * Set aweberWoodworkingMember
+     *
+     * @param string $aweberWoodworkingMember
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberWoodworkingMember($aweberWoodworkingMember)
+    {
+        $this->aweberWoodworkingMember = $aweberWoodworkingMember;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberWoodworkingMember
+     *
+     * @return string
+     */
+    public function getAweberWoodworkingMember()
+    {
+        return $this->aweberWoodworkingMember;
+    }
+
+    /**
+     * Set aweberGymMember
+     *
+     * @param string $aweberGymMember
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberGymMember($aweberGymMember)
+    {
+        $this->aweberGymMember = $aweberGymMember;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberGymMember
+     *
+     * @return string
+     */
+    public function getAweberGymMember()
+    {
+        return $this->aweberGymMember;
+    }
+
+    /**
+     * Set aweberGardenMember
+     *
+     * @param string $aweberGardenMember
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberGardenMember($aweberGardenMember)
+    {
+        $this->aweberGardenMember = $aweberGardenMember;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberGardenMember
+     *
+     * @return string
+     */
+    public function getAweberGardenMember()
+    {
+        return $this->aweberGardenMember;
+    }
+
+    /**
+     * Set aweberParkingLotLocation
+     *
+     * @param string $aweberParkingLotLocation
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberParkingLotLocation($aweberParkingLotLocation)
+    {
+        $this->aweberParkingLotLocation = $aweberParkingLotLocation;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberParkingLotLocation
+     *
+     * @return string
+     */
+    public function getAweberParkingLotLocation()
+    {
+        return $this->aweberParkingLotLocation;
+    }
+
+    /**
+     * Set aweberVehicleRegExpDaysLeft
+     *
+     * @param integer $aweberVehicleRegExpDaysLeft
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberVehicleRegExpDaysLeft($aweberVehicleRegExpDaysLeft)
+    {
+        $this->aweberVehicleRegExpDaysLeft = $aweberVehicleRegExpDaysLeft;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberVehicleRegExpDaysLeft
+     *
+     * @return integer
+     */
+    public function getAweberVehicleRegExpDaysLeft()
+    {
+        return $this->aweberVehicleRegExpDaysLeft;
+    }
+
+    /**
+     * Set aweberHomeownerInsExpDaysLeft
+     *
+     * @param integer $aweberHomeownerInsExpDaysLeft
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberHomeownerInsExpDaysLeft($aweberHomeownerInsExpDaysLeft)
+    {
+        $this->aweberHomeownerInsExpDaysLeft = $aweberHomeownerInsExpDaysLeft;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberHomeownerInsExpDaysLeft
+     *
+     * @return integer
+     */
+    public function getAweberHomeownerInsExpDaysLeft()
+    {
+        return $this->aweberHomeownerInsExpDaysLeft;
+    }
+
+    /**
+     * Set aweberStorageLkrClBldg
+     *
+     * @param string $aweberStorageLkrClBldg
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberStorageLkrClBldg($aweberStorageLkrClBldg)
+    {
+        $this->aweberStorageLkrClBldg = $aweberStorageLkrClBldg;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberStorageLkrClBldg
+     *
+     * @return string
+     */
+    public function getAweberStorageLkrClBldg()
+    {
+        return $this->aweberStorageLkrClBldg;
+    }
+
+    /**
+     * Set aweberStorageLkrNum
+     *
+     * @param string $aweberStorageLkrNum
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberStorageLkrNum($aweberStorageLkrNum)
+    {
+        $this->aweberStorageLkrNum = $aweberStorageLkrNum;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberStorageLkrNum
+     *
+     * @return string
+     */
+    public function getAweberStorageLkrNum()
+    {
+        return $this->aweberStorageLkrNum;
+    }
+
+    /**
+     * Set aweberStorageClFloorNum
+     *
+     * @param string $aweberStorageClFloorNum
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberStorageClFloorNum($aweberStorageClFloorNum)
+    {
+        $this->aweberStorageClFloorNum = $aweberStorageClFloorNum;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberStorageClFloorNum
+     *
+     * @return string
+     */
+    public function getAweberStorageClFloorNum()
+    {
+        return $this->aweberStorageClFloorNum;
+    }
+
+    /**
+     * Set aweberIsDogInApt
+     *
+     * @param string $aweberIsDogInApt
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberIsDogInApt($aweberIsDogInApt)
+    {
+        $this->aweberIsDogInApt = $aweberIsDogInApt;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberIsDogInApt
+     *
+     * @return string
+     */
+    public function getAweberIsDogInApt()
+    {
+        return $this->aweberIsDogInApt;
+    }
+
+    /**
+     * Set aweberBikeRackBldg
+     *
+     * @param string $aweberBikeRackBldg
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberBikeRackBldg($aweberBikeRackBldg)
+    {
+        $this->aweberBikeRackBldg = $aweberBikeRackBldg;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberBikeRackBldg
+     *
+     * @return string
+     */
+    public function getAweberBikeRackBldg()
+    {
+        return $this->aweberBikeRackBldg;
+    }
+
+    /**
+     * Set aweberBikeRackLocation
+     *
+     * @param string $aweberBikeRackLocation
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberBikeRackLocation($aweberBikeRackLocation)
+    {
+        $this->aweberBikeRackLocation = $aweberBikeRackLocation;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberBikeRackLocation
+     *
+     * @return string
+     */
+    public function getAweberBikeRackLocation()
+    {
+        return $this->aweberBikeRackLocation;
+    }
+
+    /**
+     * Set aweberResidentCategory
+     *
+     * @param string $aweberResidentCategory
+     *
+     * @return AweberMdsSyncAudit
+     */
+    public function setAweberResidentCategory($aweberResidentCategory)
+    {
+        $this->aweberResidentCategory = $aweberResidentCategory;
+
+        return $this;
+    }
+
+    /**
+     * Get aweberResidentCategory
+     *
+     * @return string
+     */
+    public function getAweberResidentCategory()
+    {
+        return $this->aweberResidentCategory;
+    }
+
 
     /**
      * Set lastChangedDate

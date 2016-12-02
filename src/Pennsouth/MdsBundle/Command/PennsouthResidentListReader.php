@@ -46,9 +46,7 @@ class PennsouthResidentListReader
 
             $count = count($pennsouthResidentsHavingEmailAddresses); // length function obtains number of elements in a collection of objects
 
-            print ("\n" . "@@@@@@@@@@ pennsouthResidents with email addresses: " . $count . "\n");
-
-          //  $this->setPennsouthResidentsHavingEmailAddresses(array($pennsouthResidentsHavingEmailAddresses));
+            print ("\n" . "PennsouthResidents with email addresses: " . $count . "\n");
 
             return $pennsouthResidentsHavingEmailAddresses;
 

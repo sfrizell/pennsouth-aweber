@@ -8,10 +8,9 @@
 
 namespace Pennsouth\MdsBundle\Command;
 
-use Pennsouth\MdsBundle\AweberEntity\AweberSubscriber;
 use Pennsouth\MdsBundle\AweberEntity\AweberUpdateSummary;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Command\Command;
+//use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -196,7 +195,15 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         // test below
 
-/*            $aweberSubscriberListReader = new AweberSubscriberListReader($fullPathToAweber);
+
+  /*         $entityManager = $this->getEntityManager();
+
+        $pennsouthResidentListReader = new PennsouthResidentListReader($entityManager);
+
+
+        $residentsWithEmailAddressesArray = $pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddressAssociativeArray();
+
+         $aweberSubscriberListReader = new AweberSubscriberListReader($fullPathToAweber);
 
           $account = $aweberSubscriberListReader->connectToAWeberAccount();
           print("\n" . "Connected to AweberAccount...");
@@ -246,10 +253,11 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
                 print("\n -- SyncAweberMdsCommand - 2");
 
-        $subscriberId = $aweberSubscriberWriter->createAweberSubscriberTest($account, $emailNotificationList, $aweberSubscriberTest);
+        $aweberEntry = $aweberSubscriberWriter->createAweberSubscriberTest($account, $emailNotificationList, $aweberSubscriberTest);
 
-        print("\n" . "Subscriber inserted: subscriberId: " . $subscriberId);
-        print("\n" . "End of test...");
+        print("\n" . "Subscriber inserted: Aweber entry: \n");
+        print_r($aweberEntry);
+        print("\n" . "End of test... \n");
 
         exit(0);*/
         // test above
@@ -258,8 +266,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         $aweberSubscriberListReader = new AweberSubscriberListReader($fullPathToAweber);
 
         $this->adminEmailRecipients = null;
-        $emailNotificationLists = array();
-        // todo: check if the declaration of $account here below breaks functionality?
+        //$emailNotificationLists = array();
         $account = null; // added this declaration 11/4/2016 when code was working without it - but then
                          // how could call to$aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList) work without this declaration?
                          // question is does the variable declaration here break anything???
@@ -335,11 +342,12 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                // print("\n" . "1");
                 $listName = $emailNotificationList->data["name"];
 
+                print("\n" . " List Name: " . $listName . "\n");
+
                 // returns associative array : key = name of aWeberSubscriberList ; value = array of AweberSubscriber objects
                 $aweberSubscribersByListNames[] = $aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList);
-                $success = TRUE;
 
-                print("\n" . " List Name: " . $listName . "\n");
+
                 /*       if ($listName == "frizell_test") {
                            print("\n" . "2");
                            $aweberSubscriberWriter = new AweberSubscriberWriter($rootDir);
@@ -369,9 +377,9 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             $mdsToAweberComparator = new MdsToAweberComparator($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersByListNames);
             // todo: a) invoke the compareAweberToMds function - done
             // todo: (b) write new method to perform the Aweber inserts/updates to subscriber lists - done
-            // todo: (c) write new method to insert into AweberMdsSyncAudit what has been inserted/updated
-            // todo: (d) generate summary statistics in email to admins
-            // todo:  (e) write requested list management spreadsheets from the application.
+            // todo: (c) write new method to insert into AweberMdsSyncAudit what has been inserted/updated - done
+            // todo: (d) generate summary statistics in email to admins - done
+            // todo:  (e) write requested list management spreadsheets from the application. - done for Parking Lot Spaces
             if ($this->runReportOnAweberEmailsNotInMds) { // following method invoked just to allow Penn South Management Office to sync up Aweber with MDS; once done,
                 // we should not need to run the following any longer...
                 $mdsToAweberComparator->reportOnAweberSubscribersWithNoMatchInMds();
@@ -391,6 +399,9 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                     $aweberSubscriberListsUpdater = new AweberSubscriberListsUpdater($fullPathToAweber, $aweberApiInstance, $emailNotificationLists);
                     $aweberSubscriberListsUpdater->updateAweberSubscriberLists($account, $aweberSubscriberUpdateInsertLists);
                     $aweberUpdateSummary = $mdsToAweberComparator->storeAuditTrailofUpdatesToAweberSubscribers($aweberSubscriberUpdateInsertLists);
+                    // todo - sfrizell - remove the following print output after testing...
+                    //print("\n \$aweberUpdateSummary: \n" );
+                    //print_r($aweberUpdateSummary);
                     $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
                     $messageBody = "RunUpdateAweberFromMds: Processing completed successfully in MDS to AWeber Update program." . "\n\n";
                     $messageBody = $this->buildMessageBodyForEmailToAdmins($messageBody, $aweberUpdateSummary);
@@ -415,44 +426,32 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         }
 
 
-
-
         $runEndDate = new \DateTime("now");
-        print("\n" . "Program run end date/time: " . $runEndDate->format('Y-m-d H:i:s'));
+        print("\n" . "Program run end date/time: " . $runEndDate->format('Y-m-d H:i:s') . "\n");
+        exit(0);
 
-    //    $account = $app->connectToAWeberAccount();
-
-    //    $emailNotificationLists = $app->getEmailNotificationLists($account);
-
-    //    $app->getSubscribersToEmailNotificationLists( $account, $emailNotificationLists);
-
-
-            // outputs a message followed by a "\n"
-           // $output->writeln('Whoa!');
-
-            // outputs a message without adding a "\n" at the end of the line
-          //  $output->write('You are about to ');
-           // $output->write('create a user.');
 
     }
 
-    private function buildMessageBodyForEmailToAdmins($messageBody,  AweberUpdateSummary $aweberUpdateSummary) {
+    private function buildMessageBodyForEmailToAdmins($messageBody,  AweberUpdateSummary $aweberUpdateSummary)
+    {
         if (!is_null($aweberUpdateSummary->getListInsertArrayCtr() and count($aweberUpdateSummary->getListInsertArrayCtr()) > 0)) {
-                                    $messageBody = $messageBody . "\n" . "List inserts: " . "\n";
+            $messageBody .=  "\n" . "List inserts: " . "\n";
             foreach ($aweberUpdateSummary->getListInsertArrayCtr() as $listName => $value) {
-                        $messageBody = $messageBody . " " . $listName . " count: " . $value . "\n\n";
-                    }
-                } else {
-                    $messageBody = $messageBody . "\n" . "There were no inserts in Aweber subscriber lists in this run of the program." . "\n";
-                }
-                if (!is_null($aweberUpdateSummary->getListUpdateArrayCtr() and count($aweberUpdateSummary->getListUpdateArrayCtr()) > 0)) {
-                    $messageBody = $messageBody . "\n" . "List updates: " . "\n";
-                    foreach ($aweberUpdateSummary->getListUpdateArrayCtr() as $listName => $value) {
-                        $messageBody = $messageBody . " " . $listName . " count: " . $value . "\n\n";
-                    }
-                } else {
-                    $messageBody = $messageBody . "\n" . "There were no updates made to Aweber subscriber lists in this run of the program." . "\n";
-                }
+                $messageBody .= "   " . $listName . " count: " . $value . "\n\n";
+            }
+        } else {
+            $messageBody .= "\n" . "There were no inserts in Aweber subscriber lists in this run of the program." . "\n";
+        }
+
+        if (!is_null($aweberUpdateSummary->getListUpdateArrayCtr() and count($aweberUpdateSummary->getListUpdateArrayCtr()) > 0)) {
+            $messageBody .=  "\n" . "List updates: " . "\n";
+            foreach ($aweberUpdateSummary->getListUpdateArrayCtr() as $listName => $value) {
+                $messageBody .= "   " . $listName . " count: " . $value . "\n\n";
+            }
+        } else {
+            $messageBody .= "\n" . "There were no updates made to Aweber subscriber lists in this run of the program." . "\n";
+        }
 
         return $messageBody;
     }
@@ -460,7 +459,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
     private function sendEmailtoAdmins( $subjectLine, $messageBody) {
           $mailer = $this->getContainer()->get('mailer');
           $emailSubjectLine = $subjectLine;
-          $emailRecipients = array();
+         // $emailRecipients = array();
           if (!is_null($this->adminEmailRecipients)) {
               $emailRecipients = $this->adminEmailRecipients;
               print("\n" . "Sending to recipients obtained from Aweber subscriber list admin_mds_to_aweber ");

@@ -153,7 +153,7 @@ class PennsouthResident
     private $storageLockerNum;
 
     /**
-     * @var integer
+     * @var string
      */
     private $storageClosetFloorNum;
 
@@ -1096,4 +1096,3 @@ class PennsouthResident
         return $this->pennsouthAptApartment;
     }
 }
-

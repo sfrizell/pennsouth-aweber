@@ -51,20 +51,19 @@ class AweberSubscriberListsUpdater
         // Are there resident email addresses in MDS with no match in Aweber? If so insert the subscriber into Aweber
         if (!$this->aweberSubscriberUpdateInsertLists->isAweberSubscriberInsertListEmpty()) {
             $aweberSubscriberWriter = new AweberSubscriberWriter($this->fullPathToAweber, $this->aweberApiInstance);
-            $updateCtr = 0;
+            $insertCtr = 0;
             $batchSize = 30;
             foreach ($this->aweberSubscriberUpdateInsertLists->getAweberSubscriberInsertList() as $aweberSubscriberByListName) {
                 foreach ($aweberSubscriberByListName as $listName => $aweberSubscriber) {
-                    $updateCtr++;
-                    if (($updateCtr % $batchSize) === 0) { // evaluates to zero $batchSize iterations through the cycle...
+                    $insertCtr++;
+                    // should not need the sleep block below since we are slowing down the pace in the SubscriberWriter itself...
+/*                    if (($insertCtr % $batchSize) === 0) { // evaluates to zero $batchSize iterations through the cycle...
                         sleep(65);
-                    }
+                    }*/
                         try {
-                            if ($updateCtr == 1) {
-                                print("\n" . " ----- AweberSubscriberListsUpdater.updateAweberSubscriberLists method -  \$aweberSubscriber->getEmail(): " . $aweberSubscriber->getEmail());
-                            }
+
                             if ($aweberSubscriber->getEmail() == 'steve.frizell@gmail.com') {
-                                print("\n" . "-------   AweberSubscriberListsUpdater - found steve.frizell email address for update   ----------");
+                                print("\n" . "-------   AweberSubscriberListsUpdater - found steve.frizell email address for insert   ----------");
                                 print("\n" . "listName: " . $listName);
                                 //print_r($aweberSubscriber);
                                 // insert the AweberSubscriber in the subscriber list...
@@ -87,15 +86,24 @@ class AweberSubscriberListsUpdater
         // If so, update Aweber subscriber
         if (!$this->aweberSubscriberUpdateInsertLists->isAweberSubscriberUpdateListEmpty()) {
             $aweberSubscriberWriter = new AweberSubscriberWriter($this->fullPathToAweber, $this->aweberApiInstance);
-            $insertCtr = 0;
+            $updateCtr = 0;
             $batchSize = 30;
             foreach ($this->aweberSubscriberUpdateInsertLists->getAweberSubscriberUpdateList() as $aweberSubscriberByListName ) {
                 foreach ( $aweberSubscriberByListName as $listName => $aweberSubscriber) {
-                    $insertCtr++;
-                    if (($insertCtr % $batchSize) === 0) {
+                    $updateCtr++;
+                    // the block below to sleep should not be necessary as it is in the updateAweberSubscriber method...
+   /*                 if (($updateCtr % $batchSize) === 0) {
                         sleep(60);
-                    }
+                    }*/
                     try {
+                        // todo : remove the following after testing...
+                        if ($aweberSubscriber->getEmail() == 'steve.frizell@gmail.com') {
+                           print("\n" . "-------   AweberSubscriberListsUpdater - found steve.frizell email address for update   ----------");
+                           print("\n" . "listName: " . $listName);
+                           //print_r($aweberSubscriber);
+                           // insert the AweberSubscriber in the subscriber list...
+                           $aweberSubscriberWriter->updateAweberSubscriber($listName, $aweberSubscriber);
+                       }
                         // update the AweberSubscriber...
                         // todo : uncomment the following after testing...
                         // $aweberSubscriberWriter->updateAweberSubscriber( $listName, $aweberSubscriber);
