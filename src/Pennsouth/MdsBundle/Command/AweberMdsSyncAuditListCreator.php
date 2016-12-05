@@ -1,6 +1,6 @@
 <?php
 /**
- * ParkingLotListCreator.php
+ * AweberMdsSyncAuditListCreator.php
  * User: sfrizell
  * Date: 11/27/16
  *  Function:
@@ -9,15 +9,128 @@
 namespace Pennsouth\MdsBundle\Command;
 
 use Doctrine\ORM\EntityManager;
-use Pennsouth\MdsBundle\Entity\PennsouthResident;
 use PHPExcel_Style_Fill;
+use PHPExcel_Style_Color;
+use PHPExcel_Cell;
+use Liuggio\ExcelBundle\Factory;
+use PHPExcel_CachedObjectStorageFactory;
+use PHPExcel_Settings;
+use Doctrine\ORM\Query;
 
-class ParkingLotListCreator
+class AweberMdsSyncAuditListCreator
 {
 
-    const PARKING_LOT_LIST_FILE_NAME = 'parking_lot_spaces.xlsx';
-    const LIST_AWEBER_UPDATES_FILE_NAME = 'aweber_updates.xlsx';
-    const LIST_AWEBERS_SUBS_WITH_NO_MATCH_IN_MDS_FILE_NAME = 'aweber_no_matches_in_mds.xlsx';
+    const LIST_AWEBER_UPDATES_FILE_NAME                     = 'aweber_updates.xlsx';
+    const LIST_AWEBERUPDATES_FILE_NAME_BASE                 = 'aweber_updates';
+    const EXCEL_FILENAME_SUFFIX                             = '.xlsx';
+    const LIST_AWEBERS_SUBS_WITH_NO_MATCH_IN_MDS_FILE_NAME  = 'aweber_no_matches_in_mds.xlsx';
+    const LIST_AWEBER_UPDATES_BATCH_SIZE = 2000;
+
+    const AWEBER_UPDATES_LIST_HEADER_ARRAY = array(
+            'Aweber Subscriber List',
+            'Update Action',
+            'MDS Pennsouth Building',
+            'MDS Floor Number',
+            'MDS Apt Line',
+            'MDS Resident First Name',
+            'MDS Resident Last Name',
+            'Aweber Builidng',
+            'Aweber Floor Number',
+            'Aweber Apt Line',
+            'Aweber Subscriber Name',
+            'Subscriber Email Address',
+            'Action Reason',
+            'Aweber Subscriber Status',
+            'Aweber Subscribed At',
+            'Aweber Unsubscribed At',
+            'Aweber Subscription Method',
+            'MDS Toddler Rm Member',
+            'MDS Youth Rm Member',
+            'MDS Ceramics Member',
+            'MDS Woodworking Member',
+            'MDS Gym Member',
+            'MDS Garden Member',
+            'MDS Parking Lot Location',
+            'MDS Vehicle Reg Exp Days Left',
+            'MDS Homeowner Ins Exp Days Left',
+            'MDS Storage Lkr Cl Building',
+            'MDS Storage Lkr Num',
+            'MDS Storage Lkr Cl Fl Num',
+            'MDS Is Dog In Apt',
+            'MDS Bike Rack Bldg',
+            'MDS Bike Rack Location',
+            'MDS Resident Category',
+            'Aweber Toddler Rm Member',
+            'Aweber Youth Rm Member',
+            'Aweber Ceramics Member',
+            'Aweber Woodworking Member',
+            'Aweber Gym Member',
+            'Aweber Garden Member',
+            'Aweber Parking Lot Location',
+            'Aweber Vehicle Reg Exp Days Left',
+            'Aweber Homeowner Ins Exp Days Left',
+            'Aweber Storage Lkr Cl Building',
+            'Aweber Storage Lkr Num',
+            'Aweber Storage Lkr Cl Fl Num',
+            'Aweber Is Dog In Apt',
+            'Aweber Bike Rack Bldg',
+            'Aweber Bike Rack Location',
+            'Aweber Resident Category',
+            'Last Changed Date'
+    );
+
+    const  AWEBER_UPDATES_LIST_AWEBER_MDS_SYNC_AUDIT_COL_NAMES = array(
+                        'aweberSubscriberListName',
+                        'updateAction',
+                        'mdsBuilding',
+                        'mdsFloorNumber',
+                        'mdsAptLine',
+                        'mdsResidentFirstName',
+                        'mdsResidentLastName',
+                        'aweberBuilding',
+                        'aweberFloorNumber',
+                        'aweberAptLine',
+                        'aweberSubscriberName',
+                        'subscriberEmailAddress',
+                        'actionReason',
+                        'aweberSubscriberStatus',
+                        'aweberSubscribedAt',
+                        'aweberUnsubscribedAt',
+                        'aweberSubscriptionMethod',
+                        'mdsToddlerRmMember',
+                        'mdsYouthRmMember',
+                        'mdsCeramicsMember',
+                        'mdsWoodworkingMember',
+                        'mdsGymMember',
+                        'mdsGardenMember',
+                        'mdsParkingLotLocation',
+                        'mdsVehicleRegExpDaysLeft',
+                        'mdsHomeownerInsExpDaysLeft',
+                        'mdsStorageLkrClBldg',
+                        'mdsStorageLkrNum',
+                        'mdsStorageClFloorNum',
+                        'mdsIsDogInApt',
+                        'mdsBikeRackBldg',
+                        'mdsBikeRackLocation',
+                        'mdsResidentCategory',
+                        'aweberToddlerRmMember',
+                        'aweberYouthRmMember',
+                        'aweberCeramicsMember',
+                        'aweberWoodworkingMember',
+                        'aweberGymMember',
+                        'aweberGardenMember',
+                        'aweberParkingLotLocation',
+                        'aweberVehicleRegExpDaysLeft',
+                        'aweberHomeownerInsExpDaysLeft',
+                        'aweberStorageLkrClBldg',
+                        'aweberStorageLkrNum',
+                        'aweberStorageClFloorNum',
+                        'aweberIsDogInApt',
+                        'aweberBikeRackBldg',
+                        'aweberBikeRackLocation',
+                        'aweberResidentCategory',
+                        'lastChangedDate'
+                    );
 
     private $entityManager;
     private $phpExcel;
@@ -35,195 +148,343 @@ class ParkingLotListCreator
         return $this->entityManager;
     }
 
+
     /**
-     * Run SQL query against the pennsouth_db.pennsouth_resident table to obtain a list of all distinct apartments
-     *   that have assigned Pennsouth parking lot spaces. Obtain the list in order by decal_num. Write
-     *   the list to an excel spreadsheet, identifying any gaps in the sequence of assigned values for decal_num.
-     *   These gaps identify unfilled parking spaces.
-     *   Write the spreadsheet to the /app_output directory under the project root directory.
-     * See: http://stackoverflow.com/questions/39186017/creating-excel-file-from-array-using-php-and-symfony
-     *   also: http://ourcodeworld.com/articles/read/50/how-to-create-a-excel-file-with-php-in-symfony-2-3
-     * For usage examples of Font and Fill, see the comments in the code of PHPExcel:
-     *    vendor/phpoffice/phpexcel/Classes/PHPExcel/Style/Font
-     *    vendor/phpoffice/phpexcel/Classes/PHPExcel/Style/Fill
+     * Run SQL query against the pennsouth_db.aweber_mds_sync_audit table to obtain a list of all inserts and updates
+     *  of Aweber subscriber lists from MDS input.  Write the list to excel spreadsheet(s). Because of memory issues,
+     *   if the number of rows written exceeds the limit defined in the class constant self::LIST_AWEBER_UPDATES_BATCH_SIZE
+     *    then a second spreadsheet will be generated for each set of the defined limit.
+      *   Write the spreadsheet to the /app_output directory under the project root directory.
+      * See: http://stackoverflow.com/questions/39186017/creating-excel-file-from-array-using-php-and-symfony
+      *   also: http://ourcodeworld.com/articles/read/50/how-to-create-a-excel-file-with-php-in-symfony-2-3
+      * For usage examples of Font and Fill, see the comments in the code of PHPExcel:
+      *    vendor/phpoffice/phpexcel/Classes/PHPExcel/Style/Font
+      *    vendor/phpoffice/phpexcel/Classes/PHPExcel/Style/Fill
+     *  Note: The technique of iterating over the result set and detaching each row is to help minimize memory usage.
+     *   See Doctrine documentation of batch processing: See section 13.4 of the following page:
+     *      http://doctrine-orm.readthedocs.io/projects/doctrine-orm/en/latest/reference/batch-processing.html
+     * @return bool
+     * @throws \Exception
      */
     public function generateAweberUpdatesList() {
 
-        $residentsWithParkingSpaces = $this->getResidentsWithParkingSpaces();
+        try {
+            $query = $this->getEntityManager()->createQuery(
+                'Select msa
+                 from PennsouthMdsBundle:AweberMdsSyncAudit msa
+                where msa.updateAction is not NULL
+                order by msa.updateAction, msa.mdsBuilding, msa.mdsFloorNumber, msa.mdsAptLine'
+            );
+
+
+            $iterableResult = $query->iterate();
+
+            $phpExcelObject = $this->getPhpExcelObjectAndSetHeadings();
+
+            $colLimit = count(self::AWEBER_UPDATES_LIST_AWEBER_MDS_SYNC_AUDIT_COL_NAMES);
+            $phpExcelObject->setActiveSheetIndex(0);
+            $rowCtr = 0;
+            $fileWriteCtr = 0;
+            foreach ($iterableResult as $mdsAweberSyncAuditRow) {
+
+                    $mdsAweberSyncAuditRowAsArray = get_object_vars ( $mdsAweberSyncAuditRow[0] );
+
+
+                         if (!is_null($phpExcelObject) and $phpExcelObject instanceof \PHPExcel) {
+
+
+                             $rowCtr++;
+
+                             for ($i = 0; $i < $colLimit; $i++) {
+                                 $currentLetter = PHPExcel_Cell::stringFromColumnIndex($i);
+                                 $cellId = $currentLetter . $rowCtr;
+
+                                     $phpExcelObject->getActiveSheet()
+                                         ->setCellValue($cellId, $mdsAweberSyncAuditRowAsArray[self::AWEBER_UPDATES_LIST_AWEBER_MDS_SYNC_AUDIT_COL_NAMES[$i]]);
+
+                             }
+
+
+                             $modulo = $rowCtr % self::LIST_AWEBER_UPDATES_BATCH_SIZE;
+                             // $rowCtr > 2000
+                             if ($modulo == 0) {
+                                 $fileWriteCtr++;
+                                 print("\n  \$modulo == 0 \n");
+                                 $phpExcelObject->getActiveSheet()->setTitle('MDS->Aweber Updates Inserts');
+                                // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+                                $phpExcelObject->setActiveSheetIndex(0);
+
+                                // create the writer
+                                $writer = $this->phpExcel->createWriter($phpExcelObject, 'Excel2007');
+                                // The save method is documented in the official PHPExcel library
+                                $writer->save($this->appOutputDir . '/' . self::LIST_AWEBERUPDATES_FILE_NAME_BASE . $fileWriteCtr . self::EXCEL_FILENAME_SUFFIX);
+
+                                $phpExcelObject = null;
+
+
+                                $phpExcelObject = $this->getPhpExcelObjectAndSetHeadings();
+                                $phpExcelObject->setActiveSheetIndex(0);
+                                $rowCtr = 1;
+
+                                 }
+
+
+                            // return TRUE;
+                         }
+
+                    //  return FALSE;
+
+                    $this->getEntityManager()->detach($mdsAweberSyncAuditRow[0]);
+
+            }
+
+            $phpExcelObject->getActiveSheet()->setTitle('MDS->Aweber Updates Inserts');
+            // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+            $phpExcelObject->setActiveSheetIndex(0);
+
+            // create the writer
+            $writer = $this->phpExcel->createWriter($phpExcelObject, 'Excel2007');
+            // The save method is documented in the official PHPExcel library
+            $fileWriteCtr++;
+            $writer->save($this->appOutputDir . '/' . self::LIST_AWEBERUPDATES_FILE_NAME_BASE . $fileWriteCtr . self::EXCEL_FILENAME_SUFFIX);
+            // $writer->save($this->appOutputDir . '/' . self::LIST_AWEBER_UPDATES_FILE_NAME);
+            return TRUE;
+
+        }
+        catch (\Exception $exception) {
+            print("\n" . "Fatal Exception occurred in AweberMdsSyncAuditListCreator->generateAweberUpdateListsWithDetachedQueryResults()! ");
+            print ("\n Exception->getMessage() : " . $exception->getMessage());
+            print "Type: " . $exception->getCode(). "\n";
+            print("\n" . "Exiting from program.");
+            throw $exception;
+        }
+    }
+
+
+    private function getPhpExcelObjectAndSetHeadings() {
 
         $phpExcelObject = $this->phpExcel->createPHPExcelObject();
 
-        $phpExcelObject->getProperties()->setCreator("batch")
-            ->setLastModifiedBy("Batch Process")
-            ->setTitle("Office 2005 XLSX Pennsouth Aweber Updates from MDS List Document")
-            ->setSubject("Office 2005 XLSX Document")
-            ->setDescription("List of updates to Pennsouth Aweber Subscriber Lists from MDS data. Both inserts and updates of subscribers.")
-            ->setKeywords("office 2005 openxml php")
-            ->setCategory("List Management Reports");
-        $phpExcelObject->setActiveSheetIndex(0)
-            ->setCellValue('A1', 'Building')
-            ->setCellValue('B1', 'Floor Number')
-            ->setCellValue('C1', 'Apt Line')
-            ->setCellValue('D1', 'Parking Lot Location')
-            ->setCellValue('E1', 'Decal Number')
-            ->setCellValue('F1', 'Gap');
 
-        // set font of Header row to bold
-        $phpExcelObject->getActiveSheet()
-            ->getStyle('A1')->getFont()->applyFromArray(
-                array(
-                    'bold'  => TRUE,
-                    'size'  => 12
-                )
-            );
-        $phpExcelObject->getActiveSheet()
-            ->getStyle('B1')->getFont()->applyFromArray(
-                array(
-                    'bold'  => TRUE,
-                    'size'  => 12
-                )
-            );
-        $phpExcelObject->getActiveSheet()
-            ->getStyle('C1')->getFont()->applyFromArray(
-                array(
-                    'bold'  => TRUE,
-                    'size'  => 12
-                )
-            );
-        $phpExcelObject->getActiveSheet()
-            ->getStyle('D1')->getFont()->applyFromArray(
-                array(
-                    'bold'  => TRUE,
-                    'size'  => 12
-                )
-            );
-        $phpExcelObject->getActiveSheet()
-            ->getStyle('E1')->getFont()->applyFromArray(
-                array(
-                    'bold'  => TRUE,
-                    'size'  => 12
-                )
-            );
-        $phpExcelObject->getActiveSheet()
-            ->getStyle('F1')->getFont()->applyFromArray(
-                array(
-                    'bold'  => TRUE,
-                    'size'  => 12
-                )
-            );
 
-        // set fill of Header row to light background color - #EAE9DE
-               $phpExcelObject->getActiveSheet()
-                   ->getStyle('A1')->getFill()->applyFromArray(
-                       array(
-                           'type'	   => PHPExcel_Style_Fill::FILL_SOLID,
-                           'color'       => array(
-                               'rgb' => 'EAE9DE'
-                           )
-                       )
-                   );
-               $phpExcelObject->getActiveSheet()
-                   ->getStyle('B1')->getFill()->applyFromArray(
-                       array(
-                           'type'	   => PHPExcel_Style_Fill::FILL_SOLID,
-                           'color'       => array(
-                               'rgb' => 'EAE9DE'
-                           )
-                       )
-                   );
-               $phpExcelObject->getActiveSheet()
-                   ->getStyle('C1')->getFill()->applyFromArray(
-                       array(
-                           'type'	   => PHPExcel_Style_Fill::FILL_SOLID,
-                           'color'       => array(
-                               'rgb' => 'EAE9DE'
-                           )
-                       )
-                   );
-               $phpExcelObject->getActiveSheet()
-                   ->getStyle('D1')->getFill()->applyFromArray(
-                       array(
-                           'type'	   => PHPExcel_Style_Fill::FILL_SOLID,
-                           'color'       => array(
-                               'rgb' => 'EAE9DE'
-                           )
-                       )
-                   );
-               $phpExcelObject->getActiveSheet()
-                   ->getStyle('E1')->getFill()->applyFromArray(
-                       array(
-                           'type'	   => PHPExcel_Style_Fill::FILL_SOLID,
-                           'color'       => array(
-                               'rgb' => 'EAE9DE'
-                           )
-                       )
-                   );
-               $phpExcelObject->getActiveSheet()
-                   ->getStyle('F1')->getFill()->applyFromArray(
-                       array(
-                           'type'	   => PHPExcel_Style_Fill::FILL_SOLID,
-                           'color'       => array(
-                               'rgb' => 'EAE9DE'
-                           )
-                       )
-                   );
+       if ($phpExcelObject instanceof \PHPExcel) {
 
-        $prevDecalNum = null;
-        $rowCtr = 1;
-        foreach ( $residentsWithParkingSpaces as $resident ) {
-            $rowCtr++;
-            $gapMsg = "";
-            if (!is_null($prevDecalNum) and !($resident['decalNum'] == 700)) {
-                $gapCalc = $resident['decalNum'] - $prevDecalNum;
-                if ($gapCalc > 1 ) {
-                    $gapMsg = "Gap";
-                }
-            }
-            $a = 'A' . $rowCtr;
-            $b = 'B' . $rowCtr;
-            $c = 'C' . $rowCtr;
-            $d = 'D' . $rowCtr;
-            $e = 'E' . $rowCtr;
-            $f = 'F' . $rowCtr;
-            $phpExcelObject->setActiveSheetIndex(0)
-                ->setCellValue($a, $resident['building'] )
-                ->setCellValue($b, $resident['floorNumber'])
-                ->setCellValue($c, $resident['aptLine'])
-                ->setCellValue($d, $resident['parkingLotLocation'])
-                ->setCellValue($e, $resident['decalNum'])
-                ->setCellValue($f, $gapMsg);
+           $fileWriteCtr = 0;
 
-            $prevDecalNum = $resident['decalNum'];
+           $phpExcelObject->getProperties()->setCreator("batch")
+               ->setLastModifiedBy("Batch Process")
+               ->setTitle("Office 2005 XLSX Pennsouth Aweber Updates from MDS List Document")
+               ->setSubject("Office 2005 XLSX Document")
+               ->setDescription("List of updates to Pennsouth Aweber Subscriber Lists from MDS data. Both inserts and updates of subscribers.")
+               ->setKeywords("office 2005 openxml php")
+               ->setCategory("List Management Reports");
 
-        }
 
-        $phpExcelObject->getActiveSheet()->setTitle('Parking Lot List');
-        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
-        $phpExcelObject->setActiveSheetIndex(0);
+         //  $phpExcelStyleColor = new PHPExcel_Style_Color('EAE9DE');
 
-         // create the writer
-         $writer = $this->phpExcel->createWriter($phpExcelObject, 'Excel2007');
-         // The save method is documented in the official PHPExcel library
-         $writer->save($this->appOutputDir . '/' . self::PARKING_LOT_LIST_FILE_NAME);
+           $totalCols = count(self::AWEBER_UPDATES_LIST_HEADER_ARRAY)+1;
 
-        return TRUE;
+           $phpExcelSheet = $phpExcelObject->getActiveSheet();
+           $phpExcelSheet->fromArray(self::AWEBER_UPDATES_LIST_HEADER_ARRAY, NULL);
+           $first_letter = PHPExcel_Cell::stringFromColumnIndex(0);
+           $last_letter = PHPExcel_Cell::stringFromColumnIndex($totalCols);
+           $header_range = "{$first_letter}1:{$last_letter}1";
+           $phpExcelSheet->getStyle($header_range)->getFont()
+               ->setBold(true)
+               ->setSize(12)
+               ;
+
+           $phpExcelSheet->getStyle($header_range)->getFill()->applyFromArray(
+                                   array(
+                                       'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                                       'color' => array(
+                                           'rgb' => 'EAE9DE'
+                                       )
+                                   )
+                               );
+
+
+          // print("\n setting autosize=true \n");
+
+               foreach (range(0, $totalCols) as $col) {
+                   $phpExcelObject->getActiveSheet()->getColumnDimensionByColumn($col)->setAutoSize(true);
+               }
+
+
+           return $phpExcelObject;
+       }
+
+        return NULL;
 
     }
 
-    private function getResidentsWithParkingSpaces() {
+    /**
+       *
+     *     Executing this method with more than 2500 rows of data resulted in a fatal memory error: Fatal error: Allowed memory size of 134217728 bytes exhausted
+     *     Would like to use the array $colNamesByHeaderNameKeys if possible... The two const arrays are not well designed because they are not directly associated
+     *     with each other but they are in fact co-dependent.
+       */
+      public function generateAweberUpdatesListFailedWithMemoryIssues()
+      {
+
+          $colNamesByHeaderNameKeys = array (
+                                 'Aweber Subscriber List' => 			'aweberSubscriberListName',
+                                 'Update Action' => 					'updateAction',
+                                 'MDS Pennsouth Building' =>			'mdsBuilding',
+                                 'MDS Floor Number' => 					'mdsFloorNumber',
+                                 'MDS Apt Line' => 						'mdsAptLine',
+                                 'MDS Resident First Name' =>			'mdsResidentFirstName',
+                                 'MDS Resident Last Name' =>				'mdsResidentLastName',
+                                 'Aweber Builidng' => 					'aweberBuilding',
+                                 'Aweber Floor Number' => 				'aweberFloorNumber',
+                                 'Aweber Apt Line' => 					'aweberAptLine',
+                                 'Aweber Subscriber Name' =>				'aweberSubscriberName',
+                                 'Subscriber Email Address' => 			'subscriberEmailAddress',
+                                 'Action Reason' => 						'actionReason',
+                                 'Aweber Subscriber Status' => 			'aweberSubscriberStatus',
+                                 'Aweber Subscribed At' => 				'aweberSubscribedAt',
+                                 'Aweber Unsubscribed At' =>				'aweberUnsubscribedAt',
+                                 'Aweber Subscription Method' => 		'aweberSubscriptionMethod',
+                                 'MDS Toddler Rm Member' => 				'mdsToddlerRmMember',
+                                 'MDS Youth Rm Member' => 				'mdsYouthRmMember',
+                                 'MDS Ceramics Member' => 				'mdsCeramicsMember',
+                                 'MDS Woodworking Member' =>				'mdsWoodworkingMember',
+                                 'MDS Gym Member' => 					'mdsGymMember',
+                                 'MDS Garden Member' => 					'mdsGardenMember',
+                                 'MDS Parking Lot Location' =>  			'mdsParkingLotLocation',
+                                 'MDS Vehicle Reg Exp Days Left' => 		'mdsVehicleRegExpDaysLeft',
+                                 'MDS Homeowner Ins Exp Days Left' =>	'mdsHomeownerInsExpDaysLeft',
+                                 'MDS Storage Lkr Cl Building' =>		'mdsStorageLkrClBldg',
+                                 'MDS Storage Lkr Num' => 				'mdsStorageLkrNum',
+                                 'MDS Storage Lkr Cl Fl Num' =>			'mdsStorageClFloorNum',
+                                 'MDS Is Dog In Apt' => 					'mdsIsDogInApt',
+                                 'MDS Bike Rack Bldg' => 				'mdsBikeRackBldg',
+                                 'MDS Bike Rack Location' =>				'mdsBikeRackLocation',
+                                 'MDS Resident Category' => 				'mdsResidentCategory',
+                                 'Aweber Toddler Rm Member' =>			'aweberToddlerRmMember',
+                                 'Aweber Youth Rm Member' =>				'aweberYouthRmMember',
+                                 'Aweber Ceramics Member' =>				'aweberCeramicsMember',
+                                 'Aweber Woodworking Member'  =>			'aweberWoodworkingMember',
+                                 'Aweber Gym Member' => 					'aweberGymMember',
+                                 'Aweber Garden Member' => 				'aweberGardenMember',
+                                 'Aweber Parking Lot Location' =>		'aweberParkingLotLocation',
+                                 'Aweber Vehicle Reg Exp Days Left' =>	'aweberVehicleRegExpDaysLeft',
+                                 'Aweber Homeowner Ins Exp Days Left' => 'aweberHomeownerInsExpDaysLeft',
+                                 'Aweber Storage Lkr Cl Building' =>		'aweberStorageLkrClBldg',
+                                 'Aweber Storage Lkr Num' =>				'aweberStorageLkrNum',
+                                 'Aweber Storage Lkr Cl Fl Num' =>		'aweberStorageClFloorNum',
+                                 'Aweber Is Dog In Apt' => 				'aweberIsDogInApt',
+                                 'Aweber Bike Rack Bldg' => 				'aweberBikeRackBldg',
+                                 'Aweber Bike Rack Location' => 			'aweberBikeRackLocation',
+                                 'Aweber Resident Category'=> 			'aweberResidentCategory',
+                                 'Last Changed Date' =>					'lastChangedDate'
+                         );
+
+          $mdsSyncAuditUpdatesAndInserts = $this->getMdsSyncAuditUpdatesAndInserts();
+
+
+          $phpExcelObject = $this->getPhpExcelObjectAndSetHeadings();
+
+          //    $phpExcelObject = $this->phpExcel->createPHPExcelObject();
+
+
+
+              if (!is_null($phpExcelObject) and $phpExcelObject instanceof \PHPExcel) {
+
+                  $fileWriteCtr = 0;
+
+
+                 // print("\n After setting autosize=true \n");
+
+                  $rowCtr = 1;
+
+                  $colLimit = count(self::AWEBER_UPDATES_LIST_AWEBER_MDS_SYNC_AUDIT_COL_NAMES);
+                  $phpExcelObject->setActiveSheetIndex(0);
+                  foreach ($mdsSyncAuditUpdatesAndInserts as $auditUpdateOrInsertRow) {
+                      $rowCtr++;
+
+
+                  //    foreach ( $colNamesByHeaderNameKeys as $key => $value ) {
+                  //        print ("\n key: " . $key . " value: " . $value . "\n");
+
+                          for ($i = 0; $i < $colLimit; $i++) {
+                              $currentLetter = PHPExcel_Cell::stringFromColumnIndex($i);
+                              $cellId = $currentLetter . $rowCtr;
+                            //  print ("\$cellId: " . $cellId . "\n");
+                             // if (!$key == 'Last Changed Date') {
+                                  $phpExcelObject->getActiveSheet()
+                                      ->setCellValue($cellId, $auditUpdateOrInsertRow[self::AWEBER_UPDATES_LIST_AWEBER_MDS_SYNC_AUDIT_COL_NAMES[$i]]);
+                             // }
+                          }
+
+                  // }
+
+                      $modulo = $rowCtr % self::LIST_AWEBER_UPDATES_BATCH_SIZE;
+                      // $rowCtr > 2000
+                      if ($modulo == 0) {
+                          $fileWriteCtr++;
+                          $phpExcelObject->getActiveSheet()->setTitle('MDS->Aweber Updates Inserts');
+                         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+                         $phpExcelObject->setActiveSheetIndex(0);
+
+                         // create the writer
+                         $writer = $this->phpExcel->createWriter($phpExcelObject, 'Excel2007');
+                         // The save method is documented in the official PHPExcel library
+                         $writer->save($this->appOutputDir . '/' . self::LIST_AWEBERUPDATES_FILE_NAME_BASE . $fileWriteCtr . self::EXCEL_FILENAME_SUFFIX);
+
+                         $phpExcelObject = $this->getPhpExcelObjectAndSetHeadings();
+                         $phpExcelObject->setActiveSheetIndex(0);
+
+                         // break;
+                      }
+
+
+                  }
+
+                  $phpExcelObject->getActiveSheet()->setTitle('MDS->Aweber Updates Inserts');
+                  // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+                  $phpExcelObject->setActiveSheetIndex(0);
+
+                  // create the writer
+                  $writer = $this->phpExcel->createWriter($phpExcelObject, 'Excel2007');
+                  // The save method is documented in the official PHPExcel library
+                  $fileWriteCtr++;
+                  $writer->save($this->appOutputDir . '/' . self::LIST_AWEBERUPDATES_FILE_NAME_BASE . $fileWriteCtr . self::EXCEL_FILENAME_SUFFIX);
+                 // $writer->save($this->appOutputDir . '/' . self::LIST_AWEBER_UPDATES_FILE_NAME);
+
+
+                  return TRUE;
+              }
+
+          return FALSE;
+
+      }
+
+
+    /**
+     *  This function is only invoked by the function generateAweberUpdatesListFailedWithMemoryIssues(), which is not used.
+     *  todo - delete the two functions:
+     *    -  generateAweberUpdatesListFailedWithMemoryIssues()
+     *    -  getMdsSyncAuditUpdatesAndInserts()
+     * @return array
+     * @throws \Exception
+     */
+    private function getMdsSyncAuditUpdatesAndInserts() {
 
         try {
             $query = $this->getEntityManager()->createQuery(
-                'Select DISTINCT pr.building, pr.floorNumber, pr.aptLine,
-                  pr.parkingLotLocation, pr.decalNum
-                 from PennsouthMdsBundle:PennsouthResident pr
-                where pr.decalNum is not NULL
-                order by pr.decalNum'
+                'Select msa
+                 from PennsouthMdsBundle:AweberMdsSyncAudit msa
+                where msa.updateAction is not NULL
+                order by msa.updateAction, msa.mdsBuilding, msa.mdsFloorNumber, msa.mdsAptLine'
             );
 
-            $residentsWithParkingSpaces = $query->getResult();
+          //  $mdsSyncAuditUpdatesAndInserts = $query->getResult();
+            $mdsSyncAuditUpdatesAndInserts = $query->getArrayResult();
 
-            return $residentsWithParkingSpaces;
+
+            return $mdsSyncAuditUpdatesAndInserts;
+
         }
         catch (\Exception $exception) {
             print("\n" . "Fatal Exception occurred in ParkingLotListCreator->getResidentsWithParkingSpaces! ");

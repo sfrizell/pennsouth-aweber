@@ -131,7 +131,7 @@ class MdsToAweberComparator
 
         $aweberUpdateRequired = false;
         if ($updateOrInsert == self::UPDATE) {
-            $aweberSubscriberUpdated = $this->updateAweberSubscriberActionReasonAndPrevCustomFieldsIfNeeded($pennsouthResident, $aweberSubscriber);
+            $aweberSubscriberUpdated = $this->updateAweberSubscriberActionReasonAndPrevCustomFields($pennsouthResident, $aweberSubscriber);
             if ( !is_null($aweberSubscriberUpdated) and ($aweberSubscriberUpdated instanceof AweberSubscriber) ) {
                 $aweberUpdateRequired = TRUE;
                 $aweberSubscriber = $aweberSubscriberUpdated;
@@ -201,7 +201,7 @@ class MdsToAweberComparator
      *  return: $aweberSubscriber with $actionReason property updated if there are any data differences in name or custom fields between Aweber and MDS Export file data; otherwise return null.
      *
      */
-    private function updateAweberSubscriberActionReasonAndPrevCustomFieldsIfNeeded(PennsouthResident $pennsouthResident, AweberSubscriber $aweberSubscriber) {
+    private function updateAweberSubscriberActionReasonAndPrevCustomFields(PennsouthResident $pennsouthResident, AweberSubscriber $aweberSubscriber) {
 
         $actionReason = '';
         $separator = ',';
@@ -211,70 +211,80 @@ class MdsToAweberComparator
             trim($aweberSubscriber->getPennSouthBuilding(),$singleQuotes)     !== trim($pennsouthResident->getBuilding()) or
             trim($aweberSubscriber->getFloorNumber(),$singleQuotes)           !== trim($pennsouthResident->getFloorNumber()) ) {
             $actionReason .= self::UPDATE_APT . $separator;
-            $aweberSubscriber->setPrevApartment( trim( $aweberSubscriber->getApartment(), $singleQuotes) );
-            $aweberSubscriber->setPrevPennSouthBuilding(trim($aweberSubscriber->getPennSouthBuilding(),$singleQuotes));
-            $aweberSubscriber->setPrevFloorNumber(trim($aweberSubscriber->getFloorNumber(), $singleQuotes) );
         }
         if ( trim( $aweberSubscriber->getCeramicsMember(),$singleQuotes )         !== trim($pennsouthResident->getCeramicsMember()) ) {
             $actionReason .= self::UPATE_CERAMICS_CLUB . $separator;
-            $aweberSubscriber->setPrevCeramicsMember( trim( $aweberSubscriber->getCeramicsMember(), $singleQuotes ));
         }
         if ( trim($aweberSubscriber->getGardenMember(),$singleQuotes )           !== trim($pennsouthResident->getGardenMember())  ) {
             $actionReason .= self::UPDATE_GARDEN_MEMBER . $separator;
-            $aweberSubscriber->setPrevGardenMember( trim( $aweberSubscriber->getGardenMember() , $singleQuotes ) );
         }
         if ( trim($aweberSubscriber->getGymMember(),$singleQuotes)              !== trim($pennsouthResident->getGymMember())  ) {
             $actionReason .= self::UPDATE_GYM_MEMBER . $separator;
-            $aweberSubscriber->setPrevGymMember( trim( $aweberSubscriber->getGymMember() , $singleQuotes ) );
         }
         if ( trim($aweberSubscriber->getYouthRoomMember(),$singleQuotes)              !== trim($pennsouthResident->getYouthRoomMember())  ) {
             $actionReason .= self::UPDATE_YOUTH_MEMBER . $separator;
-            $aweberSubscriber->setPrevYouthRoomMember( trim( $aweberSubscriber->getYouthRoomMember() , $singleQuotes ) );
         }
         if ( trim($aweberSubscriber->getWoodworkingMember(),$singleQuotes)              !== trim($pennsouthResident->getWoodworkingMember())  ) {
             $actionReason .= self::UPDATE_WOODWORKING_MEMBER . $separator;
-            $aweberSubscriber->setPrevWoodworkingMember( trim( $aweberSubscriber->getWoodworkingMember() , $singleQuotes ) );
         }
         if ( trim($aweberSubscriber->getToddlerRoomMember(),$singleQuotes)       !== trim($pennsouthResident->getToddlerRoomMember()) ) {
             $actionReason .= self::UPDATE_TODDLER_ROOM . $separator;
-            $aweberSubscriber->setPrevToddlerRoomMember( trim( $aweberSubscriber->getToddlerRoomMember() , $singleQuotes ) );
         }
+        // Since the following values will be changed on every run of the program, we want to skip auditing on these attributes.
+        /*
         if ( trim($aweberSubscriber->getHomeownerInsExpDateLeft(),$singleQuotes) !== trim($pennsouthResident->getHomeownerInsExpCountdown()) ) {
             $actionReason .= self::UPDATE_HOMEOWNERS_INS_EXP_DAYS_LEFT . $separator;
-            $aweberSubscriber->setPrevHomeownerInsExpDateLeft( trim( $aweberSubscriber->getHomeownerInsExpDateLeft() , $singleQuotes ) );
         }
+
+        if ( trim($aweberSubscriber->getVehicleRegExpDaysLeft(),$singleQuotes) !== trim($pennsouthResident->getVehicleRegExpCountdown()) ) {
+            $actionReason .= self::UPDATE_VEHICLE_REG_EXP_DAYS_LEFT . $separator;
+        }
+        */
         if ( trim($aweberSubscriber->getIsDogInApt(),$singleQuotes )             !== trim($pennsouthResident->getIsDogInApt()) ) {
             $actionReason .= self::UPDATE_IS_DOG_PRESENT . $separator;
-            $aweberSubscriber->setIsDogInApt( trim( $aweberSubscriber->getIsDogInApt() , $singleQuotes ) );
         }
         if ( trim($aweberSubscriber->getStorageLockerClosetBldg(),$singleQuotes )  !== trim($pennsouthResident->getStorageLockerClosetBldgNum()) ) {
             $actionReason .= self::UPDATE_STORAGE_LOCKER_CLOSET_BLDG . $separator;
-            $aweberSubscriber->setPrevStorageLockerClosetBldg( trim( $aweberSubscriber->getStorageLockerClosetBldg() , $singleQuotes ) );
         }
         if ( trim($aweberSubscriber->getStorageLockerNum() ,$singleQuotes )       !== trim($pennsouthResident->getStorageLockerNum()) ) {
             $actionReason .= self::UPDATE_STORAGE_LOCKER_NUM . $separator;
-            $aweberSubscriber->setPrevStorageLockerNum( trim( $aweberSubscriber->getStorageLockerNum() , $singleQuotes ) );
         }
         if ( trim($aweberSubscriber->getStorageClosetFloorNum() ,$singleQuotes )   !== trim($pennsouthResident->getStorageClosetFloorNum()) ) {
             $actionReason .= self::UPDATE_STORAGE_CLOSET_FLOOR_NUM . $separator;
-            $aweberSubscriber->setPrevStorageClosetFloorNum( trim( $aweberSubscriber->getStorageClosetFloorNum() , $singleQuotes ) );
         }
         if ( trim($aweberSubscriber->getBikeRackBldg() ,$singleQuotes )            !== trim($pennsouthResident->getBikeRackBldg()) ) {
             $actionReason .= self::UPDATE_BIKE_RACK_BLDG . $separator;
-            $aweberSubscriber->setPrevBikeRackBldg( trim( $aweberSubscriber->getBikeRackBldg() , $singleQuotes ) );
         }
         if ( trim($aweberSubscriber->getBikeRackRoom() ,$singleQuotes  )          !== trim($pennsouthResident->getBikeRackRoom()) ) {
             $actionReason .= self::UPDATE_BIKE_RACK_ROOM . $separator;
-            $aweberSubscriber->setPrevBikeRackRoom( trim( $aweberSubscriber->getBikeRackRoom() , $singleQuotes ) );
         }
         if ( trim($aweberSubscriber->getParkingLotLocation() ,$singleQuotes )      !== trim($pennsouthResident->getParkingLotLocation()) ) {
             $actionReason .= self::UPDATE_PARKING_LOT_LOCATION . $separator;
-            $aweberSubscriber->setPrevParkingLotLocation( trim( $aweberSubscriber->getParkingLotLocation() , $singleQuotes ) );
         }
         if ( trim($aweberSubscriber->getResidentCategory() ,$singleQuotes )       !== trim($pennsouthResident->getMdsResidentCategory()) ) {
             $actionReason .= self::UPDATE_RESIDENT_CATEGORY . $separator;
-            $aweberSubscriber->setPrevResidentCategory( trim( $aweberSubscriber->getResidentCategory() , $singleQuotes ) );
         }
+
+
+        $aweberSubscriber->setPrevApartment( trim( $aweberSubscriber->getApartment(), $singleQuotes) );
+        $aweberSubscriber->setPrevPennSouthBuilding(trim($aweberSubscriber->getPennSouthBuilding(),$singleQuotes));
+        $aweberSubscriber->setPrevFloorNumber(trim($aweberSubscriber->getFloorNumber(), $singleQuotes) );
+        $aweberSubscriber->setPrevCeramicsMember( trim( $aweberSubscriber->getCeramicsMember(), $singleQuotes ));
+        $aweberSubscriber->setPrevGardenMember( trim( $aweberSubscriber->getGardenMember() , $singleQuotes ) );
+        $aweberSubscriber->setPrevGymMember( trim( $aweberSubscriber->getGymMember() , $singleQuotes ) );
+        $aweberSubscriber->setPrevYouthRoomMember( trim( $aweberSubscriber->getYouthRoomMember() , $singleQuotes ) );
+        $aweberSubscriber->setPrevWoodworkingMember( trim( $aweberSubscriber->getWoodworkingMember() , $singleQuotes ) );
+        $aweberSubscriber->setPrevToddlerRoomMember( trim( $aweberSubscriber->getToddlerRoomMember() , $singleQuotes ) );
+        $aweberSubscriber->setPrevHomeownerInsExpDateLeft( trim( $aweberSubscriber->getHomeownerInsExpDateLeft() , $singleQuotes ) );
+        $aweberSubscriber->setPrevVehicleRegExpDaysLeft( trim( $aweberSubscriber->getVehicleRegExpDaysLeft() , $singleQuotes ) );
+        $aweberSubscriber->setIsDogInApt( trim( $aweberSubscriber->getIsDogInApt() , $singleQuotes ) );
+        $aweberSubscriber->setPrevStorageLockerClosetBldg( trim( $aweberSubscriber->getStorageLockerClosetBldg() , $singleQuotes ) );
+        $aweberSubscriber->setPrevStorageLockerNum( trim( $aweberSubscriber->getStorageLockerNum() , $singleQuotes ) );
+        $aweberSubscriber->setPrevStorageClosetFloorNum( trim( $aweberSubscriber->getStorageClosetFloorNum() , $singleQuotes ) );
+        $aweberSubscriber->setPrevBikeRackBldg( trim( $aweberSubscriber->getBikeRackBldg() , $singleQuotes ) );
+        $aweberSubscriber->setPrevBikeRackRoom( trim( $aweberSubscriber->getBikeRackRoom() , $singleQuotes ) );
+        $aweberSubscriber->setPrevParkingLotLocation( trim( $aweberSubscriber->getParkingLotLocation() , $singleQuotes ) );
+        $aweberSubscriber->setPrevResidentCategory( trim( $aweberSubscriber->getResidentCategory() , $singleQuotes ) );
 
         $actionReason = trim($actionReason, $separator);
         if (strlen($actionReason) > 0) {
@@ -436,7 +446,10 @@ class MdsToAweberComparator
             $aweberMdsSyncAudit->setAweberCeramicsMember( $aweberSubscriber->getPrevCeramicsMember());
             $aweberMdsSyncAudit->setAweberGardenMember( $aweberSubscriber->getPrevGardenMember() );
             $aweberMdsSyncAudit->setAweberGymMember( $aweberSubscriber->getPrevGymMember() );
-            $aweberMdsSyncAudit->setAweberHomeownerInsExpDaysLeft( is_null($aweberSubscriber->getPrevHomeownerInsExpDateLeft() ? NULL : $aweberSubscriber->getPrevHomeownerInsExpDateLeft() ));
+
+
+            $prevHomeownerInsExpDaysLeft = $aweberSubscriber->getPrevHomeownerInsExpDateLeft();
+            $aweberMdsSyncAudit->setAweberHomeownerInsExpDaysLeft( (isset($prevHomeownerInsExpDaysLeft) and !empty($prevHomeownerInsExpDaysLeft)) ? $prevHomeownerInsExpDaysLeft : NULL );
             $aweberMdsSyncAudit->setAweberIsDogInApt( $aweberSubscriber->getPrevIsDogInApt() );
             $aweberMdsSyncAudit->setAweberParkingLotLocation( $aweberSubscriber->getPrevParkingLotLocation() );
             $aweberMdsSyncAudit->setAweberResidentCategory( $aweberSubscriber->getPrevResidentCategory() );
@@ -446,7 +459,8 @@ class MdsToAweberComparator
             $aweberMdsSyncAudit->setAweberToddlerRmMember( $aweberSubscriber->getPrevToddlerRoomMember() );
             $aweberMdsSyncAudit->setAweberYouthRmMember( $aweberSubscriber->getPrevYouthRoomMember() );
             $aweberMdsSyncAudit->setAweberWoodworkingMember( $aweberSubscriber->getPrevWoodworkingMember() );
-            $aweberMdsSyncAudit->setAweberVehicleRegExpDaysLeft( is_null($aweberSubscriber->getPrevVehicleRegExpDaysLeft() ? NULL : $aweberSubscriber->getPrevVehicleRegExpDaysLeft() ) );
+            $prevVehicleRegExpDaysLeft = $aweberSubscriber->getPrevVehicleRegExpDaysLeft();
+            $aweberMdsSyncAudit->setAweberHomeownerInsExpDaysLeft( (isset($prevVehicleRegExpDaysLeft) and !empty($prevVehicleRegExpDaysLeft)) ? $prevVehicleRegExpDaysLeft : NULL );
             $aweberMdsSyncAudit->setAweberSubscriberStatus($aweberSubscriber->getStatus());
             $aweberMdsSyncAudit->setAweberSubscriberName($aweberSubscriber->getName());
             $aweberMdsSyncAudit->setUpdateAction($updateAction);
@@ -473,7 +487,9 @@ class MdsToAweberComparator
             $aweberMdsSyncAudit->setMdsCeramicsMember( $aweberSubscriber->getCeramicsMember() );
             $aweberMdsSyncAudit->setMdsGardenMember( $aweberSubscriber->getGardenMember() );
             $aweberMdsSyncAudit->setMdsGymMember( $aweberSubscriber->getGymMember() );
-            $aweberMdsSyncAudit->setMdsHomeownerInsExpDaysLeft( is_null( $aweberSubscriber->getHomeownerInsExpDateLeft() ? NULL :  $aweberSubscriber->getHomeownerInsExpDateLeft() ));
+            $homeownerInsExpDaysLeft = $aweberSubscriber->getHomeownerInsExpDateLeft();
+            $aweberMdsSyncAudit->setMdsHomeownerInsExpDaysLeft( (isset($homeownerInsExpDaysLeft) and !empty($homeownerInsExpDaysLeft)) ? $homeownerInsExpDaysLeft : NULL );
+
             $aweberMdsSyncAudit->setMdsIsDogInApt( $aweberSubscriber->getIsDogInApt() );
             $aweberMdsSyncAudit->setMdsParkingLotLocation( $aweberSubscriber->getParkingLotLocation() );
             $aweberMdsSyncAudit->setMdsResidentCategory( $aweberSubscriber->getResidentCategory() );
@@ -483,7 +499,8 @@ class MdsToAweberComparator
             $aweberMdsSyncAudit->setMdsToddlerRmMember( $aweberSubscriber->getToddlerRoomMember() );
             $aweberMdsSyncAudit->setMdsYouthRmMember( $aweberSubscriber->getYouthRoomMember() );
             $aweberMdsSyncAudit->setMdsWoodworkingMember( $aweberSubscriber->getWoodworkingMember() );
-            $aweberMdsSyncAudit->setMdsVehicleRegExpDaysLeft( is_null($aweberSubscriber->getVehicleRegExpDaysLeft() ? NULL : $aweberSubscriber->getVehicleRegExpDaysLeft() ));
+            $vehicleRegExpDaysLeft = $aweberSubscriber->getVehicleRegExpDaysLeft();
+            $aweberMdsSyncAudit->setMdsVehicleRegExpDaysLeft( (isset($vehicleRegExpDaysLeft) and !empty($vehicleRegExpDaysLeft)) ? $vehicleRegExpDaysLeft : NULL );
 
             try {
 

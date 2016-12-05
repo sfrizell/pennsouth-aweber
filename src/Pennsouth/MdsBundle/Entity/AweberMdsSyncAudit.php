@@ -10,252 +10,252 @@ class AweberMdsSyncAudit
     /**
      * @var string
      */
-    private $aweberSubscriberListName;
+    public $aweberSubscriberListName;
 
     /**
      * @var string
      */
-    private $subscriberEmailAddress;
+    public $subscriberEmailAddress;
 
     /**
      * @var string
      */
-    private $updateAction;
+    public $updateAction;
 
     /**
      * @var string
      */
-    private $mdsBuilding;
+    public $mdsBuilding;
 
     /**
      * @var integer
      */
-    private $mdsFloorNumber;
+    public $mdsFloorNumber;
 
     /**
      * @var string
      */
-    private $mdsAptLine;
+    public $mdsAptLine;
 
     /**
      * @var string
      */
-    private $mdsResidentFirstName;
+    public $mdsResidentFirstName;
 
     /**
      * @var string
      */
-    private $mdsResidentLastName;
+    public $mdsResidentLastName;
 
     /**
      * @var string
      */
-    private $aweberBuilding;
+    public $aweberBuilding;
 
     /**
      * @var integer
      */
-    private $aweberFloorNumber;
+    public $aweberFloorNumber;
 
     /**
      * @var string
      */
-    private $aweberAptLine;
+    public $aweberAptLine;
 
     /**
      * @var string
      */
-    private $aweberSubscriberName;
+    public $aweberSubscriberName;
 
     /**
      * @var string
      */
-    private $actionReason;
+    public $actionReason;
 
     /**
      * @var string
      */
-    private $aweberSubscriberStatus;
+    public $aweberSubscriberStatus;
 
     /**
      * @var \DateTime
      */
-    private $aweberSubscribedAt;
+    public $aweberSubscribedAt;
 
     /**
      * @var \DateTime
      */
-    private $aweberUnsubscribedAt;
+    public $aweberUnsubscribedAt;
 
     /**
      * @var string
      */
-    private $aweberSubscriptionMethod;
+    public $aweberSubscriptionMethod;
 
     /**
      * @var string
      */
-    private $mdsToddlerRmMember;
+    public $mdsToddlerRmMember;
 
     /**
      * @var string
      */
-    private $mdsYouthRmMember;
+    public $mdsYouthRmMember;
 
     /**
      * @var string
      */
-    private $mdsCeramicsMember;
+    public $mdsCeramicsMember;
 
     /**
      * @var string
      */
-    private $mdsWoodworkingMember;
+    public $mdsWoodworkingMember;
 
     /**
      * @var string
      */
-    private $mdsGymMember;
+    public $mdsGymMember;
 
     /**
      * @var string
      */
-    private $mdsGardenMember;
+    public $mdsGardenMember;
 
     /**
      * @var string
      */
-    private $mdsParkingLotLocation;
+    public $mdsParkingLotLocation;
 
     /**
      * @var integer
      */
-    private $mdsVehicleRegExpDaysLeft;
+    public $mdsVehicleRegExpDaysLeft;
 
     /**
      * @var integer
      */
-    private $mdsHomeownerInsExpDaysLeft;
+    public $mdsHomeownerInsExpDaysLeft;
 
     /**
      * @var string
      */
-    private $mdsStorageLkrClBldg;
+    public $mdsStorageLkrClBldg;
 
     /**
      * @var string
      */
-    private $mdsStorageLkrNum;
+    public $mdsStorageLkrNum;
 
     /**
      * @var string
      */
-    private $mdsStorageClFloorNum;
+    public $mdsStorageClFloorNum;
 
     /**
      * @var string
      */
-    private $mdsIsDogInApt;
+    public $mdsIsDogInApt;
 
     /**
      * @var string
      */
-    private $mdsBikeRackBldg;
+    public $mdsBikeRackBldg;
 
     /**
      * @var string
      */
-    private $mdsBikeRackLocation;
+    public $mdsBikeRackLocation;
 
     /**
      * @var string
      */
-    private $mdsResidentCategory;
+    public $mdsResidentCategory;
 
     /**
      * @var string
      */
-    private $aweberToddlerRmMember;
+    public $aweberToddlerRmMember;
 
     /**
      * @var string
      */
-    private $aweberYouthRmMember;
+    public $aweberYouthRmMember;
 
     /**
      * @var string
      */
-    private $aweberCeramicsMember;
+    public $aweberCeramicsMember;
 
     /**
      * @var string
      */
-    private $aweberWoodworkingMember;
+    public $aweberWoodworkingMember;
 
     /**
      * @var string
      */
-    private $aweberGymMember;
+    public $aweberGymMember;
 
     /**
      * @var string
      */
-    private $aweberGardenMember;
+    public $aweberGardenMember;
 
     /**
      * @var string
      */
-    private $aweberParkingLotLocation;
+    public $aweberParkingLotLocation;
 
     /**
      * @var integer
      */
-    private $aweberVehicleRegExpDaysLeft;
+    public $aweberVehicleRegExpDaysLeft;
 
     /**
      * @var integer
      */
-    private $aweberHomeownerInsExpDaysLeft;
+    public $aweberHomeownerInsExpDaysLeft;
 
     /**
      * @var string
      */
-    private $aweberStorageLkrClBldg;
+    public $aweberStorageLkrClBldg;
 
     /**
      * @var string
      */
-    private $aweberStorageLkrNum;
+    public $aweberStorageLkrNum;
 
     /**
      * @var string
      */
-    private $aweberStorageClFloorNum;
+    public $aweberStorageClFloorNum;
 
     /**
      * @var string
      */
-    private $aweberIsDogInApt;
+    public $aweberIsDogInApt;
 
     /**
      * @var string
      */
-    private $aweberBikeRackBldg;
+    public $aweberBikeRackBldg;
 
     /**
      * @var string
      */
-    private $aweberBikeRackLocation;
+    public $aweberBikeRackLocation;
 
     /**
      * @var string
      */
-    private $aweberResidentCategory;
+    public $aweberResidentCategory;
 
     /**
      * @var \DateTime
      */
-    private $lastChangedDate;
+    public $lastChangedDate;
 
     /**
      * @var integer

@@ -154,9 +154,6 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         }
 
 
-       // exit(0);
-
-
    //     print ("\n @@@@@@@@@  rootDir trimmed: " .  $rootDir . "\n");
 
         // sfrizell - 10/7/2016 -- following block of code not working get a ContextErrorException running it...
@@ -299,8 +296,9 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                      $phpExcel = $this->getContainer()->get('phpexcel');
                      $parkingLotListCreator = new ParkingLotListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
                      $parkingLotListCreator->generateParkingLotList();
-                     //$phpExcelObject = $this->getContainer()->get('phpexcel')->createPHPExcelObject(); // $this->get('phpexcel')->createPHPExcelObject();
-                     //$phpExcelWriter = $this->getContainer()->get('phpexcel')->createWriter();
+                     $subjectLine = "Pennsouth Parking Lot List Created.";
+                     $messageBody = "\n The Pennsouth Parking Lot List spreadsheet is available on the Pennsouth Ftp Server. \n";
+                     $this->sendEmailtoAdmins($subjectLine, $messageBody);
                  }
                  catch (\Exception $exception) {
                      print("\n Exception encountered when running the List Management Reports.");
@@ -386,6 +384,12 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 print("\n" . "Report on Aweber Subscribers with No Match in MDS. Processing completed successfully.");
                 $subjectLine = "Report on Aweber Subscribers with No Match in MDS: Processing Successfully Completed.";
                 $messageBody = "Results of comparison of Aweber subscriber lists with MDS are stored in the pennsouth_db database.";
+                $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                $phpExcel = $this->getContainer()->get('phpexcel');
+                $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
+                $aweberMdsAuditListCreator->generateAweberUpdatesList();
+                $subjectLine = "Pennsouth List of Residents with Aweber.com Email Addresses not in MDS Successfully Created.";
+                $messageBody = "\n The report on Pennsouth residents with Aweber Email addresses not found in MDS is available on the Pennsouth Ftp Server. \n";
                 $this->sendEmailtoAdmins($subjectLine, $messageBody);
             }
             if ($this->runUpdateAweberFromMds) { // once in production, this should always be true...
