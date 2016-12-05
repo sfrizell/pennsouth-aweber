@@ -183,7 +183,7 @@ class AweberMdsSyncAuditListCreator
 
             $colLimit = count(self::AWEBER_UPDATES_LIST_AWEBER_MDS_SYNC_AUDIT_COL_NAMES);
             $phpExcelObject->setActiveSheetIndex(0);
-            $rowCtr = 0;
+            $rowCtr = 1;
             $fileWriteCtr = 0;
             foreach ($iterableResult as $mdsAweberSyncAuditRow) {
 
