@@ -40,12 +40,14 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
     const DEFAULT_ADMINS                    =  array("steve.frizell@gmail.com" => "Stephen Frizell");
     const UPDATE_AWEBER_FROM_MDS            = 'update-aweber-from-mds';
     const REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS = 'report-on-aweber-email-not-in-mds';
+    const REPORT_ON_AWEBER_UPDATES_FROM_MDS = 'report-on-aweber-updates-from-mds';
     const LIST_MANAGEMENT_REPORTS           = 'list-management-reports';
     const APP_OUTPUT_DIRECTORY              = "app_output";
 
     private $adminEmailRecipients = array();
     private $runReportOnAweberEmailsNotInMds;
     private $runUpdateAweberFromMds;
+    private $runReportOnAweberUpdatesFromMds;
     private $runListManagementReports;
 
     protected function configure() {
@@ -66,6 +68,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                         new InputOption(self::UPDATE_AWEBER_FROM_MDS, 'u', InputOption::VALUE_REQUIRED, 'Option to update Aweber from MDS input: y/n', 'y'),
                         new InputOption(self::REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS, 'r', InputOption::VALUE_REQUIRED, 'Option to report on subscriber email addresses in Aweber and not in MDS: y/n', 'n'),
                         new InputOption(self::LIST_MANAGEMENT_REPORTS, 'l', InputOption::VALUE_REQUIRED, 'Option to generate list management reports on Parking Lots, etc.: y/n', 'n'),
+                        new InputOption(self::REPORT_ON_AWEBER_UPDATES_FROM_MDS, 'a', InputOption::VALUE_REQUIRED, 'Option to generate spreadsheet listing details of updates of Aweber from MDS.: y/n', 'n'),
                     ))
                 )
             ;
@@ -127,30 +130,39 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         $this->runListManagementReports = ( is_null( $input->getOption(self::LIST_MANAGEMENT_REPORTS)) ? FALSE
                                         : ( strtolower($input->getOption(self::LIST_MANAGEMENT_REPORTS)) == 'y' ? TRUE : FALSE ) );
 
+        // default is FALSE, so anything other than parameter of 'y' is interpreted as FALSE...
+        $this->runReportOnAweberUpdatesFromMds = ( is_null( $input->getOption(self::REPORT_ON_AWEBER_UPDATES_FROM_MDS)) ? FALSE
+                                        : ( strtolower($input->getOption(self::REPORT_ON_AWEBER_UPDATES_FROM_MDS)) == 'y' ? TRUE : FALSE ) );
+
 
         if ($this->runUpdateAweberFromMds) {
-            print ("\n" . "run update from MDS set to true\n");
+            print ("\n" . "run update from MDS set to true. \n");
         }
         else {
-            print ("\n" . "run update from MDS set to false\n");
+            print ("\n" . "run update from MDS set to false. \n");
         }
 
         if ($this->runReportOnAweberEmailsNotInMds) {
-            print ("\n" . "run report on Aweber Emails not in MDS set to true\n");
+            print ("\n" . "run report on Aweber Emails not in MDS set to true. \n");
         }
         else {
-            print ("\n" . "run report on Aweber Emails not in MDS set to false\n");
+            print ("\n" . "run report on Aweber Emails not in MDS set to false. \n");
         }
 
         if ($this->runListManagementReports) {
-            print ("\n" . "run List Management Reports set to true\n");
+            print ("\n" . "run List Management Reports set to true. \n");
         }
         else {
-            print ("\n" . "run List Management Reports set to false\n");
+            print ("\n" . "run List Management Reports set to false. \n");
         }
 
-        if ($this->runListManagementReports) {
-
+        if ($this->runReportOnAweberUpdatesFromMds) {
+            print ("\n" . "run report (generate spreadsheet) on Aweber updates from MDS set to true. \n");
+            print ("\n" . "Because of memory limitations it is not possible to also run the Aweber updates from MDS. It is being set to FALSE. \n");
+            $this->runUpdateAweberFromMds = FALSE;
+        }
+        else {
+            print ("\n" . "run report (generate spreadsheet) on Aweber updates from MDS set to false. \n");
         }
 
 
@@ -313,6 +325,35 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                  }
         }
 
+        // block to generate spreadsheet of MDS -> Aweber updates.
+        // **** NOTE: Because of memory limitations, this step must be run by itself without other application functionality options being invoked.
+        try {
+            if ($this->runReportOnAweberUpdatesFromMds) {
+                $phpExcel = $this->getContainer()->get('phpexcel');
+                $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
+                $aweberMdsAuditListCreator->generateAweberUpdatesList();
+                $subjectLine = "Report Generated on Aweber.com updates from MDS";
+                $messageBody = "\n Spreadsheet report generated listing details of updates of Pennsouth resident subscriber lists in Aweber from MDS. \n" ;
+                $messageBody .= "\n The spreadsheet is available on the Pennsouth ftp server. \n";
+                $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                $runEndDate = new \DateTime("now");
+                print("\n" . "Program run end date/time: " . $runEndDate->format('Y-m-d H:i:s') . "\n");
+                exit(0);
+            }
+
+        }
+        catch (\Exception $exception) {
+
+            print("\n" . "Exception occurred in section of SyncAweberMdsCommand where spreadsheet is generated reportin on MDS to Aweber updates! Exception->getMessage() : " . $exception->getMessage());
+            print("\n" . "Exiting from program.");
+            $subjectLine = "Fatal exception encountered when attempting to generate spreadsheet reporting on MDS to Aweber updates!";
+            $messageBody = "\n" . "Exception occurred in section of SyncAweberMdsCommand where spreadsheet is generated to report on MDS to Aweber updates! Exception->getMessage() : " . $exception->getMessage();
+            $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
+            $this->sendEmailtoAdmins($subjectLine, $messageBody);
+            throw $exception;
+        }
+
+
         // check whether there is anything left to do...
         if (!$this->runUpdateAweberFromMds and !$this->runReportOnAweberEmailsNotInMds) {
             print("\n Neither the flag to run the Update Aweber from MDS nor the flag to run Reports on Aweber Emails Not in MDS is set to true. \n");
@@ -385,12 +426,9 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 $subjectLine = "Report on Aweber Subscribers with No Match in MDS: Processing Successfully Completed.";
                 $messageBody = "Results of comparison of Aweber subscriber lists with MDS are stored in the pennsouth_db database.";
                 $this->sendEmailtoAdmins($subjectLine, $messageBody);
-                $phpExcel = $this->getContainer()->get('phpexcel');
-                $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
-                $aweberMdsAuditListCreator->generateAweberUpdatesList();
-                $subjectLine = "Pennsouth List of Residents with Aweber.com Email Addresses not in MDS Successfully Created.";
-                $messageBody = "\n The report on Pennsouth residents with Aweber Email addresses not found in MDS is available on the Pennsouth Ftp Server. \n";
-                $this->sendEmailtoAdmins($subjectLine, $messageBody);
+               // $subjectLine = "Pennsouth List of Residents with Aweber.com Email Addresses not in MDS Successfully Created.";
+               // $messageBody = "\n The report on Pennsouth residents with Aweber Email addresses not found in MDS is available on the Pennsouth Ftp Server. \n";
+               // $this->sendEmailtoAdmins($subjectLine, $messageBody);
             }
             if ($this->runUpdateAweberFromMds) { // once in production, this should always be true...
                 $aweberSubscriberUpdateInsertLists = $mdsToAweberComparator->compareAweberWithMds();
@@ -403,9 +441,9 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                     $aweberSubscriberListsUpdater = new AweberSubscriberListsUpdater($fullPathToAweber, $aweberApiInstance, $emailNotificationLists);
                     $aweberSubscriberListsUpdater->updateAweberSubscriberLists($account, $aweberSubscriberUpdateInsertLists);
                     $aweberUpdateSummary = $mdsToAweberComparator->storeAuditTrailofUpdatesToAweberSubscribers($aweberSubscriberUpdateInsertLists);
-                    // todo - sfrizell - remove the following print output after testing...
-                    //print("\n \$aweberUpdateSummary: \n" );
-                    //print_r($aweberUpdateSummary);
+                    $phpExcel = $this->getContainer()->get('phpexcel');
+                    $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
+                    $aweberMdsAuditListCreator->generateAweberUpdatesList();
                     $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
                     $messageBody = "RunUpdateAweberFromMds: Processing completed successfully in MDS to AWeber Update program." . "\n\n";
                     $messageBody = $this->buildMessageBodyForEmailToAdmins($messageBody, $aweberUpdateSummary);
@@ -463,7 +501,6 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
     private function sendEmailtoAdmins( $subjectLine, $messageBody) {
           $mailer = $this->getContainer()->get('mailer');
           $emailSubjectLine = $subjectLine;
-         // $emailRecipients = array();
           if (!is_null($this->adminEmailRecipients)) {
               $emailRecipients = $this->adminEmailRecipients;
               print("\n" . "Sending to recipients obtained from Aweber subscriber list admin_mds_to_aweber ");

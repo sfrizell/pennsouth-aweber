@@ -3,7 +3,10 @@
  * AweberMdsSyncAuditListCreator.php
  * User: sfrizell
  * Date: 11/27/16
- *  Function:
+ *  Function: Generate spreadsheets listing the audit trail data written to the pennsouth_db.aweber_mds_sync_audit table.
+ * NOTE: Todo - remove the following functions which are not used:
+ *   (a) generateAweberUpdatesListFailedWithMemoryIssues()
+ *   (b) getMdsSyncAuditUpdatesAndInserts() - invoked by (a) above.
  */
 
 namespace Pennsouth\MdsBundle\Command;
