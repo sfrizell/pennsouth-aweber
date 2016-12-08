@@ -276,6 +276,13 @@ class AweberSubscriberWriter
                 $params['email'] = $aweberSubscriber->getEmail();
                 $params['custom_fields'] = $subscriberCustomFields;
 
+                // todo - remove after debugging...
+                print("\n custom_fields: \n");
+                print_r($subscriberCustomFields);
+
+                print ("\n subscriberURL: \n");
+                print_r($subscriberUrl);
+
                 $resp = $this->aweberApiInstance->adapter->request($HTTP_METHOD, $subscriberUrl, $params, $RETURN_FORMAT);
 
                 if (!$resp == 209) { // status of 209 means success..

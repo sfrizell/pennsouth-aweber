@@ -24,10 +24,42 @@ class AweberMdsSyncAuditListCreator
 {
 
     const LIST_AWEBER_UPDATES_FILE_NAME                     = 'aweber_updates.xlsx';
+    const LIST_AWEBER_EMAILS_NOT_IN_MDS                     = 'aweber_emails_not_in_mds.xlsx';
+    const LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME_BASE      = 'aweber_emails_not_in_mds';
     const LIST_AWEBERUPDATES_FILE_NAME_BASE                 = 'aweber_updates';
     const EXCEL_FILENAME_SUFFIX                             = '.xlsx';
     const LIST_AWEBERS_SUBS_WITH_NO_MATCH_IN_MDS_FILE_NAME  = 'aweber_no_matches_in_mds.xlsx';
     const LIST_AWEBER_UPDATES_BATCH_SIZE = 2000;
+
+    const AWEBER_EMAILS_NOT_IN_MDS_HEADER_ARRAY = array(
+            'Aweber Subscriber List',
+            'Aweber Building',
+            'Aweber Floor Number',
+            'Aweber Apt Line',
+            'Aweber Subscriber Name',
+            'Subscriber Email Address',
+            'Action Reason',
+            'Aweber Subscriber Status',
+            'Aweber Subscribed At',
+            'Aweber Unsubscribed At',
+            'Aweber Subscription Method',
+            'Database Insert Date'
+    );
+
+    const AWEBER_EMAILS_NOT_IN_MDS_COL_NAMES = array(
+                'aweberSubscriberListName',
+                'aweberBuilding',
+                'aweberFloorNumber',
+                'aweberAptLine',
+                'aweberSubscriberName',
+                'subscriberEmailAddress',
+                'actionReason',
+                'aweberSubscriberStatus',
+                'aweberSubscribedAt',
+                'aweberUnsubscribedAt',
+                'aweberSubscriptionMethod',
+                'lastChangedDate'
+        );
 
     const AWEBER_UPDATES_LIST_HEADER_ARRAY = array(
             'Aweber Subscriber List',
@@ -169,20 +201,28 @@ class AweberMdsSyncAuditListCreator
      * @return bool
      * @throws \Exception
      */
-    public function generateAweberUpdatesList() {
+    public function createSpreadsheetAweberUpdatesList() {
 
         try {
             $query = $this->getEntityManager()->createQuery(
                 'Select msa
                  from PennsouthMdsBundle:AweberMdsSyncAudit msa
-                where msa.updateAction is not NULL
+                where (msa.updateAction = :update or msa.updateAction = :insert)
                 order by msa.updateAction, msa.mdsBuilding, msa.mdsFloorNumber, msa.mdsAptLine'
             );
+            $query->setParameters( array(
+                'update' => 'update',
+                'insert' => 'insert',
+            ) );
 
 
             $iterableResult = $query->iterate();
 
-            $phpExcelObject = $this->getPhpExcelObjectAndSetHeadings();
+            $title = 'Pennsouth Aweber Updates from MDS List Document';
+            $description = 'List of updates to Pennsouth Aweber Subscriber Lists from MDS data. Both inserts and updates of subscribers.';
+            $category      = 'List Management Reports';
+
+            $phpExcelObject = $this->getPhpExcelObjectAndSetHeadings(self::AWEBER_UPDATES_LIST_HEADER_ARRAY, $title, $description, $category);
 
             $colLimit = count(self::AWEBER_UPDATES_LIST_AWEBER_MDS_SYNC_AUDIT_COL_NAMES);
             $phpExcelObject->setActiveSheetIndex(0);
@@ -225,7 +265,7 @@ class AweberMdsSyncAuditListCreator
                                 $phpExcelObject = null;
 
 
-                                $phpExcelObject = $this->getPhpExcelObjectAndSetHeadings();
+                                $phpExcelObject = $this->getPhpExcelObjectAndSetHeadings(self::AWEBER_UPDATES_LIST_HEADER_ARRAY, $title, $description, $category);
                                 $phpExcelObject->setActiveSheetIndex(0);
                                 $rowCtr = 1;
 
@@ -264,7 +304,7 @@ class AweberMdsSyncAuditListCreator
     }
 
 
-    private function getPhpExcelObjectAndSetHeadings() {
+    private function getPhpExcelObjectAndSetHeadings($headerArray, $title, $description, $category) {
 
         $phpExcelObject = $this->phpExcel->createPHPExcelObject();
 
@@ -276,19 +316,19 @@ class AweberMdsSyncAuditListCreator
 
            $phpExcelObject->getProperties()->setCreator("batch")
                ->setLastModifiedBy("Batch Process")
-               ->setTitle("Office 2005 XLSX Pennsouth Aweber Updates from MDS List Document")
+               ->setTitle($title)
                ->setSubject("Office 2005 XLSX Document")
-               ->setDescription("List of updates to Pennsouth Aweber Subscriber Lists from MDS data. Both inserts and updates of subscribers.")
+               ->setDescription($description)
                ->setKeywords("office 2005 openxml php")
-               ->setCategory("List Management Reports");
+               ->setCategory($category);
 
 
          //  $phpExcelStyleColor = new PHPExcel_Style_Color('EAE9DE');
 
-           $totalCols = count(self::AWEBER_UPDATES_LIST_HEADER_ARRAY)+1;
+           $totalCols = count($headerArray)+1;
 
            $phpExcelSheet = $phpExcelObject->getActiveSheet();
-           $phpExcelSheet->fromArray(self::AWEBER_UPDATES_LIST_HEADER_ARRAY, NULL);
+           $phpExcelSheet->fromArray($headerArray, NULL);
            $first_letter = PHPExcel_Cell::stringFromColumnIndex(0);
            $last_letter = PHPExcel_Cell::stringFromColumnIndex($totalCols);
            $header_range = "{$first_letter}1:{$last_letter}1";
@@ -318,6 +358,93 @@ class AweberMdsSyncAuditListCreator
        }
 
         return NULL;
+
+    }
+
+    /**
+     * @return bool
+     */
+    public function createSpreadsheetAweberEmailAddressesNotInMds() {
+
+        $aweberEmailsNotInMds = $this->getMdsSyncAuditAweberEmailsNotInMdsQueryDb();
+
+        $title              = 'Email Addresses In Aweber.com and Not in MDS';
+        $description        = 'List of Pennsouth residents email addresses in aweber.com but not in MDS.';
+        $category           = 'List Management Reports';
+        $spreadsheetTabName = 'Aweber Emails Not in MDS';
+
+        $phpExcelObject = $this->getPhpExcelObjectAndSetHeadings(self::AWEBER_EMAILS_NOT_IN_MDS_HEADER_ARRAY, $title, $description, $category);
+
+
+
+             if (!is_null($phpExcelObject) and $phpExcelObject instanceof \PHPExcel) {
+
+                 $fileWriteCtr = 0;
+
+
+                // print("\n After setting autosize=true \n");
+
+                 $rowCtr = 1;
+
+                 $colLimit = count(self::AWEBER_EMAILS_NOT_IN_MDS_COL_NAMES);
+                 $phpExcelObject->setActiveSheetIndex(0);
+                 foreach ($aweberEmailsNotInMds as $emailsinAweberNotInMdsRow) {
+                     $rowCtr++;
+
+
+                 //    foreach ( $colNamesByHeaderNameKeys as $key => $value ) {
+                 //        print ("\n key: " . $key . " value: " . $value . "\n");
+
+                         for ($i = 0; $i < $colLimit; $i++) {
+                             $currentLetter = PHPExcel_Cell::stringFromColumnIndex($i);
+                             $cellId = $currentLetter . $rowCtr;
+                           //  print ("\$cellId: " . $cellId . "\n");
+                            // if (!$key == 'Last Changed Date') {
+                                 $phpExcelObject->getActiveSheet()
+                                     ->setCellValue($cellId, $emailsinAweberNotInMdsRow[self::AWEBER_EMAILS_NOT_IN_MDS_COL_NAMES[$i]]);
+                            // }
+                         }
+
+                 // }
+
+                     $modulo = $rowCtr % self::LIST_AWEBER_UPDATES_BATCH_SIZE;
+                     // $rowCtr > 2000
+                     if ($modulo == 0) {
+                         $fileWriteCtr++;
+                         $phpExcelObject->getActiveSheet()->setTitle($spreadsheetTabName);
+                        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+                        $phpExcelObject->setActiveSheetIndex(0);
+
+                        // create the writer
+                        $writer = $this->phpExcel->createWriter($phpExcelObject, 'Excel2007');
+                        // The save method is documented in the official PHPExcel library
+                        $writer->save($this->appOutputDir . '/' . self::LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME_BASE . $fileWriteCtr . self::EXCEL_FILENAME_SUFFIX);
+
+                        $phpExcelObject = $this->getPhpExcelObjectAndSetHeadings(self::AWEBER_EMAILS_NOT_IN_MDS_HEADER_ARRAY, $title, $description, $category);
+                        $phpExcelObject->setActiveSheetIndex(0);
+
+                        // break;
+                     }
+
+
+                 }
+
+                 $phpExcelObject->getActiveSheet()->setTitle($spreadsheetTabName);
+                 // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+                 $phpExcelObject->setActiveSheetIndex(0);
+
+                 // create the writer
+                 $writer = $this->phpExcel->createWriter($phpExcelObject, 'Excel2007');
+                 // The save method is documented in the official PHPExcel library
+                 $fileWriteCtr++;
+                 $writer->save($this->appOutputDir . '/' . self::LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME_BASE . $fileWriteCtr . self::EXCEL_FILENAME_SUFFIX);
+                // $writer->save($this->appOutputDir . '/' . self::LIST_AWEBER_UPDATES_FILE_NAME);
+
+
+                 return TRUE;
+             }
+
+         return FALSE;
 
     }
 
@@ -490,7 +617,7 @@ class AweberMdsSyncAuditListCreator
 
         }
         catch (\Exception $exception) {
-            print("\n" . "Fatal Exception occurred in ParkingLotListCreator->getResidentsWithParkingSpaces! ");
+            print("\n" . "Fatal Exception occurred in AweberMdsSyncAuditListCreator->getMdsSyncAuditUpdatesAndInserts! ");
             print ("\n Exception->getMessage() : " . $exception->getMessage());
             print "Type: " . $exception->getCode(). "\n";
             print("\n" . "Exiting from program.");
@@ -498,5 +625,45 @@ class AweberMdsSyncAuditListCreator
         }
 
     }
+
+    /**
+        *  This function reads the aweber_Mds_Sync_Audit table to obtain a list of email addresses that
+        *    exist in Aweber but were not found in MDS. The data is captured at the time of the most
+        *    recent run of the application with the option to report on the emails found in Aweber but not in MDS.
+        *    The output of that run are inserts into the aweber_Mds_Sync_Audit table.
+        *    The function being invoked here is for the purpose of generating a spreadsheet from this data.
+        * @return array
+        * @throws \Exception
+        */
+       private function getMdsSyncAuditAweberEmailsNotInMdsQueryDb() {
+
+           try {
+               $query = $this->getEntityManager()->createQuery(
+                   'Select msa.aweberSubscriberListName, msa.subscriberEmailAddress, msa.aweberBuilding, msa.aweberFloorNumber, 
+                          msa.aweberAptLine, msa.aweberSubscriberName, msa.actionReason, 
+                          msa.aweberSubscriberStatus, msa.aweberSubscribedAt, msa.aweberUnsubscribedAt, msa.aweberSubscriptionMethod,
+                          msa.lastChangedDate
+                    from PennsouthMdsBundle:AweberMdsSyncAudit msa
+                   where msa.updateAction = :updateAction
+                   order by  msa.aweberBuilding, msa.aweberFloorNumber, msa.aweberAptLine, msa.aweberSubscriberName'
+               );
+               $query->setParameter( 'updateAction', 'reporting' );
+
+               $mdsSyncAuditUpdatesAndInserts = $query->getResult();
+               //$mdsSyncAuditUpdatesAndInserts = $query->getArrayResult();
+
+
+               return $mdsSyncAuditUpdatesAndInserts;
+
+           }
+           catch (\Exception $exception) {
+               print("\n" . "Fatal Exception occurred in AweberMdsSyncAuditListCreator->getMdsSyncAuditAweberEmailsNotInMdsQueryDb! ");
+               print ("\n Exception->getMessage() : " . $exception->getMessage());
+               print "Type: " . $exception->getCode(). "\n";
+               print("\n" . "Exiting from program.");
+               throw $exception;
+           }
+
+       }
 
 }
