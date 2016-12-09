@@ -345,8 +345,9 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 $phpExcel = $this->getContainer()->get('phpexcel');
                 $aptsWithNoResidentHavingEmailAddressListCreator = new AptsWithNoResidentHavingEmailAddressListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
                 $aptsWithNoResidentHavingEmailAddressListCreator->createSpreadsheetAptsWithNoEmailAddresses();
-                $subjectLine = "Apartments With No Email List Created.";
-                $messageBody = "\n The Apartments With No Email List spreadsheet is available on the Pennsouth Ftp Server. \n";
+                $subjectLine = "List of Apartments With No Email Address Created.";
+                $messageBody = "\n A document containing a list of apartments With no resident having an email address has been created. \n ";
+                $messageBody .= " \n The spreadsheet is available on the Pennsouth Ftp Server. \n";
                 $this->sendEmailtoAdmins($subjectLine, $messageBody);
                 exit(0);
             } catch (\Exception $exception) {
