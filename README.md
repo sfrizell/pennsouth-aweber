@@ -26,6 +26,9 @@ Presented below are all command line options/arguments:
 
 +  \-a, --report-on-aweber-updates-from-mds=REPORT-ON-AWEBER-UPDATES-FROM-MDS  Option to generate spreadsheet listing details of updates of Aweber from MDS.: y/n \[default: "n"\]
 
++  \-b, --report-on-apts-where-no-resident-has-email-address=REPORT-ON-APTS-WHERE-NO-RESIDENT-HAS-EMAIL-ADDRESS  Option to generate spreadsheet listing apts where no resident has email address.: y/n \[default: "n"\]
+
+
 
 **Example:**
 

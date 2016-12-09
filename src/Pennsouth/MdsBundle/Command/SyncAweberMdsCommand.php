@@ -41,11 +41,13 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
     const UPDATE_AWEBER_FROM_MDS            = 'update-aweber-from-mds';
     const REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS = 'report-on-aweber-email-not-in-mds';
     const REPORT_ON_AWEBER_UPDATES_FROM_MDS = 'report-on-aweber-updates-from-mds';
+    const REPORT_ON_APTS_WITH_NO_EMAIL      = 'report-on-apts-where-no-resident-has-email-address';
     const LIST_MANAGEMENT_REPORTS           = 'list-management-reports';
     const APP_OUTPUT_DIRECTORY              = "app_output";
 
     private $adminEmailRecipients = array();
     private $runReportOnAweberEmailsNotInMds;
+    private $runReportOnAptsWithNoEmail;
     private $runUpdateAweberFromMds;
     private $runReportOnAweberUpdatesFromMds;
     private $runListManagementReports;
@@ -69,6 +71,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                         new InputOption(self::REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS, 'a', InputOption::VALUE_REQUIRED, 'Option to report on subscriber email addresses in Aweber and not in MDS: y/n', 'n'),
                         new InputOption(self::LIST_MANAGEMENT_REPORTS, 'l', InputOption::VALUE_REQUIRED, 'Option to generate list management reports on Parking Lots, etc.: y/n', 'n'),
                         new InputOption(self::REPORT_ON_AWEBER_UPDATES_FROM_MDS, 'r', InputOption::VALUE_REQUIRED, 'Option to generate spreadsheet listing details of updates of Aweber from MDS.: y/n', 'n'),
+                        new InputOption(self::REPORT_ON_APTS_WITH_NO_EMAIL, 'b', InputOption::VALUE_REQUIRED, 'Option to generate spreadsheet listing apts where no resident has email address.: y/n', 'n'),
                     ))
                 )
             ;
@@ -134,6 +137,11 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         $this->runReportOnAweberUpdatesFromMds = ( is_null( $input->getOption(self::REPORT_ON_AWEBER_UPDATES_FROM_MDS)) ? FALSE
                                         : ( strtolower($input->getOption(self::REPORT_ON_AWEBER_UPDATES_FROM_MDS)) == 'y' ? TRUE : FALSE ) );
 
+        // default is FALSE, so anything other than parameter of 'y' is interpreted as FALSE...
+        $this->runReportOnAptsWithNoEmail = ( is_null( $input->getOption(self::REPORT_ON_APTS_WITH_NO_EMAIL)) ? FALSE
+                                        : ( strtolower($input->getOption(self::REPORT_ON_APTS_WITH_NO_EMAIL)) == 'y' ? TRUE : FALSE ) );
+
+
 
         if ($this->runUpdateAweberFromMds) {
             print ("\n" . "run update from MDS set to true. \n");
@@ -154,6 +162,13 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         }
         else {
             print ("\n" . "run List Management Reports set to false. \n");
+        }
+
+        if ($this->runReportOnAptsWithNoEmail) {
+            print ("\n" . "Run Report on Apartments with No Email Address set to true. \n");
+        }
+        else {
+            print ("\n" . "Run Report on Apartments with No Email Address set to false. \n");
         }
 
         if ($this->runReportOnAweberUpdatesFromMds) {
@@ -323,6 +338,28 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                      $this->sendEmailtoAdmins($subjectLine, $messageBody);
                      exit(1);
                  }
+        }
+
+        if ($this->runReportOnAptsWithNoEmail) {
+            try {
+                $phpExcel = $this->getContainer()->get('phpexcel');
+                $aptsWithNoResidentHavingEmailAddressListCreator = new AptsWithNoResidentHavingEmailAddressListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
+                $aptsWithNoResidentHavingEmailAddressListCreator->createSpreadsheetAptsWithNoEmailAddresses();
+                $subjectLine = "Apartments With No Email List Created.";
+                $messageBody = "\n The Apartments With No Email List spreadsheet is available on the Pennsouth Ftp Server. \n";
+                $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                exit(0);
+            } catch (\Exception $exception) {
+                print("\n Exception encountered when running the function to create a list of apartments where no resident has email.");
+                print("\n Exception->getMessage(): " . $exception->getMessage());
+                print("\n stacktrace: " . $exception->getTraceAsString());
+                print("\n Exiting from program.");
+                $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program in section where list of apartments with no email address is generated.";
+                $messageBody = "\n Exception->getMessage() : " . $exception->getMessage() . "\n";
+                $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
+                $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                exit(1);
+            }
         }
 
         // block to generate spreadsheet of MDS -> Aweber updates.
