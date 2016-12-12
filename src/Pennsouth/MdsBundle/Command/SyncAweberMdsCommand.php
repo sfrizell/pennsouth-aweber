@@ -37,7 +37,7 @@ use Symfony\Component\Debug\DebugClassLoader;
 class SyncAweberMdsCommand extends ContainerAwareCommand {
 
 
-    const DEFAULT_ADMINS                    =  array("steve.frizell@gmail.com" => "Stephen Frizell");
+    const DEFAULT_ADMINS                    =  array ( array("steve.frizell@gmail.com" => "Stephen Frizell"));
     const UPDATE_AWEBER_FROM_MDS            = 'update-aweber-from-mds';
     const REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS = 'report-on-aweber-email-not-in-mds';
     const REPORT_ON_AWEBER_UPDATES_FROM_MDS = 'report-on-aweber-updates-from-mds';
@@ -287,8 +287,6 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         // test above
 
 
-        $aweberSubscriberListReader = new AweberSubscriberListReader($fullPathToAweber);
-
         $this->adminEmailRecipients = null;
         //$emailNotificationLists = array();
         $account = null; // added this declaration 11/4/2016 when code was working without it - but then
@@ -296,6 +294,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                          // question is does the variable declaration here break anything???
 
         try {
+            $aweberSubscriberListReader = new AweberSubscriberListReader($fullPathToAweber);
             $account = $aweberSubscriberListReader->connectToAWeberAccount();
 
             $aweberApiInstance = $aweberSubscriberListReader->getAweberApiInstance();
@@ -316,28 +315,28 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
                 $this->sendEmailtoAdmins($subjectLine, $messageBody);
                 exit(1);
-            }
+        }
 
         if ($this->runListManagementReports) {
-                 try {
-                     $phpExcel = $this->getContainer()->get('phpexcel');
-                     $parkingLotListCreator = new ParkingLotListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
-                     $parkingLotListCreator->generateParkingLotList();
-                     $subjectLine = "Pennsouth Parking Lot List Created.";
-                     $messageBody = "\n The Pennsouth Parking Lot List spreadsheet is available on the Pennsouth Ftp Server. \n";
-                     $this->sendEmailtoAdmins($subjectLine, $messageBody);
-                 }
-                 catch (\Exception $exception) {
-                     print("\n Exception encountered when running the List Management Reports.");
-                     print("\n Exception->getMessage(): " . $exception->getMessage());
-                     print("\n stacktrace: " . $exception->getTraceAsString());
-                     print("\n Exiting from program.");
-                     $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program in section where List Management Reports are generated.";
-                     $messageBody =  "\n Exception->getMessage() : " . $exception->getMessage() . "\n";
-                     $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
-                     $this->sendEmailtoAdmins($subjectLine, $messageBody);
-                     exit(1);
-                 }
+             try {
+                 $phpExcel = $this->getContainer()->get('phpexcel');
+                 $parkingLotListCreator = new ParkingLotListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
+                 $parkingLotListCreator->generateParkingLotList();
+                 $subjectLine = "Pennsouth Parking Lot List Created.";
+                 $messageBody = "\n The Pennsouth Parking Lot List spreadsheet is available on the Pennsouth Ftp Server. \n";
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody);
+             }
+             catch (\Exception $exception) {
+                 print("\n Exception encountered when running the List Management Reports.");
+                 print("\n Exception->getMessage(): " . $exception->getMessage());
+                 print("\n stacktrace: " . $exception->getTraceAsString());
+                 print("\n Exiting from program.");
+                 $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program in section where List Management Reports are generated.";
+                 $messageBody =  "\n Exception->getMessage() : " . $exception->getMessage() . "\n";
+                 $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                 exit(1);
+             }
         }
 
         if ($this->runReportOnAptsWithNoEmail) {
@@ -392,11 +391,11 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         }
 
         // check whether there is anything left to do...
-               if (!$this->runUpdateAweberFromMds and !$this->runReportOnAweberEmailsNotInMds) {
-                   print("\n Neither the flag to run the Update Aweber from MDS nor the flag to run Reports on Aweber Emails Not in MDS is set to true. \n");
-                   print("\n So nothing left to do. Exiting the program.");
-                   exit(0);
-               }
+       if (!$this->runUpdateAweberFromMds and !$this->runReportOnAweberEmailsNotInMds) {
+           print("\n Neither the flag to run the Update Aweber from MDS nor the flag to run Reports on Aweber Emails Not in MDS is set to true. \n");
+           print("\n So nothing left to do. Exiting the program. \n");
+           exit(0);
+       }
 
         // block to generate spreadsheet of MDS -> Aweber updates.
                 // **** NOTE: Because of memory limitations, this step must be run by itself without other application functionality options being invoked.
@@ -482,11 +481,6 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         try {
             $mdsToAweberComparator = new MdsToAweberComparator($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersByListNames);
-            // todo: a) invoke the compareAweberToMds function - done
-            // todo: (b) write new method to perform the Aweber inserts/updates to subscriber lists - done
-            // todo: (c) write new method to insert into AweberMdsSyncAudit what has been inserted/updated - done
-            // todo: (d) generate summary statistics in email to admins - done
-            // todo:  (e) write requested list management spreadsheets from the application. - done for Parking Lot Spaces
             if ($this->runReportOnAweberEmailsNotInMds) { // following method invoked just to allow Penn South Management Office to sync up Aweber with MDS; once done,
                 // we should not need to run the following any longer...
                 $mdsToAweberComparator->reportOnAweberSubscribersWithNoMatchInMds();
@@ -575,17 +569,11 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
           else {
               $emailRecipients = self::DEFAULT_ADMINS;
           }
+
           $emailBody = $messageBody;
 
           $emailer = new Emailer($mailer, $this->getContainer()->get('swiftmailer.transport.real'), $emailSubjectLine, $emailBody, $emailRecipients);
-        //print("\n" . "sendEmailtoAdmins " . "\n");
-        //print_r($emailRecipients);
 
-/*        foreach ($emailRecipients as $emailRecipient) {
-            foreach ($emailRecipient as $emailAddress => $emailRecipientName) {
-                print("\n" . "email / name" . $emailAddress . " / " . $emailRecipientName);
-            }
-        }*/
 
           $emailer->sendEmailMessage();
 
