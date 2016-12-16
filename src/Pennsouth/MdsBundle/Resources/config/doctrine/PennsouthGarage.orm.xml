@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Pennsouth\MdsBundle\Entity\PennsouthGarage" table="Pennsouth_Garage">
+  <entity name="Pennsouth\MdsBundle\Entity\PennsouthGarage" table="pennsouth_garage">
     <indexes>
       <index name="fk_Penn_South_Garage_Availability_Status1_idx" columns="Availability_status_code"/>
     </indexes>

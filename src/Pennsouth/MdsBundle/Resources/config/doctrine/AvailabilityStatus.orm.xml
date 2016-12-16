@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Pennsouth\MdsBundle\Entity\AvailabilityStatus" table="Availability_Status">
+  <entity name="Pennsouth\MdsBundle\Entity\AvailabilityStatus" table="availability_status">
     <id name="availabilityStatusCode" type="string" column="availability_status_code" length="25">
       <generator strategy="IDENTITY"/>
     </id>

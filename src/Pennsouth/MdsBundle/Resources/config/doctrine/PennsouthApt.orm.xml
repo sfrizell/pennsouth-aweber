@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Pennsouth\MdsBundle\Entity\PennsouthApt" table="Pennsouth_Apt">
+  <entity name="Pennsouth\MdsBundle\Entity\PennsouthApt" table="pennsouth_apt">
     <indexes>
       <index name="fk_Pennsouth_Apt_Apt_Availability_Status1_idx" columns="Apt_Availability_code"/>
       <index name="fk_Pennsouth_Apt_Apt_Size1_idx" columns="Bedroom_Count"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Pennsouth\MdsBundle\Entity\PennsouthBldg" table="Pennsouth_Bldg">
+  <entity name="Pennsouth\MdsBundle\Entity\PennsouthBldg" table="pennsouth_bldg">
     <id name="buildingId" type="string" column="Building_Id" length="4">
       <generator strategy="IDENTITY"/>
     </id>

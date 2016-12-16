@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Pennsouth\MdsBundle\Entity\PennsouthShareholder" table="Pennsouth_Shareholder">
+  <entity name="Pennsouth\MdsBundle\Entity\PennsouthShareholder" table="pennsouth_shareholder">
     <indexes>
       <index name="fk_Internal_Applicant_Pennsouth_Apt1_idx" columns="Apartment_id"/>
     </indexes>
