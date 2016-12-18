@@ -43,7 +43,10 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
     const REPORT_ON_AWEBER_UPDATES_FROM_MDS = 'report-on-aweber-updates-from-mds';
     const REPORT_ON_APTS_WITH_NO_EMAIL      = 'report-on-apts-where-no-resident-has-email-address';
     const LIST_MANAGEMENT_REPORTS           = 'list-management-reports';
-    const APP_OUTPUT_DIRECTORY              = "app_output";
+    const APP_OUTPUT_DIRECTORY_DEV          = "/app_output";
+    const APP_OUTPUT_DIRECTORY_PROD         = "/home/pennsouthdata/home/mgmtoffice/public_ftp";
+    const ENVIRONMENT_DEV                   = 'dev';
+    const ENVIRONMENT_PROD                  = 'prod';
 
     private $adminEmailRecipients = array();
     private $runReportOnAweberEmailsNotInMds;
@@ -108,11 +111,31 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         $runStartDate = new \DateTime("now");
         print("\n" . "Program run start date/time: " . $runStartDate->format('Y-m-d H:i:s') . "\n");
 
+        print ("\n getenv('SYMFONY_ENV'): " . getenv('SYMFONY_ENV') . "\n");
+
+
+
         $rootDir = $this->getContainer()->getParameter('kernel.root_dir');
 
         $rootDir = rtrim($rootDir, "/app");
 
-        $appOutputDir = $rootDir . "/" . self::APP_OUTPUT_DIRECTORY;
+        // get environment -- 'prod' or 'dev' -- on production server, this environment variable ( 'SYMFONY_ENV') is set in root's .bash_profile
+        //  when it is not explicitly set, it will get set to the default value of 'dev'
+        // print ( "\n \$this->getContainer()->get('kernel')->getEnvironment(): " . $this->getContainer()->get('kernel')->getEnvironment() . "\n" );
+
+        $env = $this->getContainer()->get('kernel')->getEnvironment();
+
+        if ($env == self::ENVIRONMENT_PROD) {
+            $appOutputDir = self::APP_OUTPUT_DIRECTORY_PROD;
+        }
+        else {
+            $appOutputDir = $rootDir . self::APP_OUTPUT_DIRECTORY_DEV;
+        }
+
+        print("\n \$rootDir: " . $rootDir . "\n");
+
+        print("\n \$appOutputDir: " . $appOutputDir . "\n");
+
 
         $fullPathToAweber = $rootDir . AweberFieldsConstants::PATH_TO_AWEBER_UNDER_VENDOR;
 
@@ -323,7 +346,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                  $parkingLotListCreator = new ParkingLotListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
                  $parkingLotListCreator->generateParkingLotList();
                  $subjectLine = "Pennsouth Parking Lot List Created.";
-                 $messageBody = "\n The Pennsouth Parking Lot List spreadsheet is available on the Pennsouth Ftp Server. \n";
+                 $messageBody = "\n The Pennsouth Parking Lot List spreadsheet has been created and is available on the Pennsouth Ftp Server. \n";
                  $this->sendEmailtoAdmins($subjectLine, $messageBody);
              }
              catch (\Exception $exception) {
@@ -404,8 +427,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 $phpExcel = $this->getContainer()->get('phpexcel');
                 $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
                 $aweberMdsAuditListCreator->createSpreadsheetAweberEmailAddressesNotInMds();
-                $subjectLine = "Report Generated on Email Addresses found in Aweber.com but not in MDS";
-                $messageBody = "\n Spreadsheet report generated listing email addresses of Pennsouth residents found in Aweber but not in MDS. \n" ;
+                $subjectLine = "Report Created of Email Addresses found in Aweber.com but not in MDS";
+                $messageBody = "\n Spreadsheet report created listing email addresses of Pennsouth residents found in Aweber but not in MDS. \n" ;
                 $messageBody .= "\n The spreadsheet is available on the Pennsouth ftp server. \n";
                 $this->sendEmailtoAdmins($subjectLine, $messageBody);
                 $runEndDate = new \DateTime("now");
