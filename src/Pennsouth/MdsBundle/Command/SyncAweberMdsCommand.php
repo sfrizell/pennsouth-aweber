@@ -136,6 +136,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         print("\n \$appOutputDir: " . $appOutputDir . "\n");
 
+        print ("\n current_user: " . get_current_user() . "\n");
+
 
         $fullPathToAweber = $rootDir . AweberFieldsConstants::PATH_TO_AWEBER_UNDER_VENDOR;
 
@@ -365,10 +367,10 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         if ($this->runReportOnAptsWithNoEmail) {
             try {
                 $phpExcel = $this->getContainer()->get('phpexcel');
-                $aptsWithNoResidentHavingEmailAddressListCreator = new AptsWithNoResidentHavingEmailAddressListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
+                $aptsWithNoResidentHavingEmailAddressListCreator = new AptsWithNoResidentHavingEmailAddressListCreator($this->getEntityManager(), $phpExcel, $appOutputDir, $env);
                 $aptsWithNoResidentHavingEmailAddressListCreator->createSpreadsheetAptsWithNoEmailAddresses();
                 $subjectLine = "List of Apartments With No Email Address Created.";
-                $messageBody = "\n A document containing a list of apartments With no resident having an email address has been created. \n ";
+                $messageBody = "\n A document containing a list of apartments with no resident having an email address has been created. \n ";
                 $messageBody .= " \n The spreadsheet is available on the Pennsouth Ftp Server. \n";
                 $this->sendEmailtoAdmins($subjectLine, $messageBody);
                 exit(0);
