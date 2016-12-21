@@ -17,8 +17,10 @@ class AweberSubscriberWriter
 {
 
     private $aweberSubscriber;
-    public function __construct($pathToAweber, $aweberApiInstance) {
-        require_once $pathToAweber;
+
+    public function __construct( $aweberApiInstance) {
+      //  public function __construct($pathToAweber, $aweberApiInstance) {
+       // require_once $pathToAweber;
 
         $this->aweberApiInstance = $aweberApiInstance;
        // require_once $rootDir . '/vendor/aweber/aweber/aweber_api/aweber_api.php';
@@ -467,6 +469,7 @@ class AweberSubscriberWriter
                return $subscriberCustomFields;
 
            }
+
 
 
 }

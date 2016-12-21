@@ -30,7 +30,7 @@ class AweberSubscriberListsUpdater
         $this->fullPathToAweber     = $fullPathToAweber;
 
         // is the following require_once needed? maybe just needs to be passed to invoked methods since there are no calls to Aweber API in this class...
-         require_once $fullPathToAweber;
+       //  require_once $fullPathToAweber;
            // $this->pathToAweber = $rootDir . $this->pathToAweber;
 
          //   require_once $this->pathToAweber;
@@ -50,9 +50,10 @@ class AweberSubscriberListsUpdater
 
         // Are there resident email addresses in MDS with no match in Aweber? If so insert the subscriber into Aweber
         if (!$this->aweberSubscriberUpdateInsertLists->isAweberSubscriberInsertListEmpty()) {
-            $aweberSubscriberWriter = new AweberSubscriberWriter($this->fullPathToAweber, $this->aweberApiInstance);
+            $aweberSubscriberWriter = new AweberSubscriberWriter($this->aweberApiInstance);
+           // $aweberSubscriberWriter = new AweberSubscriberWriter($this->fullPathToAweber, $this->aweberApiInstance);
             $insertCtr = 0;
-            $batchSize = 30;
+           // $batchSize = 30;
             foreach ($this->aweberSubscriberUpdateInsertLists->getAweberSubscriberInsertList() as $aweberSubscriberByListName) {
                 foreach ($aweberSubscriberByListName as $listName => $aweberSubscriber) {
                     $insertCtr++;
@@ -85,7 +86,8 @@ class AweberSubscriberListsUpdater
         // Check for resident email addrresses in MDS where Aweber custom fields don't match the values in MDS for the given resident?
         // If so, update Aweber subscriber
         if (!$this->aweberSubscriberUpdateInsertLists->isAweberSubscriberUpdateListEmpty()) {
-            $aweberSubscriberWriter = new AweberSubscriberWriter($this->fullPathToAweber, $this->aweberApiInstance);
+            $aweberSubscriberWriter = new AweberSubscriberWriter( $this->aweberApiInstance);
+           // $aweberSubscriberWriter = new AweberSubscriberWriter($this->fullPathToAweber, $this->aweberApiInstance);
             $updateCtr = 0;
             $batchSize = 30;
             foreach ($this->aweberSubscriberUpdateInsertLists->getAweberSubscriberUpdateList() as $aweberSubscriberByListName ) {
@@ -97,8 +99,10 @@ class AweberSubscriberListsUpdater
                     }*/
                     try {
                         // todo : remove the following after testing...
-                        if ($aweberSubscriber->getEmail() == 'steve.frizell@gmail.com') {
-                           print("\n" . "-------   AweberSubscriberListsUpdater - found steve.frizell email address for update   ----------");
+                       // if ($aweberSubscriber->getEmail() == 'steve.frizell@gmail.com') {
+                        if ($aweberSubscriber->getCeramicsMember() == 'Y') {
+                          // print("\n" . "-------   AweberSubscriberListsUpdater - found steve.frizell email address for update   ----------");
+                            print("\n" . "-------   AweberSubscriberListsUpdater - \$aweberSubscriber->getCeramicsMember() == 'Y'   ----------");
                            print("\n" . "listName: " . $listName);
                            //print_r($aweberSubscriber);
                            // insert the AweberSubscriber in the subscriber list...

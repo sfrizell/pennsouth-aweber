@@ -125,6 +125,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         $env = $this->getContainer()->get('kernel')->getEnvironment();
 
+        print("\n   environment: " . $env . "\n");
+
         if ($env == self::ENVIRONMENT_PROD) {
             $appOutputDir = self::APP_OUTPUT_DIRECTORY_PROD;
         }
@@ -319,7 +321,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                          // question is does the variable declaration here break anything???
 
         try {
-            $aweberSubscriberListReader = new AweberSubscriberListReader($fullPathToAweber);
+            $aweberSubscriberListReader = new AweberSubscriberListReader();
+           // $aweberSubscriberListReader = new AweberSubscriberListReader($fullPathToAweber);
             $account = $aweberSubscriberListReader->connectToAWeberAccount();
 
             $aweberApiInstance = $aweberSubscriberListReader->getAweberApiInstance();
@@ -529,7 +532,9 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                     $aweberSubscriberListsUpdater->updateAweberSubscriberLists($account, $aweberSubscriberUpdateInsertLists);
                     $aweberUpdateSummary = $mdsToAweberComparator->storeAuditTrailofUpdatesToAweberSubscribers($aweberSubscriberUpdateInsertLists);
                     $phpExcel = $this->getContainer()->get('phpexcel');
-                    $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
+                    // todo : evaluate whether it will be okay to create the spreadsheet reporting on the updates in the same run as the update...
+                   /* $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
+                    $aweberMdsAuditListCreator->createSpreadsheetAweberUpdatesList(); */
                     $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
                     $messageBody = "RunUpdateAweberFromMds: Processing completed successfully in MDS to AWeber Update program." . "\n\n";
                     $messageBody = $this->buildMessageBodyForEmailToAdmins($messageBody, $aweberUpdateSummary);
