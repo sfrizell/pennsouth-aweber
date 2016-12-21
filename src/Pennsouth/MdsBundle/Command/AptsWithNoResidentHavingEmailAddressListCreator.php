@@ -194,7 +194,7 @@ class AptsWithNoResidentHavingEmailAddressListCreator
                        where pr.building = msa.aweber_building
                        and pr.floor_number = msa.aweber_floor_number
                        and pr.apt_line = msa.aweber_apt_line 
-                       and msa.subscriber_email_address <> :emailAddress2
+                       and msa.update_action = :updateAction
                        and msa.Aweber_Subscriber_Status = :status )
                        order by apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name ';
               }
@@ -216,8 +216,8 @@ class AptsWithNoResidentHavingEmailAddressListCreator
                     from pennsouth_db.aweber_mds_sync_audit msa 
                      where pr.building = msa.aweber_building
                      and pr.floor_number = msa.aweber_floor_number
-                     and pr.apt_line = msa.aweber_apt_line 
-                     and msa.subscriber_email_address <> :emailAddress2
+                     and pr.apt_line = msa.aweber_apt_line
+                     and msa.update_action = :updateAction
                      and msa.Aweber_Subscriber_Status = :status )
                      order by apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name ';
               }
@@ -226,7 +226,7 @@ class AptsWithNoResidentHavingEmailAddressListCreator
               $statement = $this->getEntityManager()->getConnection()->prepare($query);
                       // Set parameters
               $statement->bindValue( 'emailAddress1', '');
-              $statement->bindValue( 'emailAddress2', '');
+              $statement->bindValue( 'updateAction', 'reporting');
               $statement->bindValue( 'status', 'subscribed');
                   //    $statement->bindValue('status', 1);
               $statement->execute();

@@ -425,33 +425,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
            exit(0);
        }
 
-        // block to generate spreadsheet of MDS -> Aweber updates.
-                // **** NOTE: Because of memory limitations, this step must be run by itself without other application functionality options being invoked.
-        try {
-            if ($this->runReportOnAweberEmailsNotInMds) {
-                $phpExcel = $this->getContainer()->get('phpexcel');
-                $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
-                $aweberMdsAuditListCreator->createSpreadsheetAweberEmailAddressesNotInMds();
-                $subjectLine = "Report Created of Email Addresses found in Aweber.com but not in MDS";
-                $messageBody = "\n Spreadsheet report created listing email addresses of Pennsouth residents found in Aweber but not in MDS. \n" ;
-                $messageBody .= "\n The spreadsheet is available on the Pennsouth ftp server. \n";
-                $this->sendEmailtoAdmins($subjectLine, $messageBody);
-                $runEndDate = new \DateTime("now");
-                print("\n" . "Program run end date/time: " . $runEndDate->format('Y-m-d H:i:s') . "\n");
-                exit(0);
-            }
 
-        }
-        catch (\Exception $exception) {
-
-            print("\n" . "Exception occurred in section of SyncAweberMdsCommand where spreadsheet is generated reporting on email addresses found in Aweber.com but not MDS! Exception->getMessage() : " . $exception->getMessage());
-            print("\n" . "Exiting from program.");
-            $subjectLine = "Fatal exception encountered when attempting to generate spreadsheet reporting on email addresses found in aweber.com but not in MDS!";
-            $messageBody = "\n" . "Exception occurred in section of SyncAweberMdsCommand where spreadsheet is generated reporting on email addresses found in Aweber.com but not MDS! Exception->getMessage() : " . $exception->getMessage();
-            $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
-            $this->sendEmailtoAdmins($subjectLine, $messageBody);
-            throw $exception;
-        }
 
 
 
@@ -558,6 +532,33 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             throw $exception;
         }
 
+        // block to generate spreadsheet of MDS -> Aweber updates.
+                       // **** NOTE: Because of memory limitations, this step must be run by itself without other application functionality options being invoked.
+       try {
+           if ($this->runReportOnAweberEmailsNotInMds) {
+               $phpExcel = $this->getContainer()->get('phpexcel');
+               $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
+               $aweberMdsAuditListCreator->createSpreadsheetAweberEmailAddressesNotInMds();
+               $subjectLine = "Report Created of Email Addresses found in Aweber.com but not in MDS";
+               $messageBody = "\n Spreadsheet report created listing email addresses of Pennsouth residents found in Aweber but not in MDS. \n" ;
+               $messageBody .= "\n The spreadsheet is available on the Pennsouth ftp server. \n";
+               $this->sendEmailtoAdmins($subjectLine, $messageBody);
+               $runEndDate = new \DateTime("now");
+               print("\n" . "Program run end date/time: " . $runEndDate->format('Y-m-d H:i:s') . "\n");
+               exit(0);
+           }
+
+       }
+       catch (\Exception $exception) {
+
+           print("\n" . "Exception occurred in section of SyncAweberMdsCommand where spreadsheet is generated reporting on email addresses found in Aweber.com but not MDS! Exception->getMessage() : " . $exception->getMessage());
+           print("\n" . "Exiting from program.");
+           $subjectLine = "Fatal exception encountered when attempting to generate spreadsheet reporting on email addresses found in aweber.com but not in MDS!";
+           $messageBody = "\n" . "Exception occurred in section of SyncAweberMdsCommand where spreadsheet is generated reporting on email addresses found in Aweber.com but not MDS! Exception->getMessage() : " . $exception->getMessage();
+           $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
+           $this->sendEmailtoAdmins($subjectLine, $messageBody);
+           throw $exception;
+       }
 
         $runEndDate = new \DateTime("now");
         print("\n" . "Program run end date/time: " . $runEndDate->format('Y-m-d H:i:s') . "\n");

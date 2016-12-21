@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6b0dfb0-340b-4be3-b81b-b2d7247d6f8a" name="Default" comment="Add List Management report functionality. Add PHPExcel library to project.">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_output/aweber_emails_not_in_mds1.xlsx" afterPath="$PROJECT_DIR$/app_output/aweber_emails_not_in_mds1.xlsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_output/list_of_apts_with_no_email.xlsx" afterPath="$PROJECT_DIR$/app_output/list_of_apts_with_no_email.xlsx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/AweberEntity/AweberSubscriber.php" afterPath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/AweberEntity/AweberSubscriber.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberListReader.php" afterPath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberListReader.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberListsUpdater.php" afterPath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberListsUpdater.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberWriter.php" afterPath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberWriter.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AptsWithNoResidentHavingEmailAddressListCreator.php" afterPath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AptsWithNoResidentHavingEmailAddressListCreator.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/SyncAweberMdsCommand.php" afterPath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/SyncAweberMdsCommand.php" />
     </list>
     <ignored path="pennsouth_aweber.iws" />
@@ -43,7 +42,7 @@
       <file leaf-file-name="AweberSubscriberListsUpdater.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberListsUpdater.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="397">
+            <state relative-caret-position="1485">
               <caret line="108" column="63" lean-forward="false" selection-start-line="108" selection-start-column="63" selection-end-line="108" selection-end-column="63" />
               <folding />
             </state>
@@ -53,7 +52,7 @@
       <file leaf-file-name="AweberSubscriberListReader.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberListReader.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
+            <state relative-caret-position="330">
               <caret line="34" column="7" lean-forward="false" selection-start-line="34" selection-start-column="7" selection-end-line="34" selection-end-column="7" />
               <folding />
             </state>
@@ -63,19 +62,54 @@
       <file leaf-file-name="AweberSubscriber.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/AweberEntity/AweberSubscriber.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="80">
-              <caret line="238" column="0" lean-forward="true" selection-start-line="238" selection-start-column="0" selection-end-line="238" selection-end-column="0" />
+            <state relative-caret-position="3525">
+              <caret line="235" column="0" lean-forward="false" selection-start-line="235" selection-start-column="0" selection-end-line="235" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SyncAweberMdsCommand.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SyncAweberMdsCommand.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/SyncAweberMdsCommand.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="268">
-              <caret line="127" column="31" lean-forward="false" selection-start-line="127" selection-start-column="31" selection-end-line="127" selection-end-column="31" />
+            <state relative-caret-position="251">
+              <caret line="548" column="12" lean-forward="true" selection-start-line="548" selection-start-column="12" selection-end-line="548" selection-end-column="12" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AweberMdsSyncAuditListCreator.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberMdsSyncAuditListCreator.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="359">
+              <caret line="366" column="20" lean-forward="false" selection-start-line="366" selection-start-column="20" selection-end-line="366" selection-end-column="20" />
+              <folding>
+                <marker date="1481235916000" expanded="true" signature="8601:8716" ph="Select msa f... PennsouthMdsBundle" />
+                <marker date="1481235916000" expanded="true" signature="8601:8851" ph="Select msa f... PennsouthMdsBundle" />
+                <marker date="1481235916000" expanded="true" signature="27976:28196" ph="Select msa f... PennsouthMdsBundle" />
+                <marker date="1481235916000" expanded="true" signature="29576:30169" ph="Select msa f... PennsouthMdsBundle" />
+                <marker date="1481235916000" expanded="true" signature="29576:30195" ph="Select msa.a... PennsouthMdsBundle" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AptsWithNoResidentHavingEmailAddressListCreator.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AptsWithNoResidentHavingEmailAddressListCreator.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="782">
+              <caret line="219" column="21" lean-forward="false" selection-start-line="219" selection-start-column="21" selection-end-line="219" selection-end-column="21" />
+              <folding>
+                <marker date="1482362378000" expanded="true" signature="5960:7170" ph="select disti... pennsouth_apt" />
+                <marker date="1482362378000" expanded="true" signature="6372:6603" ph="select \'x\'... pennsouth_resident" />
+                <marker date="1482362378000" expanded="true" signature="6668:7068" ph="select \'x\'... aweber_mds_sync_audit" />
+                <marker date="1482362378000" expanded="true" signature="7261:8436" ph="select apt.b... pennsouth_Apt" />
+                <marker date="1482362378000" expanded="true" signature="7661:7873" ph="select \'x\'... pennsouth_resident" />
+                <marker date="1482362378000" expanded="true" signature="7661:7887" ph="select \'x\'... pennsouth_resident" />
+                <marker date="1482362378000" expanded="true" signature="7948:8329" ph="select \'x\'... Aweber_mds_sync_audit" />
+                <marker date="1482362378000" expanded="true" signature="7948:8336" ph="select \'x\'... Aweber_mds_sync_audit" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -83,7 +117,7 @@
       <file leaf-file-name="MdsToAweberComparator.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/MdsToAweberComparator.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
+            <state relative-caret-position="1755">
               <caret line="129" column="20" lean-forward="false" selection-start-line="129" selection-start-column="20" selection-end-line="129" selection-end-column="20" />
               <folding />
             </state>
@@ -93,28 +127,8 @@
       <file leaf-file-name="AweberSubscriberWriter.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberWriter.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2053">
+            <state relative-caret-position="3390">
               <caret line="234" column="20" lean-forward="false" selection-start-line="234" selection-start-column="20" selection-end-line="234" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="config_test.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/config/config_test.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="config_dev.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/config/config_dev.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -207,13 +221,13 @@
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Resources/config/doctrine/PennsouthStorageLocker.orm.xml" />
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Resources/config/doctrine/PennSouthUtilityCloset.orm.xml" />
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberMdsSyncAuditListCreator.php" />
-        <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AptsWithNoResidentHavingEmailAddressListCreator.php" />
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/AweberEntity/AweberSubscriber.php" />
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberWriter.php" />
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberListsUpdater.php" />
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberListReader.php" />
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/MdsToAweberComparator.php" />
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/SyncAweberMdsCommand.php" />
+        <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AptsWithNoResidentHavingEmailAddressListCreator.php" />
       </list>
     </option>
   </component>
@@ -284,10 +298,10 @@
     </include_path>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="43" />
-    <option name="y" value="227" />
+    <option name="x" value="24" />
+    <option name="y" value="36" />
     <option name="width" value="2188" />
-    <option name="height" value="1041" />
+    <option name="height" value="1298" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -305,8 +319,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -585,6 +597,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -785,27 +799,28 @@
       <workItem from="1482047117486" duration="55000" />
       <workItem from="1482125227311" duration="3430000" />
       <workItem from="1482212400434" duration="558000" />
-      <workItem from="1482250998482" duration="7910000" />
+      <workItem from="1482250998482" duration="8168000" />
+      <workItem from="1482357428303" duration="1284000" />
+      <workItem from="1482358798738" duration="2737000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="581252000" />
+    <option name="totallyTimeSpent" value="585531000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="43" y="227" width="2188" height="1041" extended-state="0" />
-    <editor active="false" />
+    <frame x="24" y="36" width="2188" height="1298" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24603914" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25069898" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="DB Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24043716" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="DB Execution Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32752293" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42703864" sideWeight="0.4422188" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.065456904" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46695557" sideWeight="0.47562706" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.59375" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24970132" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17334779" sideWeight="0.5577812" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11440678" sideWeight="0.5577812" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -817,6 +832,7 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44395605" sideWeight="0.9014906" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46695557" sideWeight="0.47562706" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Framework" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -927,13 +943,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/logs/dev.log">
-      <provider editor-type-id="LargeFileEditor">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
+      </provider>
+      <provider editor-type-id="LargeFileEditor">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/config.php">
@@ -1158,46 +1174,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AptsWithNoResidentHavingEmailAddressListCreator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="47" column="16" lean-forward="false" selection-start-line="47" selection-start-column="16" selection-end-line="47" selection-end-column="16" />
-          <folding>
-            <element signature="e#6#117#0#PHP" expanded="false" />
-            <element signature="e#159#190#0#PHP" expanded="false" />
-            <marker date="1482131060000" expanded="true" signature="5960:7183" ph="select disti... pennsouth_apt" />
-            <marker date="1482131060000" expanded="true" signature="6372:6603" ph="select \'x\'... pennsouth_resident" />
-            <marker date="1482131060000" expanded="true" signature="6668:7081" ph="select \'x\'... aweber_mds_sync_audit" />
-            <marker date="1482131060000" expanded="true" signature="7274:8463" ph="select apt.b... pennsouth_Apt" />
-            <marker date="1482131060000" expanded="true" signature="7674:7886" ph="select \'x\'... pennsouth_resident" />
-            <marker date="1482131060000" expanded="true" signature="7674:7900" ph="select \'x\'... pennsouth_resident" />
-            <marker date="1482131060000" expanded="true" signature="7961:8356" ph="select \'x\'... Aweber_mds_sync_audit" />
-            <marker date="1482131060000" expanded="true" signature="7961:8363" ph="select \'x\'... Aweber_mds_sync_audit" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberMdsSyncAuditListCreator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2865">
-          <caret line="206" column="60" lean-forward="false" selection-start-line="206" selection-start-column="60" selection-end-line="206" selection-end-column="60" />
-          <folding>
-            <element signature="e#6#402#0#PHP" expanded="false" />
-            <element signature="e#444#475#0#PHP" expanded="false" />
-            <marker date="1481235916000" expanded="true" signature="8601:8716" ph="Select msa f... PennsouthMdsBundle" />
-            <marker date="1481235916000" expanded="true" signature="8601:8851" ph="Select msa f... PennsouthMdsBundle" />
-            <marker date="1481235916000" expanded="true" signature="27976:28196" ph="Select msa f... PennsouthMdsBundle" />
-            <marker date="1481235916000" expanded="true" signature="29576:30169" ph="Select msa f... PennsouthMdsBundle" />
-            <marker date="1481235916000" expanded="true" signature="29576:30195" ph="Select msa.a... PennsouthMdsBundle" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/config/config_test.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1227,23 +1207,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/AweberEntity/AweberSubscriber.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="238" column="0" lean-forward="true" selection-start-line="238" selection-start-column="0" selection-end-line="238" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberListReader.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="34" column="7" lean-forward="false" selection-start-line="34" selection-start-column="7" selection-end-line="34" selection-end-column="7" />
+        <state relative-caret-position="3525">
+          <caret line="235" column="0" lean-forward="false" selection-start-line="235" selection-start-column="0" selection-end-line="235" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberWriter.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2053">
+        <state relative-caret-position="3390">
           <caret line="234" column="20" lean-forward="false" selection-start-line="234" selection-start-column="20" selection-end-line="234" selection-end-column="20" />
           <folding />
         </state>
@@ -1251,25 +1223,64 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberListsUpdater.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
+        <state relative-caret-position="1485">
           <caret line="108" column="63" lean-forward="false" selection-start-line="108" selection-start-column="63" selection-end-line="108" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberListReader.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="34" column="7" lean-forward="false" selection-start-line="34" selection-start-column="7" selection-end-line="34" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/MdsToAweberComparator.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
+        <state relative-caret-position="1755">
           <caret line="129" column="20" lean-forward="false" selection-start-line="129" selection-start-column="20" selection-end-line="129" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberMdsSyncAuditListCreator.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="366" column="20" lean-forward="false" selection-start-line="366" selection-start-column="20" selection-end-line="366" selection-end-column="20" />
+          <folding>
+            <marker date="1481235916000" expanded="true" signature="8601:8716" ph="Select msa f... PennsouthMdsBundle" />
+            <marker date="1481235916000" expanded="true" signature="8601:8851" ph="Select msa f... PennsouthMdsBundle" />
+            <marker date="1481235916000" expanded="true" signature="27976:28196" ph="Select msa f... PennsouthMdsBundle" />
+            <marker date="1481235916000" expanded="true" signature="29576:30169" ph="Select msa f... PennsouthMdsBundle" />
+            <marker date="1481235916000" expanded="true" signature="29576:30195" ph="Select msa.a... PennsouthMdsBundle" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/SyncAweberMdsCommand.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="127" column="31" lean-forward="false" selection-start-line="127" selection-start-column="31" selection-end-line="127" selection-end-column="31" />
+        <state relative-caret-position="251">
+          <caret line="548" column="12" lean-forward="true" selection-start-line="548" selection-start-column="12" selection-end-line="548" selection-end-column="12" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AptsWithNoResidentHavingEmailAddressListCreator.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="782">
+          <caret line="219" column="21" lean-forward="false" selection-start-line="219" selection-start-column="21" selection-end-line="219" selection-end-column="21" />
+          <folding>
+            <marker date="1482362378000" expanded="true" signature="5960:7170" ph="select disti... pennsouth_apt" />
+            <marker date="1482362378000" expanded="true" signature="6372:6603" ph="select \'x\'... pennsouth_resident" />
+            <marker date="1482362378000" expanded="true" signature="6668:7068" ph="select \'x\'... aweber_mds_sync_audit" />
+            <marker date="1482362378000" expanded="true" signature="7261:8436" ph="select apt.b... pennsouth_Apt" />
+            <marker date="1482362378000" expanded="true" signature="7661:7873" ph="select \'x\'... pennsouth_resident" />
+            <marker date="1482362378000" expanded="true" signature="7661:7887" ph="select \'x\'... pennsouth_resident" />
+            <marker date="1482362378000" expanded="true" signature="7948:8329" ph="select \'x\'... Aweber_mds_sync_audit" />
+            <marker date="1482362378000" expanded="true" signature="7948:8336" ph="select \'x\'... Aweber_mds_sync_audit" />
+          </folding>
         </state>
       </provider>
     </entry>
