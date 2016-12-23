@@ -152,6 +152,11 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="mdsBikeRackRoom" type="string" column="mds_bike_rack_room" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="mdsBikeRackLocation" type="string" column="Mds_Bike_Rack_Location" length="10" nullable="true">
       <options>
         <option name="fixed"/>
@@ -230,6 +235,11 @@
       </options>
     </field>
     <field name="aweberBikeRackBldg" type="string" column="Aweber_Bike_Rack_Bldg" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberBikeRackRoom" type="string" column="aweber_bike_rack_room" length="2" nullable="true">
       <options>
         <option name="fixed"/>
       </options>

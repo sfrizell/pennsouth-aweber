@@ -165,6 +165,11 @@ class AweberMdsSyncAudit
     /**
      * @var string
      */
+    public $mdsBikeRackRoom;
+
+    /**
+     * @var string
+     */
     public $mdsBikeRackLocation;
 
     /**
@@ -241,6 +246,11 @@ class AweberMdsSyncAudit
      * @var string
      */
     public $aweberBikeRackBldg;
+
+    /**
+     * @var string
+     */
+    public $aweberBikeRackRoom;
 
     /**
      * @var string
@@ -1008,6 +1018,24 @@ class AweberMdsSyncAudit
     }
 
     /**
+     * @return string
+     */
+    public function getMdsBikeRackRoom()
+    {
+        return $this->mdsBikeRackRoom;
+    }
+
+    /**
+     * @param string $mdsBikeRackRoom
+     */
+    public function setMdsBikeRackRoom($mdsBikeRackRoom)
+    {
+        $this->mdsBikeRackRoom = $mdsBikeRackRoom;
+    }
+
+
+
+    /**
      * Set mdsBikeRackLocation
      *
      * @param string $mdsBikeRackLocation
@@ -1390,6 +1418,24 @@ class AweberMdsSyncAudit
     {
         return $this->aweberBikeRackBldg;
     }
+
+    /**
+     * @return string
+     */
+    public function getAweberBikeRackRoom()
+    {
+        return $this->aweberBikeRackRoom;
+    }
+
+    /**
+     * @param string $aweberBikeRackRoom
+     */
+    public function setAweberBikeRackRoom($aweberBikeRackRoom)
+    {
+        $this->aweberBikeRackRoom = $aweberBikeRackRoom;
+    }
+
+
 
     /**
      * Set aweberBikeRackLocation

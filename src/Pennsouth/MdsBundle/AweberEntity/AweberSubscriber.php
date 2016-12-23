@@ -171,6 +171,11 @@ class AweberSubscriber
     private $bikeRackRoom;
 
     /**
+     * @var string
+     */
+    private $bikeRackLocation;
+
+    /**
      *  prev custom field values
      */
 
@@ -253,6 +258,11 @@ class AweberSubscriber
         * @var string
         */
        private $prevBikeRackRoom;
+
+    /**
+     * @var string
+     */
+       private $prevBikeRackLocation;
 
     /**
      * @var string
@@ -768,6 +778,24 @@ class AweberSubscriber
     }
 
     /**
+     * @return string
+     */
+    public function getBikeRackLocation()
+    {
+        return $this->bikeRackLocation;
+    }
+
+    /**
+     * @param string $bikeRackLocation
+     */
+    public function setBikeRackLocation($bikeRackLocation)
+    {
+        $this->bikeRackLocation = $bikeRackLocation;
+    }
+
+
+
+    /**
      * @param mixed $bikeRackRoom
      */
     public function setBikeRackRoom($bikeRackRoom)
@@ -1029,6 +1057,22 @@ class AweberSubscriber
     public function setPrevBikeRackRoom($prevBikeRackRoom)
     {
         $this->prevBikeRackRoom = $prevBikeRackRoom;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevBikeRackLocation()
+    {
+        return $this->prevBikeRackLocation;
+    }
+
+    /**
+     * @param string $prevBikeRackLocation
+     */
+    public function setPrevBikeRackLocation($prevBikeRackLocation)
+    {
+        $this->prevBikeRackLocation = $prevBikeRackLocation;
     }
 
 

@@ -34,6 +34,7 @@ class MdsToAweberComparator
     const UPDATE_STORAGE_CLOSET_FLOOR_NUM           = 'storage_closet_fl_num';
     const UPDATE_BIKE_RACK_BLDG                     = 'bike_rack_bldg';
     const UPDATE_BIKE_RACK_ROOM                     = 'bike_rack_rm';
+    const UPDATE_BIKE_RACK_LOCATION                 = 'bike_rack_location';
     const UPDATE_HOMEOWNERS_INS_EXP_DAYS_LEFT       = 'home_ins_exp_days';
     const UPDATE_VEHICLE_REG_EXP_DAYS_LEFT          = 'vehicle_reg_exp_days';
     const UPDATE_IS_DOG_PRESENT                     = 'dog';
@@ -154,6 +155,7 @@ class MdsToAweberComparator
             $aweberSubscriber->setStorageClosetFloorNum( is_null($pennsouthResident->getStorageClosetFloorNum()) ? "" : $pennsouthResident->getStorageClosetFloorNum());
             $aweberSubscriber->setBikeRackBldg( is_null( $pennsouthResident->getBikeRackBldg()) ? "" : $pennsouthResident->getBikeRackBldg());
             $aweberSubscriber->setBikeRackRoom( is_null( $pennsouthResident->getBikeRackRoom()) ? "" : $pennsouthResident->getBikeRackRoom() );
+            $aweberSubscriber->setBikeRackLocation( is_null( $pennsouthResident->getBikeRackLocation()) ? "" : $pennsouthResident->getBikeRackLocation() );
             $aweberSubscriber->setWoodworkingMember( is_null( $pennsouthResident->getWoodworkingMember()) ? "" : $pennsouthResident->getWoodworkingMember());
             $aweberSubscriber->setHomeownerInsExpDateLeft( is_null($pennsouthResident->getHomeownerInsExpCountdown()) ? "" : $pennsouthResident->getHomeownerInsExpCountdown());
             $aweberSubscriber->setYouthRoomMember(is_null($pennsouthResident->getYouthRoomMember()) ? "" : $pennsouthResident->getYouthRoomMember());
@@ -177,6 +179,7 @@ class MdsToAweberComparator
                                     AweberFieldsConstants::STORAGE_CLOSET_FLOOR_NUM         => $aweberSubscriber->getStorageClosetFloorNum(),
                                     AweberFieldsConstants::BIKE_RACK_BLDG                   => $aweberSubscriber->getBikeRackBldg(),
                                     AweberFieldsConstants::BIKE_RACK_ROOM                   => $aweberSubscriber->getBikeRackRoom(),
+                                    AweberFieldsConstants::BIKE_RACK_LOCATION               => $aweberSubscriber->getBikeRackLocation(),
                                     AweberFieldsConstants::WOODWORKING_MEMBER               => $aweberSubscriber->getWoodworkingMember(),
                                     AweberFieldsConstants::HOMEOWNER_INS_EXP_DAYS_LEFT      => $aweberSubscriber->getHomeownerInsExpDateLeft(),
                                     AweberFieldsConstants::YOUTH_ROOM_MEMBER                => $aweberSubscriber->getYouthRoomMember(),
@@ -198,6 +201,7 @@ class MdsToAweberComparator
      * - Compare Aweber subscriber data ($aweberSubscriber) with MDS Export File data ($pennsouthResident) for subscriber with same email address.
      * @param $pennsouthResident
      * @param $aweberSubscriber
+     * @return $aweberSubscriber
      *  return: $aweberSubscriber with $actionReason property updated if there are any data differences in name or custom fields between Aweber and MDS Export file data; otherwise return null.
      *
      */
@@ -257,6 +261,9 @@ class MdsToAweberComparator
         }
         if ( trim($aweberSubscriber->getBikeRackRoom() ,$singleQuotes  )          !== trim($pennsouthResident->getBikeRackRoom()) ) {
             $actionReason .= self::UPDATE_BIKE_RACK_ROOM . $separator;
+        }
+        if ( trim($aweberSubscriber->getBikeRackLocation() ,$singleQuotes  )          !== trim($pennsouthResident->getBikeRackLocation()) ) {
+            $actionReason .= self::UPDATE_BIKE_RACK_LOCATION . $separator;
         }
         if ( trim($aweberSubscriber->getParkingLotLocation() ,$singleQuotes )      !== trim($pennsouthResident->getParkingLotLocation()) ) {
             $actionReason .= self::UPDATE_PARKING_LOT_LOCATION . $separator;
@@ -391,35 +398,36 @@ class MdsToAweberComparator
                  foreach ($aweberSubscriberList as $aweberSubscriber) {
                     // print("\n" . "!!!!!!!!!!!   aweberSubscriber in MdsToAweberComparator... !!!!!!!!!!" . "\n");
                     // print_r($aweberSubscriber);
-                     $is_subscriber_in_mds = FALSE;
-                     foreach ($this->pennsouthResidents as $pennsouthResident) {
-                        // print("\n" . "!!!!!!!!!!!   aweberSubscriber in MdsToAweberUpdate... !!!!!!!!!!" . "\n");
-                        // print_r($aweberSubscriber);
-                        // print("\n" . "!!!!!!!!!!!   aweberSubscriber getEmail... !!!!!!!!!!" . "\n");
-                        // print($aweberSubscriber->getEmail());
-                         if ( ($pennsouthResident instanceof PennsouthResident) and ( $aweberSubscriber instanceof AweberSubscriber) ) { // should always be true; here for parsing purposes
-                             if (strtolower($aweberSubscriber->getEmail()) == strtolower($pennsouthResident->getEmailAddress())) {
-                                 $is_subscriber_in_mds = TRUE;
-                                 break;
+                     if ($aweberSubscriber instanceof AweberSubscriber and $aweberSubscriber->getStatus() == 'subscribed') {
+                         $is_subscriber_in_mds = FALSE;
+                         foreach ($this->pennsouthResidents as $pennsouthResident) {
+                             // print("\n" . "!!!!!!!!!!!   aweberSubscriber in MdsToAweberUpdate... !!!!!!!!!!" . "\n");
+                             // print_r($aweberSubscriber);
+                             // print("\n" . "!!!!!!!!!!!   aweberSubscriber getEmail... !!!!!!!!!!" . "\n");
+                             // print($aweberSubscriber->getEmail());
+                             if (($pennsouthResident instanceof PennsouthResident) and ($aweberSubscriber instanceof AweberSubscriber)) { // should always be true; here for parsing purposes
+                                 if (strtolower($aweberSubscriber->getEmail()) == strtolower($pennsouthResident->getEmailAddress())) {
+                                     $is_subscriber_in_mds = TRUE;
+                                     break;
+                                 }
                              }
-                         }
 
-                     }
-                     if (!$is_subscriber_in_mds) {
-                         $insertBatchCtr++;
-                         if (($insertBatchCtr % $batchSize) === 0) {
-                             $flush = TRUE;
                          }
-                         else {
-                             $flush = FALSE;
+                         if (!$is_subscriber_in_mds) {
+                             $insertBatchCtr++;
+                             if (($insertBatchCtr % $batchSize) === 0) {
+                                 $flush = TRUE;
+                             } else {
+                                 $flush = FALSE;
+                             }
+                             $this->createAweberMdsSyncAuditNoMdsSubscriber($aweberSubscriber, $listName, $currDate, $flush);
                          }
-                         $this->createAweberMdsSyncAuditNoMdsSubscriber($aweberSubscriber, $listName, $currDate, $flush);
                      }
                  }
-                 $this->flushAndClearEntityManager();
 
               } // foreach aweberSubscribers
          } // foreach aweberSubscribersWithListNameKeys...
+         $this->flushAndClearEntityManager();
 
      }
 
@@ -430,6 +438,7 @@ class MdsToAweberComparator
          * @param $currDate
          * @param $flush - true/false - for better performance, limit number of flushes (commits) to batch of inserts.
          * @param  $updateAction - insert/update
+         * @throws $exception
          */
         private function insertAweberMdsSyncAudit(AweberSubscriber $aweberSubscriber, $listName, $currDate, $flush, $updateAction) {
 
@@ -442,7 +451,8 @@ class MdsToAweberComparator
             $aweberMdsSyncAudit->setAweberFloorNumber($aweberSubscriber->getPrevFloorNumber());
             $aweberMdsSyncAudit->setAweberAptLine($aweberSubscriber->getPrevApartment());
             $aweberMdsSyncAudit->setAweberBikeRackBldg( $aweberSubscriber->getPrevBikeRackBldg() );
-            $aweberMdsSyncAudit->setAweberBikeRackLocation( $aweberSubscriber->getPrevBikeRackRoom() );
+            $aweberMdsSyncAudit->setAweberBikeRackRoom( $aweberSubscriber->getPrevBikeRackRoom() );
+            $aweberMdsSyncAudit->setAweberBikeRackLocation( $aweberSubscriber->getPrevBikeRackLocation() );
             $aweberMdsSyncAudit->setAweberCeramicsMember( $aweberSubscriber->getPrevCeramicsMember());
             $aweberMdsSyncAudit->setAweberGardenMember( $aweberSubscriber->getPrevGardenMember() );
             $aweberMdsSyncAudit->setAweberGymMember( $aweberSubscriber->getPrevGymMember() );
@@ -483,7 +493,8 @@ class MdsToAweberComparator
             $aweberMdsSyncAudit->setMdsResidentFirstName($aweberSubscriber->getFirstName());
             $aweberMdsSyncAudit->setMdsResidentLastName($aweberSubscriber->getLastName());
             $aweberMdsSyncAudit->setMdsBikeRackBldg( $aweberSubscriber->getBikeRackBldg() );
-            $aweberMdsSyncAudit->setMdsBikeRackLocation( $aweberSubscriber->getBikeRackRoom() );
+            $aweberMdsSyncAudit->setMdsBikeRackLocation( $aweberSubscriber->getBikeRackLocation() );
+            $aweberMdsSyncAudit->setMdsBikeRackRoom( $aweberSubscriber->getBikeRackRoom() );
             $aweberMdsSyncAudit->setMdsCeramicsMember( $aweberSubscriber->getCeramicsMember() );
             $aweberMdsSyncAudit->setMdsGardenMember( $aweberSubscriber->getGardenMember() );
             $aweberMdsSyncAudit->setMdsGymMember( $aweberSubscriber->getGymMember() );

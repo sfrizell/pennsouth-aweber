@@ -39,6 +39,7 @@ class AweberFieldsConstants
        const STORAGE_CLOSET_FLOOR_NUM                           = 'storage_closet_floor_num';
        const BIKE_RACK_BLDG                                     = 'bike_rack_bldg';
        const BIKE_RACK_ROOM                                     = 'bike_rack_room';
+       const BIKE_RACK_LOCATION                                 = 'bike_rack_location';
        const PENN_SOUTH_AWEBER_ACCOUNT                          = 936765;
        const ADMINS_MDS_TO_AWEBER_LIST_ID                       = 4459191; // Aweber subscriber list of Penn South Administrators to receive emails about the running of this program to sync Aweber to MDS
        const PRIMARY_RESIDENT_LIST_ID                           = 3774632;

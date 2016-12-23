@@ -386,6 +386,9 @@ class AweberSubscriberWriter
            if (strlen($aweberSubscriber->getBikeRackRoom()) > 0) {
                $subscriberCustomFields[AweberFieldsConstants::BIKE_RACK_ROOM] = $aweberSubscriber->getBikeRackRoom();
            }
+           if (strlen($aweberSubscriber->getBikeRackLocation()) > 0) {
+               $subscriberCustomFields[AweberFieldsConstants::BIKE_RACK_LOCATION] = $aweberSubscriber->getBikeRackLocation();
+           }
            if (strlen($aweberSubscriber->getHomeownerInsExpDateLeft()) > 0) {
                $subscriberCustomFields[AweberFieldsConstants::HOMEOWNER_INS_EXP_DAYS_LEFT] = $aweberSubscriber->getHomeownerInsExpDateLeft();
            }
@@ -452,6 +455,9 @@ class AweberSubscriberWriter
                }
                if (strlen($aweberSubscriber->getBikeRackRoom()) > 0) {
                    $subscriberCustomFields[AweberFieldsConstants::BIKE_RACK_ROOM] = "'" . $aweberSubscriber->getBikeRackRoom() . "'";
+               }
+               if (strlen($aweberSubscriber->getBikeRackLocation()) > 0) {
+                   $subscriberCustomFields[AweberFieldsConstants::BIKE_RACK_LOCATION] = "'" . $aweberSubscriber->getBikeRackLocation() . "'";
                }
                if (strlen($aweberSubscriber->getHomeownerInsExpDateLeft()) > 0) {
                    $subscriberCustomFields[AweberFieldsConstants::HOMEOWNER_INS_EXP_DAYS_LEFT] = "'" . $aweberSubscriber->getHomeownerInsExpDateLeft() . "'";
