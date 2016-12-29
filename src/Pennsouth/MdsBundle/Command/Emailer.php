@@ -13,6 +13,8 @@ use Swift_Message;
 use Swift_Mime_Message;
 use Swift_Transport_SpoolTransport;
 use Swift_MemorySpool;
+use Swift_Attachment;
+use Swift_Mime_SimpleMessage;
 
 class Emailer
 {
@@ -25,26 +27,40 @@ class Emailer
     private $emailSubjectLine;
     private $emailBody;
     private $emailRecipients;
+    private $attachmentFilePath;
 
 
     public function __construct(Swift_Mailer $mailer, $transportRealTime,
-                     $emailSubjectLine, $emailBody, $emailRecipients)
+                     $emailSubjectLine, $emailBody, $emailRecipients, $attachmentFilePath = null)
     {
         $this->mailer              =  $mailer;
         $this->transportRealTime   = $transportRealTime;
         $this->emailSubjectLine     = $emailSubjectLine;
         $this->emailBody           = $emailBody;
         $this->emailRecipients      = $emailRecipients;
+        $this->attachmentFilePath   = $attachmentFilePath;
     }
 
     public function sendEmailMessage() {
 
 
+        // to add attachment, add this after the ->setBody reference:
+        // ->attach(Swift_Attachment::fromPath('/path/to/a/file.zip'))
 
-               $message = Swift_Message::newInstance()
-                          ->setSubject($this->emailSubjectLine)
-                          ->setFrom(self::PENNSOUTHDATA_SENDER_EMAIL, self::PENNSOUTHDATA_SENDER_NAME)
-                          ->setBody($this->emailBody);
+
+        if (is_null($this->attachmentFilePath)) {
+            $message = Swift_Message::newInstance()
+                ->setSubject($this->emailSubjectLine)
+                ->setFrom(self::PENNSOUTHDATA_SENDER_EMAIL, self::PENNSOUTHDATA_SENDER_NAME)
+                ->setBody($this->emailBody);
+        }
+        else {
+            $message = Swift_Message::newInstance()
+                ->setSubject($this->emailSubjectLine)
+                ->setFrom(self::PENNSOUTHDATA_SENDER_EMAIL, self::PENNSOUTHDATA_SENDER_NAME)
+                ->setBody($this->emailBody)
+                ->attach(Swift_Attachment::fromPath($this->attachmentFilePath));
+        }
 
               foreach ($this->emailRecipients as $emailRecipient) {
                     foreach ($emailRecipient as $emailAddress => $emailRecipientName) {

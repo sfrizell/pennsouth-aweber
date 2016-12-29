@@ -16,6 +16,7 @@ use Liuggio\ExcelBundle\Factory;
 use PHPExcel_CachedObjectStorageFactory;
 use PHPExcel_Settings;
 use Doctrine\ORM\Query;
+use PHPExcel;
 
 class AptsWithNoResidentHavingEmailAddressListCreator
 {
@@ -119,7 +120,8 @@ class AptsWithNoResidentHavingEmailAddressListCreator
 
 
 
-       if ($phpExcelObject instanceof \PHPExcel) {
+
+       if ($phpExcelObject instanceof PHPExcel) {
 
            $phpExcelObject->getProperties()->setCreator("batch")
                ->setLastModifiedBy("Batch Process")
@@ -167,6 +169,7 @@ class AptsWithNoResidentHavingEmailAddressListCreator
     }
 
     /**
+     * This function avoids the use of Doctrine's DQL and just uses raw SQL.
      * @return mixed
      * @throws \Exception
      */
