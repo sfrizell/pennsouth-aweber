@@ -345,6 +345,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 exit(1);
         }
 
+        print("\n ------- 1 -----------\n");
+
         if ($this->runListManagementReports) {
              try {
                  $phpExcel = $this->getContainer()->get('phpexcel');
@@ -369,6 +371,9 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
              }
         }
 
+
+        print("\n ------- 2 -----------\n");
+
         if ($this->runReportOnAptsWithNoEmail) {
             try {
                 $phpExcel = $this->getContainer()->get('phpexcel');
@@ -392,6 +397,9 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 exit(1);
             }
         }
+
+        print("\n ------- 3 -----------\n");
+
 
         // block to generate spreadsheet of MDS -> Aweber updates.
         // **** NOTE: Because of memory limitations, this step must be run by itself without other application functionality options being invoked.
@@ -421,6 +429,10 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             throw $exception;
         }
 
+
+        print("\n ------- 4 -----------\n");
+
+
         // check whether there is anything left to do...
        if (!$this->runUpdateAweberFromMds and !$this->runReportOnAweberEmailsNotInMds) {
            print("\n Neither the flag to run the Update Aweber from MDS nor the flag to run Reports on Aweber Emails Not in MDS is set to true. \n");
@@ -429,25 +441,22 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
        }
 
 
-
-
-
-
-        $entityManager = $this->getEntityManager();
-
-        $pennsouthResidentListReader = new PennsouthResidentListReader($entityManager);
-
-
-        $residentsWithEmailAddressesArray = $pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddressAssociativeArray();
-
-       // $aweberSubscriberListReader->getSubscribersToEmailNotificationLists($account, $emailNotificationLists);
-       // print("\n" . "0");
-
         /**
          *   In block below, obtain the list of Penn South Subscribers to each of the Penn South Resident subscriber lists obtained from the block above
          */
         $aweberSubscribersByListNames = array();
         try {
+
+            $entityManager = $this->getEntityManager();
+
+            $pennsouthResidentListReader = new PennsouthResidentListReader($entityManager);
+
+            print("\n ------- 4.1 -----------\n");
+
+            $residentsWithEmailAddressesArray = $pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddressAssociativeArray();
+
+            print("\n ------- 4.2 -----------\n");
+
             foreach ($emailNotificationLists as $emailNotificationList) {
 
                // print("\n" . "1");
@@ -483,6 +492,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             throw $exception;
         }
 
+
+        print("\n ------- 5 -----------\n");
 
         try {
             $mdsToAweberComparator = new MdsToAweberComparator($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersByListNames);
@@ -535,6 +546,10 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             throw $exception;
         }
 
+
+        print("\n ------- 6 -----------\n");
+
+
         // block to generate spreadsheet of MDS -> Aweber updates.
         // **** NOTE: Because of memory limitations, this step must be run by itself without other application functionality options being invoked.
        try {
@@ -545,7 +560,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                $subjectLine = "Report Created of Email Addresses found in Aweber.com but not in MDS";
                $messageBody = "\n Spreadsheet report created listing email addresses of Pennsouth residents found in Aweber but not in MDS. \n" ;
                $messageBody .= "\n The spreadsheet is attached to this email. It is also available on the Pennsouth ftp server. \n";
-               $attachmentFilePath = $appOutputDir . "/" . AweberMdsSyncAuditListCreator::LIST_AWEBERS_SUBS_WITH_NO_MATCH_IN_MDS_FILE_NAME;
+               $attachmentFilePath = $appOutputDir . "/" . AweberMdsSyncAuditListCreator::LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME;
                $this->sendEmailtoAdmins($subjectLine, $messageBody, $attachmentFilePath);
                $runEndDate = new \DateTime("now");
                print("\n" . "Program run end date/time: " . $runEndDate->format('Y-m-d H:i:s') . "\n");
@@ -597,7 +612,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
     private function sendEmailtoAdmins( $subjectLine, $messageBody, $attachmentFilePath = null) {
           $mailer = $this->getContainer()->get('mailer');
           $emailSubjectLine = $subjectLine;
-          if (!is_null($this->adminEmailRecipients)) {
+          if (!is_null($this->adminEmailRecipients) and !empty($this->adminEmailRecipients)) {
               $emailRecipients = $this->adminEmailRecipients;
               print("\n" . "Sending to recipients obtained from Aweber subscriber list admin_mds_to_aweber ");
           }

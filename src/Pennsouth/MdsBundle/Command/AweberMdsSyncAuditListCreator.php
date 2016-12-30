@@ -24,11 +24,10 @@ class AweberMdsSyncAuditListCreator
 {
 
     const LIST_AWEBER_UPDATES_FILE_NAME                     = 'aweber_updates.xlsx';
-    const LIST_AWEBER_EMAILS_NOT_IN_MDS                     = 'aweber_emails_not_in_mds.xlsx';
+    const LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME           = 'aweber_emails_not_in_mds.xlsx';
     const LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME_BASE      = 'aweber_emails_not_in_mds';
     const LIST_AWEBERUPDATES_FILE_NAME_BASE                 = 'aweber_updates';
     const EXCEL_FILENAME_SUFFIX                             = '.xlsx';
-    const LIST_AWEBERS_SUBS_WITH_NO_MATCH_IN_MDS_FILE_NAME  = 'aweber_no_matches_in_mds.xlsx';
     const LIST_AWEBER_UPDATES_BATCH_SIZE = 2000;
 
     const AWEBER_EMAILS_NOT_IN_MDS_HEADER_ARRAY = array(
@@ -392,23 +391,19 @@ class AweberMdsSyncAuditListCreator
                  $rowCtr++;
 
 
-             //    foreach ( $colNamesByHeaderNameKeys as $key => $value ) {
-             //        print ("\n key: " . $key . " value: " . $value . "\n");
+
 
                      for ($i = 0; $i < $colLimit; $i++) {
                          $currentLetter = PHPExcel_Cell::stringFromColumnIndex($i);
                          $cellId = $currentLetter . $rowCtr;
-                       //  print ("\$cellId: " . $cellId . "\n");
-                        // if (!$key == 'Last Changed Date') {
-                             $phpExcelObject->getActiveSheet()
+
+                         $phpExcelObject->getActiveSheet()
                                  ->setCellValue($cellId, $emailsinAweberNotInMdsRow[self::AWEBER_EMAILS_NOT_IN_MDS_COL_NAMES[$i]]);
-                        // }
                      }
 
-             // }
 
-                 $modulo = $rowCtr % self::LIST_AWEBER_UPDATES_BATCH_SIZE;
-                 // $rowCtr > 2000
+/*                 $modulo = $rowCtr % self::LIST_AWEBER_UPDATES_BATCH_SIZE;
+
                  if ($modulo == 0) {
                      $fileWriteCtr++;
                      $phpExcelObject->getActiveSheet()->setTitle($spreadsheetTabName);
@@ -417,14 +412,16 @@ class AweberMdsSyncAuditListCreator
 
                     // create the writer
                     $writer = $this->phpExcel->createWriter($phpExcelObject, 'Excel2007');
-                    // The save method is documented in the official PHPExcel library
-                    $writer->save($this->appOutputDir . '/' . self::LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME_BASE . $fileWriteCtr . self::EXCEL_FILENAME_SUFFIX);
+
+                   // $writer->save($this->appOutputDir . '/' . self::LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME_BASE . $fileWriteCtr . self::EXCEL_FILENAME_SUFFIX);
+                     $writer->save($this->appOutputDir . '/' . self::LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME);
+
 
                     $phpExcelObject = $this->getPhpExcelObjectAndSetHeadings(self::AWEBER_EMAILS_NOT_IN_MDS_HEADER_ARRAY, $title, $description, $category);
                     $phpExcelObject->setActiveSheetIndex(0);
 
-                    // break;
-                 }
+
+                 }*/
 
 
              }
@@ -437,9 +434,8 @@ class AweberMdsSyncAuditListCreator
              $writer = $this->phpExcel->createWriter($phpExcelObject, 'Excel2007');
              // The save method is documented in the official PHPExcel library
              $fileWriteCtr++;
-             $writer->save($this->appOutputDir . '/' . self::LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME_BASE . $fileWriteCtr . self::EXCEL_FILENAME_SUFFIX);
-            // $writer->save($this->appOutputDir . '/' . self::LIST_AWEBER_UPDATES_FILE_NAME);
-
+           //  $writer->save($this->appOutputDir . '/' . self::LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME_BASE . $fileWriteCtr . self::EXCEL_FILENAME_SUFFIX);
+             $writer->save($this->appOutputDir . '/' . self::LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME);
 
              return TRUE;
          }

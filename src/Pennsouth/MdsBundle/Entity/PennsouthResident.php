@@ -123,6 +123,16 @@ class PennsouthResident
     private $vehicleRegExpCountdown;
 
     /**
+     * @var string
+     */
+    private $vehicleModel;
+
+    /**
+     * @var string
+     */
+    private $vehicleLicensePlateNum;
+
+    /**
      * @var \DateTime
      */
     private $homeownerInsExpDate;
@@ -749,6 +759,40 @@ class PennsouthResident
     {
         return $this->vehicleRegExpCountdown;
     }
+
+    /**
+     * @return string
+     */
+    public function getVehicleModel()
+    {
+        return $this->vehicleModel;
+    }
+
+    /**
+     * @param string $vehicleModel
+     */
+    public function setVehicleModel($vehicleModel)
+    {
+        $this->vehicleModel = $vehicleModel;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVehicleLicensePlateNum()
+    {
+        return $this->vehicleLicensePlateNum;
+    }
+
+    /**
+     * @param string $vehicleLicensePlateNum
+     */
+    public function setVehicleLicensePlateNum($vehicleLicensePlateNum)
+    {
+        $this->vehicleLicensePlateNum = $vehicleLicensePlateNum;
+    }
+
+
 
     /**
      * Set homeownerInsExpDate

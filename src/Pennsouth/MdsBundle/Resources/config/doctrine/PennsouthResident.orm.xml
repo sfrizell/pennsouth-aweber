@@ -121,6 +121,8 @@
         <option name="comment">Number of Days till Expiration of vehicle registration. 0=has expired.</option>
       </options>
     </field>
+    <field name="vehicleModel" type="string" column="vehicle_model" length="35" nullable="true"/>
+    <field name="vehicleLicensePlateNum" type="string" column="vehicle_license_plate_num" length="7" nullable="true"/>
     <field name="homeownerInsExpDate" type="datetime" column="Homeowner_Ins_Exp_Date" nullable="true">
       <options>
         <option name="comment">Date of Expiration of Homeowners insurance.</option>

@@ -132,11 +132,12 @@ class AweberSubscriberWriter
                 $HTTP_METHOD = 'POST';
                 $URL = null;
                 if ($listName == AweberFieldsConstants::PRIMARY_RESIDENT_LIST) {
-                    if (strtolower($aweberSubscriber->getEmail()) == 'steve.frizell@gmail.com') {
+                    $URL = AweberFieldsConstants::PRIMARY_RESIDENT_LIST_URL . '/subscribers';
+               /*     if (strtolower($aweberSubscriber->getEmail()) == 'sfnyc.net@gmail.com') {
                         $URL = AweberFieldsConstants::FRIZELL_SUBSCRIBER_LIST_TEST_URL . '/subscribers';
                     } else {
                         $URL = AweberFieldsConstants::PRIMARY_RESIDENT_LIST_URL . '/subscribers';
-                    }
+                    }*/
                 } else {
                     if ($listName == AweberFieldsConstants::EMERGENCY_NOTICES_FOR_RESIDENTS) {
                         $URL = AweberFieldsConstants::PENNSOUTH_EMERGENCY_NOTICES_LIST_URL . '/subscribers';
@@ -279,11 +280,11 @@ class AweberSubscriberWriter
                 $params['custom_fields'] = $subscriberCustomFields;
 
                 // todo - remove after debugging...
-                print("\n custom_fields: \n");
-                print_r($subscriberCustomFields);
+                //print("\n custom_fields: \n");
+                //print_r($subscriberCustomFields);
 
-                print ("\n subscriberURL: \n");
-                print_r($subscriberUrl);
+                //print ("\n subscriberURL: \n");
+                //print_r($subscriberUrl);
 
                 $resp = $this->aweberApiInstance->adapter->request($HTTP_METHOD, $subscriberUrl, $params, $RETURN_FORMAT);
 

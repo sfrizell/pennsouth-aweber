@@ -41,57 +41,64 @@ class Emailer
         $this->attachmentFilePath   = $attachmentFilePath;
     }
 
-    public function sendEmailMessage() {
+    public function sendEmailMessage()
+    {
 
 
         // to add attachment, add this after the ->setBody reference:
         // ->attach(Swift_Attachment::fromPath('/path/to/a/file.zip'))
 
 
-        if (is_null($this->attachmentFilePath)) {
-            $message = Swift_Message::newInstance()
-                ->setSubject($this->emailSubjectLine)
-                ->setFrom(self::PENNSOUTHDATA_SENDER_EMAIL, self::PENNSOUTHDATA_SENDER_NAME)
-                ->setBody($this->emailBody);
+        try {
+            if (is_null($this->attachmentFilePath)) {
+                $message = Swift_Message::newInstance()
+                    ->setSubject($this->emailSubjectLine)
+                    ->setFrom(self::PENNSOUTHDATA_SENDER_EMAIL, self::PENNSOUTHDATA_SENDER_NAME)
+                    ->setBody($this->emailBody);
+            } else {
+                $message = Swift_Message::newInstance()
+                    ->setSubject($this->emailSubjectLine)
+                    ->setFrom(self::PENNSOUTHDATA_SENDER_EMAIL, self::PENNSOUTHDATA_SENDER_NAME)
+                    ->setBody($this->emailBody)
+                    ->attach(Swift_Attachment::fromPath($this->attachmentFilePath));
+            }
+
+            foreach ($this->emailRecipients as $emailRecipient) {
+                foreach ($emailRecipient as $emailAddress => $emailRecipientName) {
+                    $message->addTo($emailAddress, $emailRecipientName);
+                }
+            }
+
+            /*                    foreach ($this->emailRecipients as $emailAddress => $emailRecipientName) {
+                                    $message->addTo($emailAddress, $emailRecipientName);
+                                }*/
+
+            $result = $this->mailer->send($message); // success returns 1
+
+            //print("\n" . "result of mailer->send message: " . $result);
+            //$output->writeln($result);
+
+
+            $transport = $this->mailer->getTransport();
+
+            if (!$transport instanceof Swift_Transport_SpoolTransport) {
+                throw new \Exception("Exception in Emailer->setEmailMessage. \$transport not an instance of Swift_Transport_SpoolTransport !");
+            }
+
+            $spool = $transport->getSpool();
+            if (!$spool instanceof Swift_MemorySpool) {
+                throw new \Exception("Exception in Emailer->setEmailMessage. \$spool not an instance of Swift_MemorySpool !");
+            }
+
+            $spool->flushQueue($this->transportRealTime);
+
+
         }
-        else {
-            $message = Swift_Message::newInstance()
-                ->setSubject($this->emailSubjectLine)
-                ->setFrom(self::PENNSOUTHDATA_SENDER_EMAIL, self::PENNSOUTHDATA_SENDER_NAME)
-                ->setBody($this->emailBody)
-                ->attach(Swift_Attachment::fromPath($this->attachmentFilePath));
+        catch (\Exception $exception) {
+            print("\n" . "Exception occurred in Emailer->sendEmailMessage()! Exception->getMessage() : " . $exception->getMessage());
+            print("\n \$Exception->getTraceAsString(): " . $exception->getTraceAsString() . "\n");
+
         }
-
-              foreach ($this->emailRecipients as $emailRecipient) {
-                    foreach ($emailRecipient as $emailAddress => $emailRecipientName) {
-                        $message->addTo($emailAddress, $emailRecipientName);
-                    }
-              }
-
-/*                    foreach ($this->emailRecipients as $emailAddress => $emailRecipientName) {
-                        $message->addTo($emailAddress, $emailRecipientName);
-                    }*/
-
-                $result = $this->mailer->send($message); // success returns 1
-
-                //print("\n" . "result of mailer->send message: " . $result);
-                //$output->writeln($result);
-
-
-                $transport = $this->mailer->getTransport();
-
-               if (!$transport instanceof Swift_Transport_SpoolTransport) {
-                   throw new \Exception("Exception in Emailer->setEmailMessage. \$transport not an instance of Swift_Transport_SpoolTransport !");
-               }
-
-               $spool = $transport->getSpool();
-               if (!$spool instanceof Swift_MemorySpool) {
-                   throw new \Exception("Exception in Emailer->setEmailMessage. \$spool not an instance of Swift_MemorySpool !");
-               }
-
-                $spool->flushQueue($this->transportRealTime);
-
-
     }
 
 }

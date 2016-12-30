@@ -63,8 +63,8 @@ class AweberSubscriberListsUpdater
                     }*/
                         try {
 
-                            if ($aweberSubscriber->getEmail() == 'steve.frizell@gmail.com') {
-                                print("\n" . "-------   AweberSubscriberListsUpdater - found steve.frizell email address for insert   ----------");
+                            if ($aweberSubscriber->getEmail() == 'sfnyc.net@gmail.com') {
+                                print("\n" . "-------   AweberSubscriberListsUpdater - found sfnyc.net@gmail.com email address for insert   ----------");
                                 print("\n" . "listName: " . $listName);
                                 //print_r($aweberSubscriber);
                                 // insert the AweberSubscriber in the subscriber list...
@@ -100,14 +100,14 @@ class AweberSubscriberListsUpdater
                     try {
                         // todo : remove the following after testing...
                        // if ($aweberSubscriber->getEmail() == 'steve.frizell@gmail.com') {
-                        if ($aweberSubscriber->getCeramicsMember() == 'Y') {
+                      //  if ($aweberSubscriber->getCeramicsMember() == 'Y') {
                           // print("\n" . "-------   AweberSubscriberListsUpdater - found steve.frizell email address for update   ----------");
-                            print("\n" . "-------   AweberSubscriberListsUpdater - \$aweberSubscriber->getCeramicsMember() == 'Y'   ----------");
-                           print("\n" . "listName: " . $listName);
+                         //   print("\n" . "-------   AweberSubscriberListsUpdater - \$aweberSubscriber->getCeramicsMember() == 'Y'   ----------");
+                         //  print("\n" . "listName: " . $listName);
                            //print_r($aweberSubscriber);
-                           // insert the AweberSubscriber in the subscriber list...
+                           // update the AweberSubscriber in the subscriber list...
                            $aweberSubscriberWriter->updateAweberSubscriber($listName, $aweberSubscriber);
-                       }
+                      // }
                         // update the AweberSubscriber...
                         // todo : uncomment the following after testing...
                         // $aweberSubscriberWriter->updateAweberSubscriber( $listName, $aweberSubscriber);
