@@ -774,6 +774,8 @@ class PennsouthResident
     public function setVehicleModel($vehicleModel)
     {
         $this->vehicleModel = $vehicleModel;
+
+        return $this;
     }
 
     /**
@@ -790,6 +792,8 @@ class PennsouthResident
     public function setVehicleLicensePlateNum($vehicleLicensePlateNum)
     {
         $this->vehicleLicensePlateNum = $vehicleLicensePlateNum;
+
+        return $this;
     }
 
 
