@@ -130,12 +130,12 @@ class AweberMdsSyncAudit
     /**
      * @var integer
      */
-    public $mdsVehicleRegExpDaysLeft;
+    public $mdsVehicleRegIntervalRemaining;
 
     /**
      * @var integer
      */
-    public $mdsHomeownerInsExpDaysLeft;
+    public $mdsHomeownerInsIntervalRemaining;
 
     /**
      * @var string
@@ -215,12 +215,12 @@ class AweberMdsSyncAudit
     /**
      * @var integer
      */
-    public $aweberVehicleRegExpDaysLeft;
+    public $aweberVehicleRegIntervalRemaining;
 
     /**
      * @var integer
      */
-    public $aweberHomeownerInsExpDaysLeft;
+    public $aweberHomeownerInsIntervalRemaining;
 
     /**
      * @var string
@@ -850,51 +850,51 @@ class AweberMdsSyncAudit
     }
 
     /**
-     * Set mdsVehicleRegExpDaysLeft
+     * Set mdsVehicleRegIntervalRemaining
      *
-     * @param integer $mdsVehicleRegExpDaysLeft
+     * @param integer $mdsVehicleRegIntervalRemaining
      *
      * @return AweberMdsSyncAudit
      */
-    public function setMdsVehicleRegExpDaysLeft($mdsVehicleRegExpDaysLeft)
+    public function setMdsVehicleRegIntervalRemaining($mdsVehicleRegIntervalRemaining)
     {
-        $this->mdsVehicleRegExpDaysLeft = $mdsVehicleRegExpDaysLeft;
+        $this->mdsVehicleRegIntervalRemaining = $mdsVehicleRegIntervalRemaining;
 
         return $this;
     }
 
     /**
-     * Get mdsVehicleRegExpDaysLeft
+     * Get mdsVehicleRegIntervalRemaining
      *
      * @return integer
      */
-    public function getMdsVehicleRegExpDaysLeft()
+    public function getMdsVehicleRegIntervalRemaining()
     {
-        return $this->mdsVehicleRegExpDaysLeft;
+        return $this->mdsVehicleRegIntervalRemaining;
     }
 
     /**
-     * Set mdsHomeownerInsExpDaysLeft
+     * Set mdsHomeownerInsIntervalRemaining
      *
-     * @param integer $mdsHomeownerInsExpDaysLeft
+     * @param integer $mdsHomeownerInsIntervalRemaining
      *
      * @return AweberMdsSyncAudit
      */
-    public function setMdsHomeownerInsExpDaysLeft($mdsHomeownerInsExpDaysLeft)
+    public function setMdsHomeownerInsIntervalRemaining($mdsHomeownerInsIntervalRemaining)
     {
-        $this->mdsHomeownerInsExpDaysLeft = $mdsHomeownerInsExpDaysLeft;
+        $this->mdsHomeownerInsIntervalRemaining = $mdsHomeownerInsIntervalRemaining;
 
         return $this;
     }
 
     /**
-     * Get mdsHomeownerInsExpDaysLeft
+     * Get mdsHomeownerInsIntervalRemaining
      *
      * @return integer
      */
-    public function getMdsHomeownerInsExpDaysLeft()
+    public function getMdsHomeownerInsIntervalRemaining()
     {
-        return $this->mdsHomeownerInsExpDaysLeft;
+        return $this->mdsHomeownerInsIntervalRemaining;
     }
 
     /**
@@ -1252,51 +1252,51 @@ class AweberMdsSyncAudit
     }
 
     /**
-     * Set aweberVehicleRegExpDaysLeft
+     * Set aweberVehicleRegIntervalRemaining
      *
-     * @param integer $aweberVehicleRegExpDaysLeft
+     * @param integer $aweberVehicleRegIntervalRemaining
      *
      * @return AweberMdsSyncAudit
      */
-    public function setAweberVehicleRegExpDaysLeft($aweberVehicleRegExpDaysLeft)
+    public function setAweberVehicleRegIntervalRemaining($aweberVehicleRegIntervalRemaining)
     {
-        $this->aweberVehicleRegExpDaysLeft = $aweberVehicleRegExpDaysLeft;
+        $this->aweberVehicleRegIntervalRemaining = $aweberVehicleRegIntervalRemaining;
 
         return $this;
     }
 
     /**
-     * Get aweberVehicleRegExpDaysLeft
+     * Get aweberVehicleRegIntervalRemaining
      *
      * @return integer
      */
-    public function getAweberVehicleRegExpDaysLeft()
+    public function getAweberVehicleRegIntervalRemaining()
     {
-        return $this->aweberVehicleRegExpDaysLeft;
+        return $this->aweberVehicleRegIntervalRemaining;
     }
 
     /**
-     * Set aweberHomeownerInsExpDaysLeft
+     * Set aweberHomeownerInsIntervalRemaining
      *
-     * @param integer $aweberHomeownerInsExpDaysLeft
+     * @param integer $aweberHomeownerInsIntervalRemaining
      *
      * @return AweberMdsSyncAudit
      */
-    public function setAweberHomeownerInsExpDaysLeft($aweberHomeownerInsExpDaysLeft)
+    public function setAweberHomeownerInsIntervalRemaining($aweberHomeownerInsIntervalRemaining)
     {
-        $this->aweberHomeownerInsExpDaysLeft = $aweberHomeownerInsExpDaysLeft;
+        $this->aweberHomeownerInsIntervalRemaining = $aweberHomeownerInsIntervalRemaining;
 
         return $this;
     }
 
     /**
-     * Get aweberHomeownerInsExpDaysLeft
+     * Get aweberHomeownerInsIntervalRemaining
      *
      * @return integer
      */
-    public function getAweberHomeownerInsExpDaysLeft()
+    public function getAweberHomeownerInsIntervalRemaining()
     {
-        return $this->aweberHomeownerInsExpDaysLeft;
+        return $this->aweberHomeownerInsIntervalRemaining;
     }
 
     /**

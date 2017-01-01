@@ -42,19 +42,32 @@ class AweberSubscriberWriter
         try {
 
 
+            print("\n -- AweberSubscriberWriter->createAweberSubscriberTest - 1 \n");
 
-          //  $aweberSubscriber = new AweberSubscriber();
+            print("\n \$aweberSubscriber: \n");
+            print_r($aweberSubscriber);
+            print ("\n");
+/*
+           $aweberSubscriber = new AweberSubscriber();
 
-            print("\n -- createAweberSubscriberTest - 1");
-//            $aweberSubscriber->setEmail('steve.frizell@gmail.com');
-//            $aweberSubscriber->setName('Stephen Frizell');
-//            $aweberSubscriber->setFirstName('Stephen');
-//            $aweberSubscriber->setLastName('Frizell');
+
+            $aweberSubscriber->setEmail('sfnyc.net@gmail.com');
+            $aweberSubscriber->setName('Stephen FrizellTest');
+            $aweberSubscriber->setFirstName('Stephen');
+            $aweberSubscriber->setLastName('Frizell');
+            $aweberSubscriber->setGymMember('Y');
+            $aweberSubscriber->setParkingLotLocation('UPPER');
+            $aweberSubscriber->setPennSouthBuilding('1');
+            $aweberSubscriber->setFloorNumber('2');
+            $aweberSubscriber->setApartment('C');*/
+
+
+          //  $aweberSubscriber->setVehicleRegIntervalRemaining(0);
 
 //            $subscriberCustomFields = array();
-//            $subscriberCustomFields["Penn_South_Building"] = "1";
-//            $subscriberCustomFields["Floor_Number"] = "1";
-//            $subscriberCustomFields["Apartment"] = "A";
+//            $subscriberCustomFields['Penn_South_Building'] = '1';
+//            $subscriberCustomFields['Floor_Number'] = '1';
+//            $subscriberCustomFields['Apartment'] = 'A';
 
             $subscriberCustomFields = $this->setCustomFields($aweberSubscriber);
 
@@ -204,7 +217,22 @@ class AweberSubscriberWriter
                          print("\n" . "Exiting from program.");
                          throw $exception;
                      }
-                 } else {
+                 } else if ($exception->status == "400") {
+
+                     print("\n" . "AweberAPIException (status = 400 - Email address blocked. Please refer to https://help.aweber.com/entries/97662366 ) occurred in AweberSubscriberWriter->createAweberSubscriber. ");
+                     print ("\n" . "skipping this email address: " . $aweberSubscriber->getEmail());
+                     return FALSE; // todo - add logic to handle in invoking method...
+
+                 }
+                 else if ($exception->type == "APIUnreachableError") {
+                     $j++;
+                     if ($j < $maxRetries) { // 6 is arbitrary number of tries...
+                         print("\n" . "AweberAPIException (type = APIUnreachableError - service temporarily unavailable) occurred in AweberSubscriberWriter->createAweberSubscriber. ");
+                         print ("\n" . "Going to sleep for 2 minutes; then will try again.");
+                         sleep(120);
+                     }
+                }
+                  else {
                      print("\n" . "AweberAPIException occurred in AweberSubscriberListReader->getSubscribersToAdminsMdsToAweberList! Exception->getMessage() : " . $exception->getMessage());
                      print "Type: " . $exception->type . "\n";
                      print "Status: " . $exception->status . "\n";
@@ -324,7 +352,16 @@ class AweberSubscriberWriter
                                      print("\n" . "Exiting from program.");
                                      throw $exception;
                                  }
-                             } else {
+                             }
+                             else if ($exception->type == "APIUnreachableError") {
+                                  $j++;
+                                  if ($j < $maxRetries) { // 6 is arbitrary number of tries...
+                                      print("\n" . "AweberAPIException (type = APIUnreachableError - service temporarily unavailable) occurred in AweberSubscriberWriter->updateAweberSubscriber. ");
+                                      print ("\n" . "Going to sleep for 2 minutes; then will try again.");
+                                      sleep(120);
+                                  }
+                             }
+                             else {
                                  print("\n" . "AweberAPIException occurred in AweberSubscriberWriter->updateAweberSubscriber! Exception->getMessage() : " . $exception->getMessage());
                                  print "Type: " . $exception->type . "\n";
                                  print "Status: " . $exception->status . "\n";
@@ -390,11 +427,11 @@ class AweberSubscriberWriter
            if (strlen($aweberSubscriber->getBikeRackLocation()) > 0) {
                $subscriberCustomFields[AweberFieldsConstants::BIKE_RACK_LOCATION] = $aweberSubscriber->getBikeRackLocation();
            }
-           if (strlen($aweberSubscriber->getHomeownerInsExpDateLeft()) > 0) {
-               $subscriberCustomFields[AweberFieldsConstants::HOMEOWNER_INS_EXP_DAYS_LEFT] = $aweberSubscriber->getHomeownerInsExpDateLeft();
+           if (strlen($aweberSubscriber->getHomeownerInsIntervalRemaining()) > 0) {
+               $subscriberCustomFields[AweberFieldsConstants::HOMEOWNER_INS_INTERVAL_REMAINING] = $aweberSubscriber->getHomeownerInsIntervalRemaining();
            }
-           if (strlen($aweberSubscriber->getVehicleRegExpDaysLeft()) > 0) {
-               $subscriberCustomFields[AweberFieldsConstants::VEHICLE_REG_EXP_DAYS_LEFT] = $aweberSubscriber->getVehicleRegExpDaysLeft();
+           if (strlen($aweberSubscriber->getVehicleRegIntervalRemaining()) > 0) {
+               $subscriberCustomFields[AweberFieldsConstants::VEHICLE_REG_INTERVAL_REMAINING] = $aweberSubscriber->getVehicleRegIntervalRemaining();
            }
            if (strlen($aweberSubscriber->getParkingLotLocation()) > 0) {
                $subscriberCustomFields[AweberFieldsConstants::PARKING_LOT_LOCATION] = $aweberSubscriber->getParkingLotLocation();
@@ -416,61 +453,62 @@ class AweberSubscriberWriter
          */
            private function setCustomFields(AweberSubscriber $aweberSubscriber) {
 
+               $singleQuote = "'";
                $subscriberCustomFields = array();
-               $subscriberCustomFields[AweberFieldsConstants::BUILDING]                      = "'" . $aweberSubscriber->getPennSouthBuilding() . "'";
-               $subscriberCustomFields[AweberFieldsConstants::FLOOR_NUMBER]                  = "'" . $aweberSubscriber->getFloorNumber() . "'";
-               $subscriberCustomFields[AweberFieldsConstants::APARTMENT]                     = "'" . $aweberSubscriber->getApartment() . "'";
+               $subscriberCustomFields[AweberFieldsConstants::BUILDING]                      = $singleQuote . $aweberSubscriber->getPennSouthBuilding() . $singleQuote;
+               $subscriberCustomFields[AweberFieldsConstants::FLOOR_NUMBER]                  = $singleQuote . $aweberSubscriber->getFloorNumber() . $singleQuote;
+               $subscriberCustomFields[AweberFieldsConstants::APARTMENT]                     = $singleQuote . $aweberSubscriber->getApartment() . $singleQuote;
                if(strlen($aweberSubscriber->getCeramicsMember()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::CERAMICS_MEMBER] = "'" . $aweberSubscriber->getCeramicsMember() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::CERAMICS_MEMBER] = $singleQuote . $aweberSubscriber->getCeramicsMember() . $singleQuote;
                }
                if (strlen($aweberSubscriber->getGardenMember()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::GARDEN_MEMBER] = "'" . $aweberSubscriber->getGardenMember() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::GARDEN_MEMBER] = $singleQuote . $aweberSubscriber->getGardenMember() . $singleQuote;
                }
                if (strlen($aweberSubscriber->getGymMember()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::GYM_MEMBER] = "'" . $aweberSubscriber->getGymMember() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::GYM_MEMBER] = $singleQuote . $aweberSubscriber->getGymMember() . $singleQuote;
                }
                if (strlen($aweberSubscriber->getToddlerRoomMember()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::TODDLER_ROOM_MEMBER] = "'" . $aweberSubscriber->getToddlerRoomMember() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::TODDLER_ROOM_MEMBER] = $singleQuote . $aweberSubscriber->getToddlerRoomMember() . $singleQuote;
                }
                if (strlen($aweberSubscriber->getWoodworkingMember()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::WOODWORKING_MEMBER] = "'" . $aweberSubscriber->getWoodworkingMember() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::WOODWORKING_MEMBER] = $singleQuote . $aweberSubscriber->getWoodworkingMember() . $singleQuote;
                }
                if (strlen($aweberSubscriber->getYouthRoomMember()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::YOUTH_ROOM_MEMBER] = "'" . $aweberSubscriber->getYouthRoomMember() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::YOUTH_ROOM_MEMBER] = $singleQuote . $aweberSubscriber->getYouthRoomMember() . $singleQuote;
                }
 
                if (strlen($aweberSubscriber->getIsDogInApt()) > 0 ) {
-                   $subscriberCustomFields[AweberFieldsConstants::IS_DOG_IN_APT] = "'" . $aweberSubscriber->getIsDogInApt() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::IS_DOG_IN_APT] = $singleQuote . $aweberSubscriber->getIsDogInApt() . $singleQuote;
                }
                if (strlen($aweberSubscriber->getStorageLockerClosetBldg()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::STORAGE_LOCKER_CLOSET_BLDG_NUM] = "'" . $aweberSubscriber->getStorageLockerClosetBldg() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::STORAGE_LOCKER_CLOSET_BLDG_NUM] = $singleQuote . $aweberSubscriber->getStorageLockerClosetBldg() . $singleQuote;
                }
                if (strlen($aweberSubscriber->getStorageLockerNum()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::STORAGE_LOCKER_NUM] = "'" . $aweberSubscriber->getStorageLockerNum() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::STORAGE_LOCKER_NUM] = $singleQuote . $aweberSubscriber->getStorageLockerNum() . $singleQuote;
                }
                if (strlen($aweberSubscriber->getStorageClosetFloorNum()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::STORAGE_CLOSET_FLOOR_NUM] = "'" . $aweberSubscriber->getStorageClosetFloorNum() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::STORAGE_CLOSET_FLOOR_NUM] = $singleQuote . $aweberSubscriber->getStorageClosetFloorNum() . $singleQuote;
                }
                if (strlen($aweberSubscriber->getBikeRackBldg()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::BIKE_RACK_BLDG] = "'" . $aweberSubscriber->getBikeRackBldg() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::BIKE_RACK_BLDG] = $singleQuote . $aweberSubscriber->getBikeRackBldg() . $singleQuote;
                }
                if (strlen($aweberSubscriber->getBikeRackRoom()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::BIKE_RACK_ROOM] = "'" . $aweberSubscriber->getBikeRackRoom() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::BIKE_RACK_ROOM] = $singleQuote . $aweberSubscriber->getBikeRackRoom() . $singleQuote;
                }
                if (strlen($aweberSubscriber->getBikeRackLocation()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::BIKE_RACK_LOCATION] = "'" . $aweberSubscriber->getBikeRackLocation() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::BIKE_RACK_LOCATION] = $singleQuote . $aweberSubscriber->getBikeRackLocation() . $singleQuote;
                }
-               if (strlen($aweberSubscriber->getHomeownerInsExpDateLeft()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::HOMEOWNER_INS_EXP_DAYS_LEFT] = "'" . $aweberSubscriber->getHomeownerInsExpDateLeft() . "'";
+               if (strlen($aweberSubscriber->getHomeownerInsIntervalRemaining()) > 0) {
+                   $subscriberCustomFields[AweberFieldsConstants::HOMEOWNER_INS_INTERVAL_REMAINING] = $singleQuote . $aweberSubscriber->getHomeownerInsIntervalRemaining() . $singleQuote;
                }
-               if (strlen($aweberSubscriber->getVehicleRegExpDaysLeft()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::VEHICLE_REG_EXP_DAYS_LEFT] = "'" . $aweberSubscriber->getVehicleRegExpDaysLeft() . "'";
+               if (strlen($aweberSubscriber->getVehicleRegIntervalRemaining()) > 0) {
+                   $subscriberCustomFields[AweberFieldsConstants::VEHICLE_REG_INTERVAL_REMAINING] = $singleQuote . $aweberSubscriber->getVehicleRegIntervalRemaining() . $singleQuote;
                }
                if (strlen($aweberSubscriber->getParkingLotLocation()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::PARKING_LOT_LOCATION] = "'" . $aweberSubscriber->getParkingLotLocation() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::PARKING_LOT_LOCATION] = $singleQuote . $aweberSubscriber->getParkingLotLocation() . $singleQuote;
                }
                if (strlen($aweberSubscriber->getResidentCategory()) > 0) {
-                   $subscriberCustomFields[AweberFieldsConstants::RESIDENT_CATEGORY] = "'" . $aweberSubscriber->getResidentCategory() . "'";
+                   $subscriberCustomFields[AweberFieldsConstants::RESIDENT_CATEGORY] = $singleQuote . $aweberSubscriber->getResidentCategory() . $singleQuote;
                }
 
                return $subscriberCustomFields;

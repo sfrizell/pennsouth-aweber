@@ -117,12 +117,12 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="mdsVehicleRegExpDaysLeft" type="integer" column="Mds_Vehicle_Reg_Exp_Days_Left" nullable="true">
+    <field name="mdsVehicleRegIntervalRemaining" type="integer" column="mds_vehicle_reg_interval_remaining" nullable="true">
       <options>
         <option name="unsigned"/>
       </options>
     </field>
-    <field name="mdsHomeownerInsExpDaysLeft" type="integer" column="Mds_Homeowner_Ins_Exp_Days_left" nullable="true">
+    <field name="mdsHomeownerInsIntervalRemaining" type="integer" column="mds_homeowner_ins_interval_remaining" nullable="true">
       <options>
         <option name="unsigned"/>
       </options>
@@ -204,12 +204,12 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="aweberVehicleRegExpDaysLeft" type="integer" column="Aweber_Vehicle_Reg_Exp_Days_Left" nullable="true">
+    <field name="aweberVehicleRegIntervalRemaining" type="integer" column="aweber_vehicle_reg_interval_remaining" nullable="true">
       <options>
         <option name="unsigned"/>
       </options>
     </field>
-    <field name="aweberHomeownerInsExpDaysLeft" type="integer" column="Aweber_Homeowner_Ins_Exp_Days_Left" nullable="true">
+    <field name="aweberHomeownerInsIntervalRemaining" type="integer" column="aweber_homeowner_ins_interval_remaining" nullable="true">
       <options>
         <option name="unsigned"/>
       </options>

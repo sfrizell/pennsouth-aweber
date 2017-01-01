@@ -121,8 +121,22 @@
         <option name="comment">Number of Days till Expiration of vehicle registration. 0=has expired.</option>
       </options>
     </field>
-    <field name="vehicleModel" type="string" column="vehicle_model" length="35" nullable="true"/>
-    <field name="vehicleLicensePlateNum" type="string" column="vehicle_license_plate_num" length="7" nullable="true"/>
+    <field name="vehicleRegIntervalRemaining" type="integer" column="vehicle_reg_interval_remaining" nullable="true">
+       <options>
+         <option name="unsigned"/>
+         <option name="comment">Interval remaining before expiration of insurance. Values: 0, 10, 21. Null means the value is outside of any of these ranges.</option>
+       </options>
+     </field>
+    <field name="vehicleModel" type="string" column="vehicle_model" length="35" nullable="true">
+    <options>
+      <option name="fixed"/>
+    </options>
+  </field>
+    <field name="vehicleLicensePlateNum" type="string" column="vehicle_license_plate_num" length="7" nullable="true">
+        <options>
+          <option name="fixed"/>
+        </options>
+    </field>
     <field name="homeownerInsExpDate" type="datetime" column="Homeowner_Ins_Exp_Date" nullable="true">
       <options>
         <option name="comment">Date of Expiration of Homeowners insurance.</option>
@@ -134,6 +148,12 @@
         <option name="comment">Number of Days till Expiration. 0=has expired.</option>
       </options>
     </field>
+    <field name="homeownerInsIntervalRemaining" type="integer" column="homeowner_ins_interval_remaining" nullable="true">
+       <options>
+         <option name="unsigned"/>
+         <option name="comment">Interval remaining before expiration of insurance. Values: 0, 10, 21. Null means the value is outside of any of these ranges.</option>
+       </options>
+     </field>
     <field name="birthDate" type="datetime" column="Birth_Date" nullable="true"/>
     <field name="moveInDate" type="datetime" column="Move_In_Date" nullable="true"/>
     <field name="storageLockerClosetBldgNum" type="string" column="Storage_Locker_Closet_Bldg_Num" length="20" nullable="true">

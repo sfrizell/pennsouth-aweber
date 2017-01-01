@@ -29,7 +29,8 @@ class ParkingLotListCreator
                 'Decal Num',
                 'Gap',
                 'Car Reg. Expiration Date (MDS)',
-                'Days Until Reg. Expires',
+                'Days Until Car Reg. Expires',
+                'Car Reg. Exp. Countdown Interval',
                 'Make/Model',
                 'License Plate',
                 'Shareholder1 Last Name',
@@ -54,6 +55,7 @@ class ParkingLotListCreator
                     'gap',
                     'vehicle_reg_exp_date',
                     'vehicle_reg_exp_countdown',
+                    'vehicle_reg_interval_remaining',
                     'vehicle_model',
                     'vehicle_license_plate_num',
                     'last_name',
@@ -265,7 +267,7 @@ class ParkingLotListCreator
         /*
          * Following DQL doesn't work because of LEFT JOIN - don't know how to use custom join with Doctrine
          *                 'SELECT  distinct pr.building, pr.floorNumber, pr.aptLine, pr.mdsResidentCategory as mds_resident_category1,
-                             pr.parkingLotLocation, \'\' as gap, pr.decalNum, pr.vehicleRegExpDate, pr.vehicleRegExpCountdown,
+                             pr.parkingLotLocation, \'\' as gap, pr.decalNum, pr.vehicleRegExpDate, pr.vehicleRegIntervalRemaining,
                              pr.vehicleModel, pr.vehicleLicensePlateNum,
                              pr.firstName, pr.lastName, pr.emailAddress, pr.cellPhone, pr.eveningPhone,
                              pr2.mdsResidentCategory, pr2.firstName, pr2.lastName, pr2.emailAddress,
@@ -301,7 +303,7 @@ class ParkingLotListCreator
                 $query =
                     'SELECT  distinct pr.building, pr.floor_number, pr.apt_line, pr.mds_resident_category as mds_resident_category1,
                     pr.parking_lot_location, \'\' gap, cast(pr.decal_num as unsigned) decal_num, pr.vehicle_reg_exp_date, pr.vehicle_reg_exp_countdown,
-                    pr.vehicle_model, pr.vehicle_license_plate_num,
+                    pr.vehicle_reg_interval_remaining, pr.vehicle_model, pr.vehicle_license_plate_num,
                     pr.last_name, pr.first_name, pr.email_address, pr.cell_phone, pr.evening_phone, 
                     pr2.mds_resident_category as mds_resident_category2, pr2.last_name last_name2, pr2.first_name first_name2, 
                     pr2.email_address email_address2, pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2
@@ -323,7 +325,7 @@ class ParkingLotListCreator
                 $query =
                     'SELECT  distinct pr.building, pr.floor_number, pr.apt_line, pr.mds_resident_category as mds_resident_category1,
                     pr.parking_lot_location, \'\' gap, cast(pr.decal_num as unsigned) decal_num, pr.vehicle_reg_exp_date, pr.vehicle_reg_exp_countdown,
-                    pr.vehicle_model, pr.vehicle_license_plate_num,
+                    pr.vehicle_reg_interval_remaining, pr.vehicle_model, pr.vehicle_license_plate_num,
                     pr.last_name, pr.first_name, pr.email_address, pr.cell_phone, pr.evening_phone, 
                     pr2.mds_resident_category as mds_resident_category2, pr2.last_name last_name2, pr2.first_name first_name2, 
                     pr2.email_address email_address2, pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2

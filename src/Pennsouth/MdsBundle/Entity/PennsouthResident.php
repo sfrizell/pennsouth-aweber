@@ -123,6 +123,12 @@ class PennsouthResident
     private $vehicleRegExpCountdown;
 
     /**
+     * @var integer
+     */
+    private $vehicleRegIntervalRemaining;
+
+
+    /**
      * @var string
      */
     private $vehicleModel;
@@ -141,6 +147,11 @@ class PennsouthResident
      * @var integer
      */
     private $homeownerInsExpCountdown;
+
+    /**
+     * @var integer
+     */
+    private $homeownerInsIntervalRemaining;
 
     /**
      * @var \DateTime
@@ -737,11 +748,15 @@ class PennsouthResident
     }
 
     /**
-     * Set vehicleRegExpCountdown
-     *
-     * @param integer $vehicleRegExpCountdown
-     *
-     * @return PennsouthResident
+     * @return int
+     */
+    public function getVehicleRegExpCountdown()
+    {
+        return $this->vehicleRegExpCountdown;
+    }
+
+    /**
+     * @param int $vehicleRegExpCountdown
      */
     public function setVehicleRegExpCountdown($vehicleRegExpCountdown)
     {
@@ -750,15 +765,33 @@ class PennsouthResident
         return $this;
     }
 
+
+
     /**
-     * Get vehicleRegExpCountdown
+     * Set vehicleRegIntervalRemaining
+     *
+     * @param integer $vehicleRegIntervalRemaining
+     *
+     * @return PennsouthResident
+     */
+    public function setVehicleRegIntervalRemaining($vehicleRegIntervalRemaining)
+    {
+        $this->vehicleRegIntervalRemaining = $vehicleRegIntervalRemaining;
+
+        return $this;
+    }
+
+    /**
+     * Get vehicleRegIntervalRemaining
      *
      * @return integer
      */
-    public function getVehicleRegExpCountdown()
+    public function getVehicleRegIntervalRemaining()
     {
-        return $this->vehicleRegExpCountdown;
+        return $this->vehicleRegIntervalRemaining;
     }
+
+
 
     /**
      * @return string
@@ -823,11 +856,15 @@ class PennsouthResident
     }
 
     /**
-     * Set homeownerInsExpCountdown
-     *
-     * @param integer $homeownerInsExpCountdown
-     *
-     * @return PennsouthResident
+     * @return int
+     */
+    public function getHomeownerInsExpCountdown()
+    {
+        return $this->homeownerInsExpCountdown;
+    }
+
+    /**
+     * @param int $homeownerInsExpCountdown
      */
     public function setHomeownerInsExpCountdown($homeownerInsExpCountdown)
     {
@@ -836,15 +873,33 @@ class PennsouthResident
         return $this;
     }
 
+
+
     /**
-     * Get homeownerInsExpCountdown
+     * Set homeownerInsIntervalRemaining
+     *
+     * @param integer $homeownerInsIntervalRemaining
+     *
+     * @return PennsouthResident
+     */
+    public function setHomeownerInsIntervalRemaining($homeownerInsIntervalRemaining)
+    {
+        $this->homeownerInsIntervalRemaining = $homeownerInsIntervalRemaining;
+
+        return $this;
+    }
+
+    /**
+     * Get homeownerInsIntervalRemaining
      *
      * @return integer
      */
-    public function getHomeownerInsExpCountdown()
+    public function getHomeownerInsIntervalRemaining()
     {
-        return $this->homeownerInsExpCountdown;
+        return $this->homeownerInsIntervalRemaining;
     }
+
+
 
     /**
      * Set birthDate
