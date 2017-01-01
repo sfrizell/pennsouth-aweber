@@ -63,15 +63,15 @@ class AweberSubscriberListsUpdater
                     }*/
                         try {
 
-                            if ($aweberSubscriber->getEmail() == 'sfnyc.net@gmail.com') {
+/*                            if ($aweberSubscriber->getEmail() == 'sfnyc.net@gmail.com') {
                                 print("\n" . "-------   AweberSubscriberListsUpdater - found sfnyc.net@gmail.com email address for insert   ----------");
                                 print("\n" . "listName: " . $listName);
                                 //print_r($aweberSubscriber);
                                 // insert the AweberSubscriber in the subscriber list...
                                 $aweberSubscriberWriter->createAweberSubscriber($listName, $aweberSubscriber);
-                            }
+                            }*/
                             // todo : uncomment the following after testing...
-                            // $aweberSubscriberWriter->createAweberSubscriber( $listName, $aweberSubscriber);
+                             $aweberSubscriberWriter->createAweberSubscriber( $listName, $aweberSubscriber);
                         } // end catch exception block
                         catch (\Exception $exception) {
                             print ("\n" . "Exception caught in AweberSubscriberListsUpdater->updateAweberSubscriberLists insert subscribers section. \n");
