@@ -207,6 +207,11 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             print ("\n" . "run report (generate spreadsheet) on Aweber updates from MDS set to false. \n");
         }
 
+        // Seems to need 128M (32M default setting on Rose Hosting server is too little - Doctrine query runs out of memory in select from pennsouth_resident...
+        $memory_limit = ini_get('memory_limit');
+        print("\n memory_limit: " . $memory_limit);
+
+
 
    //     print ("\n @@@@@@@@@  rootDir trimmed: " .  $rootDir . "\n");
 
@@ -247,7 +252,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         // test below
 
 
-  /*         $entityManager = $this->getEntityManager();
+  /*     $entityManager = $this->getEntityManager();
 
         $pennsouthResidentListReader = new PennsouthResidentListReader($entityManager);
 
@@ -267,7 +272,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         $pennsouthResident = null;
         foreach ( $residentsWithEmailAddressesArray as $residentWithEmailAddress ) {
-            if ($residentWithEmailAddress->getEmailAddress() == 'steve.frizell@gmail.com') {
+            if ($residentWithEmailAddress->getEmailAddress() == 'sfnyc.net@gmail.com') {
                 $pennsouthResident = $residentWithEmailAddress;
             }
         }
@@ -345,7 +350,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 exit(1);
         }
 
-        print("\n ------- 1 -----------\n");
+       // print("\n ------- 1 -----------\n");
 
         if ($this->runListManagementReports) {
              try {
@@ -372,7 +377,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         }
 
 
-        print("\n ------- 2 -----------\n");
+       // print("\n ------- 2 -----------\n");
 
         if ($this->runReportOnAptsWithNoEmail) {
             try {
@@ -398,7 +403,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             }
         }
 
-        print("\n ------- 3 -----------\n");
+     //   print("\n ------- 3 -----------\n");
 
 
         // block to generate spreadsheet of MDS -> Aweber updates.
@@ -430,7 +435,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         }
 
 
-        print("\n ------- 4 -----------\n");
+       // print("\n ------- 4 -----------\n");
 
 
         // check whether there is anything left to do...
@@ -451,11 +456,18 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
             $pennsouthResidentListReader = new PennsouthResidentListReader($entityManager);
 
-            print("\n ------- 4.1 -----------\n");
+           // print("\n ------- 4.1 -----------\n");
+
+            // The following commented-out code turns on SQL logging for Doctrine - prints out the SQL that gets created from the DQL calls.
+/*            $this
+                ->getEntityManager()
+                ->getConnection()
+                ->getConfiguration()
+                ->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());*/
 
             $residentsWithEmailAddressesArray = $pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddressAssociativeArray();
 
-            print("\n ------- 4.2 -----------\n");
+           // print("\n ------- 4.2 -----------\n");
 
             foreach ($emailNotificationLists as $emailNotificationList) {
 
@@ -493,7 +505,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         }
 
 
-        print("\n ------- 5 -----------\n");
+       // print("\n ------- 5 -----------\n");
 
         try {
             $mdsToAweberComparator = new MdsToAweberComparator($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersByListNames);
@@ -547,7 +559,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         }
 
 
-        print("\n ------- 6 -----------\n");
+       // print("\n ------- 6 -----------\n");
 
 
         // block to generate spreadsheet of MDS -> Aweber updates.
