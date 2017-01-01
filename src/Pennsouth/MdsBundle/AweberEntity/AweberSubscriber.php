@@ -26,7 +26,7 @@ class AweberSubscriber
     private $pennSouthBuilding;
 
     /**
-     * @var integer
+     * @var string
      */
     private $floorNumber;
 
@@ -131,14 +131,14 @@ class AweberSubscriber
     private $parkingLotLocation;
 
     /**
-     * @var integer
+     * @var string
      */
-    private $vehicleRegExpDaysLeft;
+    private $vehicleRegIntervalRemaining;
 
     /**
-     * @var integer
+     * @var string
      */
-    private $homeownerInsExpDateLeft;
+    private $homeownerInsIntervalRemaining;
 
     /**
      * @var string
@@ -220,14 +220,14 @@ class AweberSubscriber
        private $prevParkingLotLocation;
 
        /**
-        * @var integer
+        * @var string
         */
-       private $prevVehicleRegExpDaysLeft;
+       private $prevVehicleRegIntervalRemaining;
 
        /**
-        * @var integer
+        * @var string
         */
-       private $prevHomeownerInsExpDateLeft;
+       private $prevHomeownerInsIntervalRemaining;
 
        /**
         * @var string
@@ -321,7 +321,7 @@ class AweberSubscriber
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getFloorNumber()
     {
@@ -329,7 +329,7 @@ class AweberSubscriber
     }
 
     /**
-     * @param int $floorNumber
+     * @param string $floorNumber
      */
     public function setFloorNumber($floorNumber)
     {
@@ -660,33 +660,33 @@ class AweberSubscriber
     /**
      * @return int
      */
-    public function getVehicleRegExpDaysLeft()
+    public function getVehicleRegIntervalRemaining()
     {
-        return $this->vehicleRegExpDaysLeft;
+        return $this->vehicleRegIntervalRemaining;
     }
 
     /**
-     * @param int $vehicleRegExpDaysLeft
+     * @param int $vehicleRegIntervalRemaining
      */
-    public function setVehicleRegExpDaysLeft($vehicleRegExpDaysLeft)
+    public function setVehicleRegIntervalRemaining($vehicleRegIntervalRemaining)
     {
-        $this->vehicleRegExpDaysLeft = $vehicleRegExpDaysLeft;
+        $this->vehicleRegIntervalRemaining = $vehicleRegIntervalRemaining;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getHomeownerInsExpDateLeft()
+    public function getHomeownerInsIntervalRemaining()
     {
-        return $this->homeownerInsExpDateLeft;
+        return $this->homeownerInsIntervalRemaining;
     }
 
     /**
-     * @param int $homeownerInsExpDateLeft
+     * @param string $homeownerInsIntervalRemaining
      */
-    public function setHomeownerInsExpDateLeft($homeownerInsExpDateLeft)
+    public function setHomeownerInsIntervalRemaining($homeownerInsIntervalRemaining)
     {
-        $this->homeownerInsExpDateLeft = $homeownerInsExpDateLeft;
+        $this->homeownerInsIntervalRemaining = $homeownerInsIntervalRemaining;
     }
 
     /**
@@ -706,7 +706,7 @@ class AweberSubscriber
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getStorageLockerClosetBldg()
     {
@@ -714,7 +714,7 @@ class AweberSubscriber
     }
 
     /**
-     * @param mixed $storageLockerClosetBldg
+     * @param string $storageLockerClosetBldg
      */
     public function setStorageLockerClosetBldg($storageLockerClosetBldg)
     {
@@ -722,7 +722,7 @@ class AweberSubscriber
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getStorageLockerNum()
     {
@@ -730,7 +730,7 @@ class AweberSubscriber
     }
 
     /**
-     * @param mixed $storageLockerNum
+     * @param string $storageLockerNum
      */
     public function setStorageLockerNum($storageLockerNum)
     {
@@ -738,7 +738,7 @@ class AweberSubscriber
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getStorageClosetFloorNum()
     {
@@ -746,7 +746,7 @@ class AweberSubscriber
     }
 
     /**
-     * @param mixed $storageClosetFloorNum
+     * @param string $storageClosetFloorNum
      */
     public function setStorageClosetFloorNum($storageClosetFloorNum)
     {
@@ -754,7 +754,7 @@ class AweberSubscriber
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBikeRackBldg()
     {
@@ -762,7 +762,7 @@ class AweberSubscriber
     }
 
     /**
-     * @param mixed $bikeRackBldg
+     * @param string $bikeRackBldg
      */
     public function setBikeRackBldg($bikeRackBldg)
     {
@@ -770,7 +770,7 @@ class AweberSubscriber
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBikeRackRoom()
     {
@@ -796,7 +796,7 @@ class AweberSubscriber
 
 
     /**
-     * @param mixed $bikeRackRoom
+     * @param string $bikeRackRoom
      */
     public function setBikeRackRoom($bikeRackRoom)
     {
@@ -932,35 +932,35 @@ class AweberSubscriber
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getPrevVehicleRegExpDaysLeft()
+    public function getPrevVehicleRegIntervalRemaining()
     {
-        return $this->prevVehicleRegExpDaysLeft;
+        return $this->prevVehicleRegIntervalRemaining;
     }
 
     /**
-     * @param int $prevVehicleRegExpDaysLeft
+     * @param string $prevVehicleRegIntervalRemaining
      */
-    public function setPrevVehicleRegExpDaysLeft($prevVehicleRegExpDaysLeft)
+    public function setPrevVehicleRegIntervalRemaining($prevVehicleRegIntervalRemaining)
     {
-        $this->prevVehicleRegExpDaysLeft = $prevVehicleRegExpDaysLeft;
+        $this->prevVehicleRegIntervalRemaining = $prevVehicleRegIntervalRemaining;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getPrevHomeownerInsExpDateLeft()
+    public function getPrevHomeownerInsIntervalRemaining()
     {
-        return $this->prevHomeownerInsExpDateLeft;
+        return $this->prevHomeownerInsIntervalRemaining;
     }
 
     /**
-     * @param int $prevHomeownerInsExpDateLeft
+     * @param string $prevHomeownerInsIntervalRemaining
      */
-    public function setPrevHomeownerInsExpDateLeft($prevHomeownerInsExpDateLeft)
+    public function setPrevHomeownerInsIntervalRemaining($prevHomeownerInsIntervalRemaining)
     {
-        $this->prevHomeownerInsExpDateLeft = $prevHomeownerInsExpDateLeft;
+        $this->prevHomeownerInsIntervalRemaining = $prevHomeownerInsIntervalRemaining;
     }
 
     /**
