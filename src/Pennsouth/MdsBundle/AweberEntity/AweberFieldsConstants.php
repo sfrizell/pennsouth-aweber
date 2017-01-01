@@ -31,8 +31,8 @@ class AweberFieldsConstants
        const GYM_MEMBER                                         = 'gym_member';
        const GARDEN_MEMBER                                      = 'garden_member';
        const PARKING_LOT_LOCATION                               = 'parking_lot_location';
-       const VEHICLE_REG_EXP_DAYS_LEFT                          = 'vehicle_reg_exp_days_left';
-       const HOMEOWNER_INS_EXP_DAYS_LEFT                        = 'homeowner_ins_exp_days_left';
+       const VEHICLE_REG_INTERVAL_REMAINING                     = 'vehicle_reg_interval_remaining';
+       const HOMEOWNER_INS_INTERVAL_REMAINING                   = 'homeowner_ins_interval_remaining';
        const IS_DOG_IN_APT                                      = 'is_dog_in_apt';
        const STORAGE_LOCKER_CLOSET_BLDG_NUM                     = 'storage_locker_closet_bldg';
        const STORAGE_LOCKER_NUM                                 = 'storage_locker_num';
@@ -49,7 +49,7 @@ class AweberFieldsConstants
        const PRIMARY_RESIDENT_LIST_URL                      = "/accounts/" . self::PENN_SOUTH_AWEBER_ACCOUNT . "/lists/" . self::PRIMARY_RESIDENT_LIST_ID;
        const PENNSOUTH_EMERGENCY_NOTICES_LIST_URL               = "/accounts/" . self::PENN_SOUTH_AWEBER_ACCOUNT . "/lists/" . self::PENNSOUTH_EMERGENCY_NOTICES_FOR_RESIDENTS_LIST_ID;
        const FRIZELL_SUBSCRIBER_LIST_TEST_URL               = "/accounts/" . self::PENN_SOUTH_AWEBER_ACCOUNT . "/lists/" . self::FRIZELL_SUBSCRIBER_LIST_TEST_ID;
-       const AWEBER_MDS_SYNC_AUDIT_TABLE_NAME               = 'Aweber_Mds_Sync_Audit';
+       const AWEBER_MDS_SYNC_AUDIT_TABLE_NAME               = 'aweber_mds_sync_audit';
 
 
 }
