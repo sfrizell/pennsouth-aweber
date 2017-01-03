@@ -22,7 +22,9 @@ Presented below are all command line options/arguments:
   
 +  \-r, --report-on-aweber-email-not-in-mds=REPORT-ON-AWEBER-EMAIL-NOT-IN-MDS  Option to report on subscriber email addresses in Aweber and not in MDS: y/n \[default: "n"\]
   
-+  \-l, --list-management-reports=LIST-MANAGEMENT-REPORTS                      Option to generate list management reports on Parking Lots, etc.: y/n \[default: "n"\]
++  \-p, --parking-lot-report=PARKING-LOT-REPORT                                 Option to create Parking Lot Report: y/n \[default: "n"\]
+
++ \-i, --homeowners-insurance-report=HOMEOWNERS-INSURANCE-REPORT                Option to create Homeowners Insurance Report: y/n [default: "n"]
 
 +  \-a, --report-on-aweber-updates-from-mds=REPORT-ON-AWEBER-UPDATES-FROM-MDS  Option to generate spreadsheet listing details of updates of Aweber from MDS.: y/n \[default: "n"\]
 
@@ -32,13 +34,13 @@ Presented below are all command line options/arguments:
 
 **Example:**
 
-php app/console app:sync-mds-aweber \-u n \-r y \-l y 
+php app/console app:sync-mds-aweber \-u n \-r y \-p y 
 
-The above command will run the application with the option (a) (the '-u n' option) not to update the Aweber.com subscriber lists, (b) (the  '-r y' option) to generate a report of Pennsouth resident emails existing in Aweber.com but not in MDS, and (c) (the '-l y' option) generate list management reports on Parking Lots, etc.
+The above command will run the application with the option (a) (the '-u n' option) not to update the Aweber.com subscriber lists, (b) (the  '-r y' option) to generate a report of Pennsouth resident emails existing in Aweber.com but not in MDS, and (c) (the '-p y' option) create Parking Lots Report.
  
 For better readability, the same command could be issued as follows:
 
-php app/console app:sync-mds-aweber \-\-update-aweber-from-mds=UPDATE-AWEBER-FROM-MDS \-\-report-on-aweber-email-not-in-mds=REPORT-ON-AWEBER-EMAIL-NOT-IN-MDS \-\-list-management-reports=LIST-MANAGEMENT-REPORTS
+php app/console app:sync-mds-aweber \-\-update-aweber-from-mds=UPDATE-AWEBER-FROM-MDS \-\-report-on-aweber-email-not-in-mds=REPORT-ON-AWEBER-EMAIL-NOT-IN-MDS \-\-parking-lot-report=PARKING-LOT-REPORT
 
 **NOTE:** The '-a' option -- to generate a report on Aweber updates from MDS -- runs into memory limitations when a large set of data is being reported on. For this reason, it is recommended that when this option is invoked it not be combined with running any of the other available application options.
 
