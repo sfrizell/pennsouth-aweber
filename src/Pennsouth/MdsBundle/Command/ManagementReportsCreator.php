@@ -1,6 +1,6 @@
 <?php
 /**
- * ParkingLotListCreator.php
+ * ManagementReportsCreator.php
  * User: sfrizell
  * Date: 11/27/16
  *  Function:
@@ -14,12 +14,14 @@ use PHPExcel_Style_Fill;
 use PHPExcel;
 use PHPExcel_Cell;
 
-class ParkingLotListCreator
+class ManagementReportsCreator
 {
 
     const PARKING_LOT_LIST_FILE_NAME = 'parking_lot_spaces.xlsx';
     const PARKING_LOT_LIST_BATCH_SIZE = 2000;
     const OBJECT1_COLS_NUM = 14;
+    const HOMEOWNERS_INSURANCE_REPORT_FILE_NAME = 'homeowners_insurance_report.csv';
+
 
     const PARKING_LOT_LIST_HEADER_ARRAY = array(
                 'Building',
@@ -71,12 +73,60 @@ class ParkingLotListCreator
                     'evening_phone2'
            );
 
+    const HOMEOWNERS_INSURANCE_REPORT_HEADER_ARRAY = array(
+                    'Building',
+                    'Address',
+                    'City, State Zip',
+                    'Floor Number',
+                    'Apt Line',
+                    'Homeowners Insurance Exp Date (MDS)',
+                    'Days Until Reg. Expires',
+                    'Expiration Interval Remaining',
+                    'No Email for Entire Apt.',
+                    'No Email for Shareholders',
+                    'Shareholder1 Last Name',
+                    'Shareholder1 First Name',
+                    'Shareholder1 Email',
+                    'Shareholder1 Cell',
+                    'Shareholder1 Home Phone',
+                    'Resident Category',
+                    'Shareholder2 Last Name',
+                    'Shareholder2 First Name',
+                    'Shareholder2 Email',
+                    'Shareholder2 Cell',
+                    'Shareholder2 Home Phone'
+           );
+
+    const HOMEOWNERS_INSURANCE_REPORT_COL_NAMES = array(
+                     'building',
+                     'address',
+                     'city_state_zip',
+                     'floor_number',
+                     'apt_line',
+                     'homeowner_ins_exp_date',
+                     'homeowner_ins_exp_countdown,',
+                     'homeowner_ins_interval_remaining',
+                     'no_email_for_apartment',
+                     'no_email_for_shareholders',
+                     'last_name',
+                     'first_name',
+                     'email_address',
+                     'cell_phone',
+                     'evening_phone',
+                     'mds_resident_category',
+                     'last_name2',
+                     'first_name2',
+                     'email_address2',
+                     'cell_phone2',
+                     'evening_phone2'
+            );
+
     private $entityManager;
     private $phpExcel;
     private $appOutputDir;
     private $env;
 
-    public function __construct (EntityManager $entityManager,  $phpExcel, $appOutputDir, $env ) {
+    public function __construct (EntityManager $entityManager,  $phpExcel = null, $appOutputDir, $env ) {
 
         $this->entityManager    = $entityManager;
         $this->phpExcel         = $phpExcel;
@@ -117,14 +167,13 @@ class ParkingLotListCreator
 
         if (!is_null($phpExcelObject) and $phpExcelObject instanceof PHPExcel) {
 
-            $fileWriteCtr = 0;
+           // $fileWriteCtr = 0;
 
 
            // print("\n After setting autosize=true \n");
 
             $rowCtr = 1;
 
-            $getDecalNum = 'getDecalNum';
             $colLimit = count(self::PARKING_LOT_LIST_COL_NAMES);
             $phpExcelObject->setActiveSheetIndex(0);
             $prevDecalNum = null;
@@ -191,7 +240,7 @@ class ParkingLotListCreator
             // create the writer
             $writer = $this->phpExcel->createWriter($phpExcelObject, 'Excel2007');
             // The save method is documented in the official PHPExcel library
-            $fileWriteCtr++;
+            //$fileWriteCtr++;
             $writer->save($this->appOutputDir . '/' . self::PARKING_LOT_LIST_FILE_NAME);
 
             return TRUE;
@@ -201,7 +250,41 @@ class ParkingLotListCreator
 
     }
 
+    /**
+     *
+     * @return bool
+     */
+    public function createHomeownersInsuranceReport() {
 
+        $homeownersInsuranceReportRows = $this->getHomeownersInsuranceReportRows();
+
+       // $totalCols = count(self::HOMEOWNERS_INSURANCE_REPORT_HEADER_ARRAY)+1;
+
+        $file = fopen($this->appOutputDir . "/" . self::HOMEOWNERS_INSURANCE_REPORT_FILE_NAME, "w");
+
+        fputcsv($file, self::HOMEOWNERS_INSURANCE_REPORT_HEADER_ARRAY);
+
+        $prevBuilding = null;
+        $prevFloorNum = null;
+        $prevAptLine = null;
+        foreach($homeownersInsuranceReportRows as $row){
+            if ( is_null($prevBuilding) or
+                   $row['building']      !== $prevBuilding   or
+                   $row['floor_number']  !== $prevFloorNum   or
+                   $row['apt_line']      !== $prevAptLine
+                 ) {
+                fputcsv($file, $row);
+            }
+            $prevBuilding   = $row['building'];
+            $prevFloorNum   = $row['floor_number'];
+            $prevAptLine    = $row['apt_line'];
+        }
+        fclose($file);
+
+
+        return TRUE;
+
+    }
 
     private function getPhpExcelObjectAndSetHeadings($headerArray, $title, $description, $category) {
 
@@ -355,7 +438,7 @@ class ParkingLotListCreator
             return $residentsWithParkingSpaces;
         }
         catch (\Exception $exception) {
-            print("\n" . "Fatal Exception occurred in ParkingLotListCreator->getResidentsWithParkingSpaces! ");
+            print("\n" . "Fatal Exception occurred in ManagementReportsCreator->getResidentsWithParkingSpaces! ");
             print ("\n Exception->getMessage() : " . $exception->getMessage());
             print "Type: " . $exception->getCode(). "\n";
             print("\n" . "Exiting from program.");
@@ -364,5 +447,142 @@ class ParkingLotListCreator
 
     }
 
+    private function getHomeownersInsuranceReportRows() {
+
+        try {
+            if ($this->env == SyncAweberMdsCommand::ENVIRONMENT_PROD) {
+                $query =
+                              'SELECT  distinct pr.building, b.address, concat( b.city, \', \', b.state, \' \', b.zip) city_state_zip, 
+                                   pr.floor_number, pr.apt_line,  
+                                   pr.homeowner_ins_exp_date,pr.homeowner_ins_exp_countdown, pr.homeowner_ins_interval_remaining,
+                                   if(apts_no_email.building_id is not null, \'No Email for Apartment\', \'\') no_email_for_apartment,
+                                   if( length(trim(pr.email_address)) = 0 and (length(trim(pr2.email_address)) = 0 or pr2.email_address is null), \'No Email for Shareholders\', \'\') no_email_for_shareholders,
+                                   pr.last_name, pr.first_name, pr.email_address, pr.cell_phone, pr.evening_phone, 
+                                   pr2.mds_resident_category, pr2.last_name last_name2, pr2.first_name first_name2, pr2.email_address email_address2,
+                                   pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2                                
+                               FROM pennsouth_resident as pr
+                                   JOIN pennsouth_bldg as b
+                               ON
+                                   pr.building = b.building_id
+                                   LEFT JOIN
+                                    pennsouth_resident as pr2
+                               ON
+                                   pr.building = pr2.building
+                               and pr.floor_number = pr2.floor_number
+                               and pr.apt_line	= pr2.apt_line
+                               and pr.pennsouth_resident_id < pr2.pennsouth_resident_id
+                               and pr.mds_resident_category = pr2.mds_resident_category
+                               and concat(pr.first_name, pr.last_name) <> concat(pr2.first_name, pr2.last_name)
+                                   LEFT JOIN
+                               (
+                               select  distinct apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
+                               from 
+                                    pennsouth_apt as apt
+                                    inner join pennsouth_resident as pr
+                               where
+                                   apt.apartment_id = pr.Pennsouth_apt_apartment_id
+                               and  not exists (
+                               select  \'x\'
+                               from pennsouth_db.pennsouth_resident pr2 
+                                where pr.pennsouth_apt_apartment_id = pr2.pennsouth_apt_apartment_id and
+                                pr2.email_address <>:emailAddress)
+                                and  not exists (
+                               select  \'x\'
+                               from aweber_mds_sync_audit msa 
+                                where pr.building = msa.aweber_building
+                                and pr.floor_number = msa.aweber_floor_number
+                                and pr.apt_line = msa.aweber_apt_line 
+                                and msa.update_action =:updateAction
+                                and msa.Aweber_Subscriber_Status =:subscriberStatus)
+                                order by apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
+                               ) apts_no_email
+                                   ON
+                                   pr.building = apts_no_email.building_id
+                               and pr.floor_number = apts_no_email.floor_number
+                               and pr.apt_line		= apts_no_email.apt_line
+                               WHERE
+                                   pr.homeowner_ins_exp_date is not null 
+                                   and pr.mds_resident_category =:residentCategory 
+                               order by pr.building, pr.floor_number, pr.apt_line, pr2.mds_resident_category desc';
+
+            }
+            else {
+                $query =
+                    'SELECT  distinct pr.building, b.address, concat( b.city, \', \', b.state, \' \', b.zip) city_state_zip, 
+                    pr.floor_number, pr.apt_line,  
+                    pr.homeowner_ins_exp_date,pr.homeowner_ins_exp_countdown, pr.homeowner_ins_interval_remaining,
+                    if(apts_no_email.building_id is not null, \'No Email for Apartment\', \'\') no_email_for_apartment,
+                    if( length(trim(pr.email_address)) = 0 and (length(trim(pr2.email_address)) = 0 or pr2.email_address is null), \'No Email for Shareholders\', \'\') no_email_for_shareholders,
+                    pr.last_name, pr.first_name, pr.email_address, pr.cell_phone, pr.evening_phone, 
+                    pr2.mds_resident_category, pr2.last_name last_name2, pr2.first_name first_name2, pr2.email_address email_address2,
+                    pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2                 
+                FROM pennsouth_db.pennsouth_resident as pr
+                    JOIN pennsouth_db.pennsouth_bldg as b
+                ON
+                    pr.building = b.building_id
+                    LEFT JOIN
+                     pennsouth_db.pennsouth_resident as pr2
+                ON
+                    pr.building = pr2.building
+                and pr.floor_number = pr2.floor_number
+                and pr.apt_line	= pr2.apt_line
+                and pr.pennsouth_resident_id < pr2.pennsouth_resident_id
+                and pr.mds_resident_category = pr2.mds_resident_category
+                and concat(pr.first_name, pr.last_name) <> concat(pr2.first_name, pr2.last_name)
+                    LEFT JOIN
+                (
+                select  distinct apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
+                from 
+                     pennsouth_db.pennsouth_apt as apt
+                     inner join pennsouth_db.pennsouth_resident as pr
+                where
+                    apt.apartment_id = pr.Pennsouth_apt_apartment_id
+                and  not exists (
+                select  \'x\'
+                from pennsouth_db.pennsouth_resident pr2 
+                 where pr.pennsouth_apt_apartment_id = pr2.pennsouth_apt_apartment_id and
+                 pr2.email_address <>:emailAddress)
+                 and  not exists (
+                select  \'x\'
+                from pennsouth_db.aweber_mds_sync_audit msa 
+                 where pr.building = msa.aweber_building
+                 and pr.floor_number = msa.aweber_floor_number
+                 and pr.apt_line = msa.aweber_apt_line 
+                 and msa.update_action =:updateAction
+                 and msa.Aweber_Subscriber_Status =:subscriberStatus)
+                 order by apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
+                ) apts_no_email
+                    ON
+                    pr.building = apts_no_email.building_id
+                and pr.floor_number = apts_no_email.floor_number
+                and pr.apt_line		= apts_no_email.apt_line
+                WHERE
+                    pr.homeowner_ins_exp_date is not null 
+                    and pr.mds_resident_category =:residentCategory 
+                order by pr.building, pr.floor_number, pr.apt_line, pr2.mds_resident_category desc';
+            }
+
+                $statement = $this->getEntityManager()->getConnection()->prepare($query);
+                // Set parameters
+                $statement->bindValue( 'emailAddress', '');
+                $statement->bindValue( 'updateAction', 'reporting');
+                $statement->bindValue( 'subscriberStatus', 'subscribed');
+                $statement->bindValue( 'residentCategory', 'SHAREHOLDER');
+
+                $statement->execute();
+
+                $homeownersInsuranceReportRows = $statement->fetchAll();
+
+                return $homeownersInsuranceReportRows;
+        }
+        catch (\Exception $exception) {
+            print("\n" . "Fatal Exception occurred in ManagementReportsCreator->getHomeownersInsuranceReportRows! ");
+            print ("\n Exception->getMessage() : " . $exception->getMessage());
+            print "Type: " . $exception->getCode(). "\n";
+            print("\n" . "Exiting from program.");
+            throw $exception;
+        }
+
+    }
 
 }
