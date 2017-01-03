@@ -114,7 +114,7 @@ class AweberSubscriberWriter
      * For create Subscriber API reference, see: http://engineering.aweber.com/awebers-api-how-to-do-all-the-things/
      * @param $listName
      * @param AweberSubscriber $aweberSubscriber
-     * @return mixed
+     * @return null (interpreted as success) or errorMessage
      * @throws \Exception
      * todo : Remove test code for 'frizell' in this method...
      */
@@ -125,6 +125,7 @@ class AweberSubscriberWriter
         $j = 0;
         $maxRetries = 5;
         $success = false;
+        $errorMessage = null;
         while (!$success) { // allow for retry if we get rate limit or temporarily unavailable exception...
             try {
                 sleep(5); // sleep 5 seconds to avoid Aweber Rate Limit Exception - status code 403
@@ -183,7 +184,7 @@ class AweberSubscriberWriter
                     // we will be using $subscriber_id in example 3
                     // the following commented out line throws a ContextErrorException - Runtime Notice: Only variables should be passed by reference
                    // $subscriber_id = array_pop(explode('/', $resp['Location']));
-                    return TRUE;
+                    return null; // success
                     //  print "New subscriber added, subscriber_id: {$subscriber_id}\n";
                 } else {
                     print ("\n" . "Exception in AweberSubscriberWriter->createAweberSubscriber for subscriber with email address" . $aweberSubscriber->getEmail() . " Aweber API Status-Code: " . $resp['Status-Code']);
@@ -221,7 +222,9 @@ class AweberSubscriberWriter
 
                      print("\n" . "AweberAPIException (status = 400 - Email address blocked. Please refer to https://help.aweber.com/entries/97662366 ) occurred in AweberSubscriberWriter->createAweberSubscriber. ");
                      print ("\n" . "skipping this email address: " . $aweberSubscriber->getEmail());
-                     return FALSE; // todo - add logic to handle in invoking method...
+                     $errorMessage = "Aweber API error - status = 400 for email_address: " . $aweberSubscriber->getEmail();
+                     return $errorMessage;
+                    // return FALSE; // todo - add logic to handle in invoking method...
 
                  }
                  else if ($exception->type == "APIUnreachableError") {

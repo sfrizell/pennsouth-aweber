@@ -42,7 +42,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
     const REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS = 'report-on-aweber-email-not-in-mds';
     const REPORT_ON_AWEBER_UPDATES_FROM_MDS = 'report-on-aweber-updates-from-mds';
     const REPORT_ON_APTS_WITH_NO_EMAIL      = 'report-on-apts-where-no-resident-has-email-address';
-    const LIST_MANAGEMENT_REPORTS           = 'list-management-reports';
+    const PARKING_LOT_REPORT                = 'parking-lot-report';
+    const HOMEOWNERS_INSURANCE_REPORT       = 'homeowners-insurance-report';
     const APP_OUTPUT_DIRECTORY_DEV          = "/app_output";
     const APP_OUTPUT_DIRECTORY_PROD         = "/home/pennsouthdata/home/mgmtoffice/public_ftp";
     const ENVIRONMENT_DEV                   = 'dev';
@@ -53,7 +54,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
     private $runReportOnAptsWithNoEmail;
     private $runUpdateAweberFromMds;
     private $runReportOnAweberUpdatesFromMds;
-    private $runListManagementReports;
+    private $runParkingLotReport;
+    private $runHomeownersInsuranceReport;
 
     protected function configure() {
         $this
@@ -72,9 +74,10 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                     new InputDefinition(array(
                         new InputOption(self::UPDATE_AWEBER_FROM_MDS, 'u', InputOption::VALUE_REQUIRED, 'Option to update Aweber from MDS input: y/n', 'y'),
                         new InputOption(self::REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS, 'a', InputOption::VALUE_REQUIRED, 'Option to report on subscriber email addresses in Aweber and not in MDS: y/n', 'n'),
-                        new InputOption(self::LIST_MANAGEMENT_REPORTS, 'l', InputOption::VALUE_REQUIRED, 'Option to generate list management reports on Parking Lots, etc.: y/n', 'n'),
-                        new InputOption(self::REPORT_ON_AWEBER_UPDATES_FROM_MDS, 'r', InputOption::VALUE_REQUIRED, 'Option to generate spreadsheet listing details of updates of Aweber from MDS.: y/n', 'n'),
-                        new InputOption(self::REPORT_ON_APTS_WITH_NO_EMAIL, 'b', InputOption::VALUE_REQUIRED, 'Option to generate spreadsheet listing apts where no resident has email address.: y/n', 'n'),
+                        new InputOption(self::PARKING_LOT_REPORT, 'p', InputOption::VALUE_REQUIRED, 'Option to create Parking Lot Report: y/n', 'n'),
+                        new InputOption(self::HOMEOWNERS_INSURANCE_REPORT, 'i', InputOption::VALUE_REQUIRED, 'Option to create Homeowners Insurance Report: y/n', 'n'),
+                        new InputOption(self::REPORT_ON_AWEBER_UPDATES_FROM_MDS, 'r', InputOption::VALUE_REQUIRED, 'Option to create spreadsheet listing details of updates of Aweber from MDS.: y/n', 'n'),
+                        new InputOption(self::REPORT_ON_APTS_WITH_NO_EMAIL, 'b', InputOption::VALUE_REQUIRED, 'Option to create spreadsheet listing apts where no resident has email address.: y/n', 'n'),
                     ))
                 )
             ;
@@ -157,8 +160,12 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                                         : ( strtolower($input->getOption(self::UPDATE_AWEBER_FROM_MDS)) == 'n' ? FALSE : TRUE ) );
 
         // default is FALSE, so anything other than parameter of 'y' is interpreted as FALSE...
-        $this->runListManagementReports = ( is_null( $input->getOption(self::LIST_MANAGEMENT_REPORTS)) ? FALSE
-                                        : ( strtolower($input->getOption(self::LIST_MANAGEMENT_REPORTS)) == 'y' ? TRUE : FALSE ) );
+        $this->runParkingLotReport = ( is_null( $input->getOption(self::PARKING_LOT_REPORT)) ? FALSE
+                                        : ( strtolower($input->getOption(self::PARKING_LOT_REPORT)) == 'y' ? TRUE : FALSE ) );
+
+        // default is FALSE, so anything other than parameter of 'y' is interpreted as FALSE...
+        $this->runHomeownersInsuranceReport = ( is_null( $input->getOption(self::HOMEOWNERS_INSURANCE_REPORT)) ? FALSE
+                                        : ( strtolower($input->getOption(self::HOMEOWNERS_INSURANCE_REPORT)) == 'y' ? TRUE : FALSE ) );
 
         // default is FALSE, so anything other than parameter of 'y' is interpreted as FALSE...
         $this->runReportOnAweberUpdatesFromMds = ( is_null( $input->getOption(self::REPORT_ON_AWEBER_UPDATES_FROM_MDS)) ? FALSE
@@ -184,11 +191,19 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             print ("\n" . "run report on Aweber Emails not in MDS set to false. \n");
         }
 
-        if ($this->runListManagementReports) {
-            print ("\n" . "run List Management Reports set to true. \n");
+        if ($this->runParkingLotReport) {
+            print ("\n" . "run Parking Lot Report set to true. \n");
         }
         else {
-            print ("\n" . "run List Management Reports set to false. \n");
+            print ("\n" . "run Parking Lot Report set to false. \n");
+        }
+
+
+        if ($this->runHomeownersInsuranceReport) {
+            print ("\n" . "run Homeowners Insurance Report set to true. \n");
+        }
+        else {
+            print ("\n" . "run Homeowners Insurance Report set to false. \n");
         }
 
         if ($this->runReportOnAptsWithNoEmail) {
@@ -352,23 +367,44 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
        // print("\n ------- 1 -----------\n");
 
-        if ($this->runListManagementReports) {
+        if ($this->runParkingLotReport) {
              try {
                  $phpExcel = $this->getContainer()->get('phpexcel');
-                 $parkingLotListCreator = new ParkingLotListCreator($this->getEntityManager(), $phpExcel, $appOutputDir, $env);
-                 $parkingLotListCreator->generateParkingLotList();
+                 $homeownersInsuranceReportCreator = new ManagementReportsCreator($this->getEntityManager(), $phpExcel, $appOutputDir, $env);
+                 $homeownersInsuranceReportCreator->generateParkingLotList();
                  $subjectLine = "Pennsouth Parking Lot List Created.";
                  $messageBody = "\n The Pennsouth Parking Lot List spreadsheet has been created and is attached to this email. It is also available on the Pennsouth Ftp Server. \n";
-                // $messageBody = "\n The Pennsouth Parking Lot List spreadsheet has been created and is available on the Pennsouth Ftp Server. \n";
-                 $attachmentFilePath = $appOutputDir . "/" . ParkingLotListCreator::PARKING_LOT_LIST_FILE_NAME;
+                 $attachmentFilePath = $appOutputDir . "/" . ManagementReportsCreator::PARKING_LOT_LIST_FILE_NAME;
                  $this->sendEmailtoAdmins($subjectLine, $messageBody, $attachmentFilePath);
              }
              catch (\Exception $exception) {
-                 print("\n Exception encountered when running the List Management Reports.");
+                 print("\n Exception encountered when running the Parking Lot Report.");
                  print("\n Exception->getMessage(): " . $exception->getMessage());
                  print("\n stacktrace: " . $exception->getTraceAsString());
                  print("\n Exiting from program.");
-                 $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program in section where List Management Reports are generated.";
+                 $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program in section where Parking Lot Report is created.";
+                 $messageBody =  "\n Exception->getMessage() : " . $exception->getMessage() . "\n";
+                 $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                 exit(1);
+             }
+        }
+
+        if ($this->runHomeownersInsuranceReport) {
+             try {
+                 $homeownersInsuranceReportCreator = new ManagementReportsCreator($this->getEntityManager(), null, $appOutputDir, $env);
+                 $homeownersInsuranceReportCreator->createHomeownersInsuranceReport();
+                 $subjectLine = "Pennsouth Homeowners Insurance Report Created.";
+                 $messageBody = "\n The Pennsouth Homeowners Insurance Report has been created and is attached to this email. It is also available on the Pennsouth Ftp Server. \n";
+                 $attachmentFilePath = $appOutputDir . "/" . ManagementReportsCreator::HOMEOWNERS_INSURANCE_REPORT_FILE_NAME;
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $attachmentFilePath);
+             }
+             catch (\Exception $exception) {
+                 print("\n Exception encountered when running the Homeowners Insurance Report.");
+                 print("\n Exception->getMessage(): " . $exception->getMessage());
+                 print("\n stacktrace: " . $exception->getTraceAsString());
+                 print("\n Exiting from program.");
+                 $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program in section where the Homeowners Insurance Report is created.";
                  $messageBody =  "\n Exception->getMessage() : " . $exception->getMessage() . "\n";
                  $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
                  $this->sendEmailtoAdmins($subjectLine, $messageBody);
@@ -529,7 +565,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                     // - invoke method to create an audit trail of the inserts/updates to Aweber
                     // - send summary statistics to Penn South Admins
                     $aweberSubscriberListsUpdater = new AweberSubscriberListsUpdater($fullPathToAweber, $aweberApiInstance, $emailNotificationLists);
-                    $aweberSubscriberListsUpdater->updateAweberSubscriberLists($account, $aweberSubscriberUpdateInsertLists);
+                    $errorMessages = $aweberSubscriberListsUpdater->updateAweberSubscriberLists($account, $aweberSubscriberUpdateInsertLists);
                     $aweberUpdateSummary = $mdsToAweberComparator->storeAuditTrailofUpdatesToAweberSubscribers($aweberSubscriberUpdateInsertLists);
                     $phpExcel = $this->getContainer()->get('phpexcel');
                     // todo : evaluate whether it will be okay to create the spreadsheet reporting on the updates in the same run as the update...
@@ -537,7 +573,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                     $aweberMdsAuditListCreator->createSpreadsheetAweberUpdatesList(); */
                     $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
                     $messageBody = "RunUpdateAweberFromMds: Processing completed successfully in MDS to AWeber Update program." . "\n\n";
-                    $messageBody = $this->buildMessageBodyForEmailToAdmins($messageBody, $aweberUpdateSummary);
+                    $messageBody = $this->buildMessageBodyForEmailToAdmins($messageBody, $aweberUpdateSummary, $errorMessages);
                     $this->sendEmailtoAdmins($subjectLine, $messageBody);
                 } else {
                     $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
@@ -598,7 +634,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
     }
 
-    private function buildMessageBodyForEmailToAdmins($messageBody,  AweberUpdateSummary $aweberUpdateSummary)
+    private function buildMessageBodyForEmailToAdmins($messageBody,  AweberUpdateSummary $aweberUpdateSummary, $errorMessages = null)
     {
         if (!is_null($aweberUpdateSummary->getListInsertArrayCtr() and count($aweberUpdateSummary->getListInsertArrayCtr()) > 0)) {
             $messageBody .=  "\n" . "List inserts: " . "\n";
@@ -616,6 +652,11 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             }
         } else {
             $messageBody .= "\n" . "There were no updates made to Aweber subscriber lists in this run of the program." . "\n";
+        }
+
+        // if there are errorMessages, add them to the end of the message body.
+        if (!is_null($errorMessages) and !empty($errorMessages)) {
+            $messageBody .= "\n" . implode( "\n", $errorMessages);
         }
 
         return $messageBody;

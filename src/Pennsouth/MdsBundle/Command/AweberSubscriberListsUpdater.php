@@ -47,6 +47,7 @@ class AweberSubscriberListsUpdater
 
         $this->account = $account;
         $this->aweberSubscriberUpdateInsertLists = $aweberSubscriberUpdateInsertLists;
+        $errorMessages = array();
 
         // Are there resident email addresses in MDS with no match in Aweber? If so insert the subscriber into Aweber
         if (!$this->aweberSubscriberUpdateInsertLists->isAweberSubscriberInsertListEmpty()) {
@@ -71,7 +72,11 @@ class AweberSubscriberListsUpdater
                                 $aweberSubscriberWriter->createAweberSubscriber($listName, $aweberSubscriber);
                             }*/
                             // todo : uncomment the following after testing...
-                             $aweberSubscriberWriter->createAweberSubscriber( $listName, $aweberSubscriber);
+                            $errorMessage = $aweberSubscriberWriter->createAweberSubscriber( $listName, $aweberSubscriber);
+                            if (!is_null($errorMessage)) {
+                                $errorMessages[] = $errorMessage;
+                            }
+
                         } // end catch exception block
                         catch (\Exception $exception) {
                             print ("\n" . "Exception caught in AweberSubscriberListsUpdater->updateAweberSubscriberLists insert subscribers section. \n");
@@ -89,7 +94,7 @@ class AweberSubscriberListsUpdater
             $aweberSubscriberWriter = new AweberSubscriberWriter( $this->aweberApiInstance);
            // $aweberSubscriberWriter = new AweberSubscriberWriter($this->fullPathToAweber, $this->aweberApiInstance);
             $updateCtr = 0;
-            $batchSize = 30;
+            //$batchSize = 30;
             foreach ($this->aweberSubscriberUpdateInsertLists->getAweberSubscriberUpdateList() as $aweberSubscriberByListName ) {
                 foreach ( $aweberSubscriberByListName as $listName => $aweberSubscriber) {
                     $updateCtr++;
@@ -106,11 +111,10 @@ class AweberSubscriberListsUpdater
                          //  print("\n" . "listName: " . $listName);
                            //print_r($aweberSubscriber);
                            // update the AweberSubscriber in the subscriber list...
-                           $aweberSubscriberWriter->updateAweberSubscriber($listName, $aweberSubscriber);
+                           // $aweberSubscriberWriter->updateAweberSubscriber($listName, $aweberSubscriber);
                       // }
                         // update the AweberSubscriber...
-                        // todo : uncomment the following after testing...
-                        // $aweberSubscriberWriter->updateAweberSubscriber( $listName, $aweberSubscriber);
+                        $aweberSubscriberWriter->updateAweberSubscriber( $listName, $aweberSubscriber);
                     }
                     catch (\Exception $exception) {
                          {
@@ -124,6 +128,6 @@ class AweberSubscriberListsUpdater
             }
         }
 
-
+        return $errorMessages; // array that is either empty or that contains error message strings...
     }
 }
