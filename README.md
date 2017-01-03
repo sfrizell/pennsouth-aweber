@@ -40,7 +40,7 @@ The above command will run the application with the option (a) (the '-u n' optio
  
 For better readability, the same command could be issued as follows:
 
-php app/console app:sync-mds-aweber \-\-update-aweber-from-mds=UPDATE-AWEBER-FROM-MDS \-\-report-on-aweber-email-not-in-mds=REPORT-ON-AWEBER-EMAIL-NOT-IN-MDS \-\-parking-lot-report=PARKING-LOT-REPORT
+php app/console app:sync-mds-aweber \-\-update-aweber-from-mds=n \-\-report-on-aweber-email-not-in-mds=y \-\-parking-lot-report=y
 
 **NOTE:** The '-a' option -- to generate a report on Aweber updates from MDS -- runs into memory limitations when a large set of data is being reported on. For this reason, it is recommended that when this option is invoked it not be combined with running any of the other available application options.
 
