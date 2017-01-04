@@ -49,15 +49,15 @@ doctrine:
 #doctrine:
 #    dbal:
 #        driver:   pdo_mysql
-#        dbname:   pennsouth_db
-#        user:     pennsouth_admin
-#        password: 1love2liveinny
+#        dbname:   xxxxxxx
+#        user:     xxxxxxxx
+#        password: xxxxxxxxx
 #        charset:  UTF8
       #   host:     localhost
-      #          port:     "8889"
-      #          dbname:   pennsouth_db
-      #          user:     pennsouth_admin
-      #          password: 1love2liveinny
+      #          port:     "1111"
+      #          dbname:   xxxxxx
+      #          user:     xxxxxx
+      #          password: xxxxx
       #          charset:  UTF8
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
@@ -109,9 +109,9 @@ hwi_oauth:
         resource_owners:
            auth0:
              type:                auth0
-             base_url:            https://pennsouth.auth0.com
-             client_id:           TmAxBciF2KFJVDOAQ1IguiQeFE8WjNln
-             client_secret:       WcqsO6DzmRJWDZIb527p-gVN8Ve3fpcssNqlrx821IwI-qKoNW3gj5JZ5UFOV2S3
+             base_url:            xxxx
+             client_id:           zzzz
+             client_secret:       yyyyyy
 
 # sfrizell comment - to set up Google as authenticator see: https://github.com/hwi/HWIOAuthBundle/blob/0.4/Resources/doc/resource_owners/google.md
 
