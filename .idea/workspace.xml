@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d6b0dfb0-340b-4be3-b81b-b2d7247d6f8a" name="Default" comment="Add List Management report functionality. Add PHPExcel library to project.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/config/config.yml" afterPath="$PROJECT_DIR$/app/config/config.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="pennsouth_aweber.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,7 +41,10 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1770">
               <caret line="130" column="20" lean-forward="false" selection-start-line="130" selection-start-column="20" selection-end-line="130" selection-end-column="20" />
-              <folding />
+              <folding>
+                <element signature="e#6#89#0#PHP" expanded="false" />
+                <element signature="e#131#162#0#PHP" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -66,7 +69,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.yml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="config.yml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/config/config.yml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="504">
@@ -76,12 +79,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="690">
-                <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+              <first_editor relative-caret-position="581">
+                <caret line="65" column="6" lean-forward="false" selection-start-line="65" selection-start-column="6" selection-end-line="65" selection-end-column="6" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -95,7 +98,7 @@
             <state relative-caret-position="540">
               <caret line="45" column="38" lean-forward="false" selection-start-line="45" selection-start-column="20" selection-end-line="45" selection-end-column="47" />
               <folding>
-                <element signature="e#140#154#0#PHP" expanded="true" />
+                <element signature="e#6#98#0#PHP" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -107,6 +110,8 @@
             <state relative-caret-position="3240">
               <caret line="224" column="122" lean-forward="false" selection-start-line="224" selection-start-column="122" selection-end-line="224" selection-end-column="122" />
               <folding>
+                <element signature="e#6#92#0#PHP" expanded="false" />
+                <element signature="e#134#148#0#PHP" expanded="false" />
                 <marker date="1483397038000" expanded="true" signature="12031:12279" ph="..." />
                 <marker date="1483397038000" expanded="true" signature="12042:12279" ph="..." />
                 <marker date="1483397038000" expanded="true" signature="12059:12279" ph="..." />
@@ -120,7 +125,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="420">
               <caret line="33" column="64" lean-forward="false" selection-start-line="33" selection-start-column="64" selection-end-line="33" selection-end-column="64" />
-              <folding />
+              <folding>
+                <element signature="e#6#91#0#PHP" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -131,6 +138,8 @@
             <state relative-caret-position="7785">
               <caret line="528" column="72" lean-forward="false" selection-start-line="528" selection-start-column="72" selection-end-line="528" selection-end-column="72" />
               <folding>
+                <element signature="e#6#95#0#PHP" expanded="false" />
+                <element signature="e#137#168#0#PHP" expanded="false" />
                 <marker date="1483333350000" expanded="true" signature="14898:16358" ph="Select pr fr... pennsouth_resident" />
                 <marker date="1483333350000" expanded="true" signature="16441:17979" ph="SELECT disti... pennsouth_resident" />
                 <marker date="1483333350000" expanded="true" signature="18955:22920" ph="SELECT disti... pennsouth_resident" />
@@ -152,6 +161,8 @@
             <state relative-caret-position="1095">
               <caret line="88" column="53" lean-forward="false" selection-start-line="88" selection-start-column="53" selection-end-line="88" selection-end-column="53" />
               <folding>
+                <element signature="e#6#402#0#PHP" expanded="false" />
+                <element signature="e#444#475#0#PHP" expanded="false" />
                 <marker date="1483142406000" expanded="true" signature="8548:8663" ph="Select msa f... PennsouthMdsBundle" />
                 <marker date="1483142406000" expanded="true" signature="8548:8798" ph="Select msa f... PennsouthMdsBundle" />
                 <marker date="1483142406000" expanded="true" signature="27400:27620" ph="Select msa f... PennsouthMdsBundle" />
@@ -243,8 +254,8 @@
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberListsUpdater.php" />
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberWriter.php" />
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/SyncAweberMdsCommand.php" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/app/config/config.yml" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -673,16 +684,16 @@
       <workItem from="1483312185961" duration="10810000" />
       <workItem from="1483395718654" duration="6816000" />
       <workItem from="1483422905602" duration="364000" />
-      <workItem from="1483511915143" duration="601000" />
+      <workItem from="1483511915143" duration="912000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="683040000" />
+    <option name="totallyTimeSpent" value="683351000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="38" y="43" width="2139" height="1104" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24558894" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -692,7 +703,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.065456904" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.59375" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24970132" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17748478" sideWeight="0.5577812" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17748478" sideWeight="0.5577812" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1081,7 +1092,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1770">
           <caret line="130" column="20" lean-forward="false" selection-start-line="130" selection-start-column="20" selection-end-line="130" selection-end-column="20" />
-          <folding />
+          <folding>
+            <element signature="e#6#89#0#PHP" expanded="false" />
+            <element signature="e#131#162#0#PHP" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1093,23 +1107,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="690">
-            <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/AweberSubscriberListsUpdater.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
           <caret line="45" column="38" lean-forward="false" selection-start-line="45" selection-start-column="20" selection-end-line="45" selection-end-column="47" />
           <folding>
-            <element signature="e#140#154#0#PHP" expanded="true" />
+            <element signature="e#6#98#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1119,6 +1122,8 @@
         <state relative-caret-position="3240">
           <caret line="224" column="122" lean-forward="false" selection-start-line="224" selection-start-column="122" selection-end-line="224" selection-end-column="122" />
           <folding>
+            <element signature="e#6#92#0#PHP" expanded="false" />
+            <element signature="e#134#148#0#PHP" expanded="false" />
             <marker date="1483397038000" expanded="true" signature="12031:12279" ph="..." />
             <marker date="1483397038000" expanded="true" signature="12042:12279" ph="..." />
             <marker date="1483397038000" expanded="true" signature="12059:12279" ph="..." />
@@ -1130,7 +1135,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="33" column="64" lean-forward="false" selection-start-line="33" selection-start-column="64" selection-end-line="33" selection-end-column="64" />
-          <folding />
+          <folding>
+            <element signature="e#6#91#0#PHP" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1139,6 +1146,8 @@
         <state relative-caret-position="7785">
           <caret line="528" column="72" lean-forward="false" selection-start-line="528" selection-start-column="72" selection-end-line="528" selection-end-column="72" />
           <folding>
+            <element signature="e#6#95#0#PHP" expanded="false" />
+            <element signature="e#137#168#0#PHP" expanded="false" />
             <marker date="1483333350000" expanded="true" signature="14898:16358" ph="Select pr fr... pennsouth_resident" />
             <marker date="1483333350000" expanded="true" signature="16441:17979" ph="SELECT disti... pennsouth_resident" />
             <marker date="1483333350000" expanded="true" signature="18955:22920" ph="SELECT disti... pennsouth_resident" />
@@ -1158,6 +1167,8 @@
         <state relative-caret-position="1095">
           <caret line="88" column="53" lean-forward="false" selection-start-line="88" selection-start-column="53" selection-end-line="88" selection-end-column="53" />
           <folding>
+            <element signature="e#6#402#0#PHP" expanded="false" />
+            <element signature="e#444#475#0#PHP" expanded="false" />
             <marker date="1483142406000" expanded="true" signature="8548:8663" ph="Select msa f... PennsouthMdsBundle" />
             <marker date="1483142406000" expanded="true" signature="8548:8798" ph="Select msa f... PennsouthMdsBundle" />
             <marker date="1483142406000" expanded="true" signature="27400:27620" ph="Select msa f... PennsouthMdsBundle" />
@@ -1172,6 +1183,17 @@
         <state relative-caret-position="504">
           <caret line="113" column="40" lean-forward="false" selection-start-line="113" selection-start-column="40" selection-end-line="113" selection-end-column="40" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="581">
+            <caret line="65" column="6" lean-forward="false" selection-start-line="65" selection-start-column="6" selection-end-line="65" selection-end-column="6" />
+            <folding />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

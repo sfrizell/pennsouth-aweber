@@ -63,7 +63,7 @@ Other than the components that are part of the symfony framework, the following 
 
 + phpoffice, providing functionality to create excel documents, located in vendor/phpoffice, with a wrapper for using this library in symfony located in vendor/liuggio.
 
-*NOTE*
+*NOTE:*
 For security reasons, the repository does not include the 'parameters.yml' file (in app/config directory) required for the project to run. 
  
 
