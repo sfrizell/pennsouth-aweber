@@ -178,52 +178,28 @@ class AptsWithNoResidentHavingEmailAddressListCreator
           try {
 
               // $query = $this->getEntityManager()->createNativeQuery
-              if ($this->env == SyncAweberMdsCommand::ENVIRONMENT_PROD) {
-                  $query =
-                      'select distinct apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
-                      from 
-                           pennsout_db.pennsouth_apt as apt
-                           inner join pennsout_db.pennsouth_resident as pr
-                      where
-                          apt.apartment_id = pr.Pennsouth_apt_apartment_id
-                      and  not exists (
-                      select  \'x\'
-                      from pennsout_db.pennsouth_resident pr2 
-                       where pr.pennsouth_apt_apartment_id = pr2.pennsouth_apt_apartment_id and
-                       pr2.email_address <> :emailAddress1)
-                       and  not exists (
-                      select  \'x\'
-                      from pennsout_db.aweber_mds_sync_audit msa 
-                       where pr.building = msa.aweber_building
-                       and pr.floor_number = msa.aweber_floor_number
-                       and pr.apt_line = msa.aweber_apt_line 
-                       and msa.update_action = :updateAction
-                       and msa.Aweber_Subscriber_Status = :status )
-                       order by apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name ';
-              }
-              else {
-                  $query =
-                      'select distinct apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
-                    from 
-                         pennsouth_db.pennsouth_apt as apt
-                         inner join pennsouth_db.pennsouth_resident as pr
-                    where
-                        apt.apartment_id = pr.Pennsouth_apt_apartment_id
-                    and  not exists (
-                    select  \'x\'
-                    from pennsouth_db.pennsouth_resident pr2 
-                     where pr.pennsouth_apt_apartment_id = pr2.pennsouth_apt_apartment_id and
-                     pr2.email_address <> :emailAddress1)
-                     and  not exists (
-                    select  \'x\'
-                    from pennsouth_db.aweber_mds_sync_audit msa 
-                     where pr.building = msa.aweber_building
-                     and pr.floor_number = msa.aweber_floor_number
-                     and pr.apt_line = msa.aweber_apt_line
-                     and msa.update_action = :updateAction
-                     and msa.Aweber_Subscriber_Status = :status )
-                     order by apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name ';
-              }
+              $query =
+                  'select distinct apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
+                  from 
+                       pennsouth_apt as apt
+                       inner join pennsouth_resident as pr
+                  where
+                      apt.apartment_id = pr.Pennsouth_apt_apartment_id
+                  and  not exists (
+                  select  \'x\'
+                  from pennsouth_resident pr2 
+                   where pr.pennsouth_apt_apartment_id = pr2.pennsouth_apt_apartment_id and
+                   pr2.email_address <> :emailAddress1)
+                   and  not exists (
+                  select  \'x\'
+                  from aweber_mds_sync_audit msa 
+                   where pr.building = msa.aweber_building
+                   and pr.floor_number = msa.aweber_floor_number
+                   and pr.apt_line = msa.aweber_apt_line 
+                   and msa.update_action = :updateAction
+                   and msa.Aweber_Subscriber_Status = :status )
+                   order by apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name ';
+
 
 
               $statement = $this->getEntityManager()->getConnection()->prepare($query);

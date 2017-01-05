@@ -382,50 +382,28 @@ class ManagementReportsCreator
             );
 
              */
-            if ($this->env == SyncAweberMdsCommand::ENVIRONMENT_PROD) {
-                $query =
-                    'SELECT  distinct pr.building, pr.floor_number, pr.apt_line, pr.mds_resident_category as mds_resident_category1,
-                    pr.parking_lot_location, \'\' gap, cast(pr.decal_num as unsigned) decal_num, pr.vehicle_reg_exp_date, pr.vehicle_reg_exp_countdown,
-                    pr.vehicle_reg_interval_remaining, pr.vehicle_model, pr.vehicle_license_plate_num,
-                    pr.last_name, pr.first_name, pr.email_address, pr.cell_phone, pr.evening_phone, 
-                    pr2.mds_resident_category as mds_resident_category2, pr2.last_name last_name2, pr2.first_name first_name2, 
-                    pr2.email_address email_address2, pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2
-                 FROM pennsouth_resident as pr
-                    LEFT JOIN
-                     pennsouth_resident as pr2
-                 ON
-                    pr.building = pr2.building
-                 and pr.floor_number = pr2.floor_number
-                 and pr.apt_line	= pr2.apt_line
-                 and pr.pennsouth_resident_id < pr2.pennsouth_resident_id
-                 and pr.mds_resident_category = pr2.mds_resident_category
-                 and concat(pr.first_name, pr.last_name) <> concat(pr2.first_name, pr2.last_name)
-                 WHERE
-                    pr.decal_num is not null and pr.mds_resident_category = :mdsResidentCategory
-                 order by cast(pr.decal_num as unsigned), pr2.mds_resident_category desc ';
-            }
-            else {
-                $query =
-                    'SELECT  distinct pr.building, pr.floor_number, pr.apt_line, pr.mds_resident_category as mds_resident_category1,
-                    pr.parking_lot_location, \'\' gap, cast(pr.decal_num as unsigned) decal_num, pr.vehicle_reg_exp_date, pr.vehicle_reg_exp_countdown,
-                    pr.vehicle_reg_interval_remaining, pr.vehicle_model, pr.vehicle_license_plate_num,
-                    pr.last_name, pr.first_name, pr.email_address, pr.cell_phone, pr.evening_phone, 
-                    pr2.mds_resident_category as mds_resident_category2, pr2.last_name last_name2, pr2.first_name first_name2, 
-                    pr2.email_address email_address2, pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2
-                     FROM pennsouth_db.pennsouth_resident as pr
-                        LEFT JOIN
-                         pennsouth_db.pennsouth_resident as pr2
-                     ON
-                        pr.building = pr2.building
-                     and pr.floor_number = pr2.floor_number
-                     and pr.apt_line	= pr2.apt_line
-                     and pr.pennsouth_resident_id < pr2.pennsouth_resident_id
-                     and pr.mds_resident_category = pr2.mds_resident_category
-                     and concat(pr.first_name, pr.last_name) <> concat(pr2.first_name, pr2.last_name)
-                     WHERE
-                        pr.decal_num is not null and pr.mds_resident_category = :mdsResidentCategory
-                     order by cast(pr.decal_num as unsigned), pr2.mds_resident_category desc ';
-            }
+
+            $query =
+                'SELECT  distinct pr.building, pr.floor_number, pr.apt_line, pr.mds_resident_category as mds_resident_category1,
+                pr.parking_lot_location, \'\' gap, cast(pr.decal_num as unsigned) decal_num, pr.vehicle_reg_exp_date, pr.vehicle_reg_exp_countdown,
+                pr.vehicle_reg_interval_remaining, pr.vehicle_model, pr.vehicle_license_plate_num,
+                pr.last_name, pr.first_name, pr.email_address, pr.cell_phone, pr.evening_phone, 
+                pr2.mds_resident_category as mds_resident_category2, pr2.last_name last_name2, pr2.first_name first_name2, 
+                pr2.email_address email_address2, pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2
+             FROM pennsouth_resident as pr
+                LEFT JOIN
+                 pennsouth_resident as pr2
+             ON
+                pr.building = pr2.building
+             and pr.floor_number = pr2.floor_number
+             and pr.apt_line	= pr2.apt_line
+             and pr.pennsouth_resident_id < pr2.pennsouth_resident_id
+             and pr.mds_resident_category = pr2.mds_resident_category
+             and concat(pr.first_name, pr.last_name) <> concat(pr2.first_name, pr2.last_name)
+             WHERE
+                pr.decal_num is not null and pr.mds_resident_category = :mdsResidentCategory
+             order by cast(pr.decal_num as unsigned), pr2.mds_resident_category desc ';
+
             
             $statement = $this->getEntityManager()->getConnection()->prepare($query);
             // Set parameters
@@ -450,117 +428,62 @@ class ManagementReportsCreator
     private function getHomeownersInsuranceReportRows() {
 
         try {
-            if ($this->env == SyncAweberMdsCommand::ENVIRONMENT_PROD) {
-                $query =
-                              'SELECT  distinct pr.building, b.address, concat( b.city, \', \', b.state, \' \', b.zip) city_state_zip, 
-                                   pr.floor_number, pr.apt_line,  
-                                   pr.homeowner_ins_exp_date,pr.homeowner_ins_exp_countdown, pr.homeowner_ins_interval_remaining,
-                                   if(apts_no_email.building_id is not null, \'No Email for Apartment\', \'\') no_email_for_apartment,
-                                   if( length(trim(pr.email_address)) = 0 and (length(trim(pr2.email_address)) = 0 or pr2.email_address is null), \'No Email for Shareholders\', \'\') no_email_for_shareholders,
-                                   pr.last_name, pr.first_name, pr.email_address, pr.cell_phone, pr.evening_phone, 
-                                   pr2.mds_resident_category, pr2.last_name last_name2, pr2.first_name first_name2, pr2.email_address email_address2,
-                                   pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2                                
-                               FROM pennsouth_resident as pr
-                                   JOIN pennsouth_bldg as b
-                               ON
-                                   pr.building = b.building_id
-                                   LEFT JOIN
-                                    pennsouth_resident as pr2
-                               ON
-                                   pr.building = pr2.building
-                               and pr.floor_number = pr2.floor_number
-                               and pr.apt_line	= pr2.apt_line
-                               and pr.pennsouth_resident_id < pr2.pennsouth_resident_id
-                               and pr.mds_resident_category = pr2.mds_resident_category
-                               and concat(pr.first_name, pr.last_name) <> concat(pr2.first_name, pr2.last_name)
-                                   LEFT JOIN
-                               (
-                               select  distinct apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
-                               from 
-                                    pennsouth_apt as apt
-                                    inner join pennsouth_resident as pr
-                               where
-                                   apt.apartment_id = pr.Pennsouth_apt_apartment_id
-                               and  not exists (
-                               select  \'x\'
-                               from pennsouth_db.pennsouth_resident pr2 
-                                where pr.pennsouth_apt_apartment_id = pr2.pennsouth_apt_apartment_id and
-                                pr2.email_address <>:emailAddress)
-                                and  not exists (
-                               select  \'x\'
-                               from aweber_mds_sync_audit msa 
-                                where pr.building = msa.aweber_building
-                                and pr.floor_number = msa.aweber_floor_number
-                                and pr.apt_line = msa.aweber_apt_line 
-                                and msa.update_action =:updateAction
-                                and msa.Aweber_Subscriber_Status =:subscriberStatus)
-                                order by apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
-                               ) apts_no_email
-                                   ON
-                                   pr.building = apts_no_email.building_id
-                               and pr.floor_number = apts_no_email.floor_number
-                               and pr.apt_line		= apts_no_email.apt_line
-                               WHERE
-                                   pr.homeowner_ins_exp_date is not null 
-                                   and pr.mds_resident_category =:residentCategory 
-                               order by pr.building, pr.floor_number, pr.apt_line, pr2.mds_resident_category desc';
 
-            }
-            else {
-                $query =
-                    'SELECT  distinct pr.building, b.address, concat( b.city, \', \', b.state, \' \', b.zip) city_state_zip, 
-                    pr.floor_number, pr.apt_line,  
-                    pr.homeowner_ins_exp_date,pr.homeowner_ins_exp_countdown, pr.homeowner_ins_interval_remaining,
-                    if(apts_no_email.building_id is not null, \'No Email for Apartment\', \'\') no_email_for_apartment,
-                    if( length(trim(pr.email_address)) = 0 and (length(trim(pr2.email_address)) = 0 or pr2.email_address is null), \'No Email for Shareholders\', \'\') no_email_for_shareholders,
-                    pr.last_name, pr.first_name, pr.email_address, pr.cell_phone, pr.evening_phone, 
-                    pr2.mds_resident_category, pr2.last_name last_name2, pr2.first_name first_name2, pr2.email_address email_address2,
-                    pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2                 
-                FROM pennsouth_db.pennsouth_resident as pr
-                    JOIN pennsouth_db.pennsouth_bldg as b
-                ON
-                    pr.building = b.building_id
-                    LEFT JOIN
-                     pennsouth_db.pennsouth_resident as pr2
-                ON
-                    pr.building = pr2.building
-                and pr.floor_number = pr2.floor_number
-                and pr.apt_line	= pr2.apt_line
-                and pr.pennsouth_resident_id < pr2.pennsouth_resident_id
-                and pr.mds_resident_category = pr2.mds_resident_category
-                and concat(pr.first_name, pr.last_name) <> concat(pr2.first_name, pr2.last_name)
-                    LEFT JOIN
-                (
-                select  distinct apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
-                from 
-                     pennsouth_db.pennsouth_apt as apt
-                     inner join pennsouth_db.pennsouth_resident as pr
-                where
-                    apt.apartment_id = pr.Pennsouth_apt_apartment_id
-                and  not exists (
-                select  \'x\'
-                from pennsouth_db.pennsouth_resident pr2 
-                 where pr.pennsouth_apt_apartment_id = pr2.pennsouth_apt_apartment_id and
-                 pr2.email_address <>:emailAddress)
-                 and  not exists (
-                select  \'x\'
-                from pennsouth_db.aweber_mds_sync_audit msa 
-                 where pr.building = msa.aweber_building
-                 and pr.floor_number = msa.aweber_floor_number
-                 and pr.apt_line = msa.aweber_apt_line 
-                 and msa.update_action =:updateAction
-                 and msa.Aweber_Subscriber_Status =:subscriberStatus)
-                 order by apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
-                ) apts_no_email
-                    ON
-                    pr.building = apts_no_email.building_id
-                and pr.floor_number = apts_no_email.floor_number
-                and pr.apt_line		= apts_no_email.apt_line
-                WHERE
-                    pr.homeowner_ins_exp_date is not null 
-                    and pr.mds_resident_category =:residentCategory 
-                order by pr.building, pr.floor_number, pr.apt_line, pr2.mds_resident_category desc';
-            }
+            $query =
+                      'SELECT  distinct pr.building, b.address, concat( b.city, \', \', b.state, \' \', b.zip) city_state_zip, 
+                           pr.floor_number, pr.apt_line,  
+                           pr.homeowner_ins_exp_date,pr.homeowner_ins_exp_countdown, pr.homeowner_ins_interval_remaining,
+                           if(apts_no_email.building_id is not null, \'No Email for Apartment\', \'\') no_email_for_apartment,
+                           if( length(trim(pr.email_address)) = 0 and (length(trim(pr2.email_address)) = 0 or pr2.email_address is null), \'No Email for Shareholders\', \'\') no_email_for_shareholders,
+                           pr.last_name, pr.first_name, pr.email_address, pr.cell_phone, pr.evening_phone, 
+                           pr2.mds_resident_category, pr2.last_name last_name2, pr2.first_name first_name2, pr2.email_address email_address2,
+                           pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2                                
+                       FROM pennsouth_resident as pr
+                           JOIN pennsouth_bldg as b
+                       ON
+                           pr.building = b.building_id
+                           LEFT JOIN
+                            pennsouth_resident as pr2
+                       ON
+                           pr.building = pr2.building
+                       and pr.floor_number = pr2.floor_number
+                       and pr.apt_line	= pr2.apt_line
+                       and pr.pennsouth_resident_id < pr2.pennsouth_resident_id
+                       and pr.mds_resident_category = pr2.mds_resident_category
+                       and concat(pr.first_name, pr.last_name) <> concat(pr2.first_name, pr2.last_name)
+                           LEFT JOIN
+                       (
+                       select  distinct apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
+                       from 
+                            pennsouth_apt as apt
+                            inner join pennsouth_resident as pr
+                       where
+                           apt.apartment_id = pr.Pennsouth_apt_apartment_id
+                       and  not exists (
+                       select  \'x\'
+                       from pennsouth_db.pennsouth_resident pr2 
+                        where pr.pennsouth_apt_apartment_id = pr2.pennsouth_apt_apartment_id and
+                        pr2.email_address <>:emailAddress)
+                        and  not exists (
+                       select  \'x\'
+                       from aweber_mds_sync_audit msa 
+                        where pr.building = msa.aweber_building
+                        and pr.floor_number = msa.aweber_floor_number
+                        and pr.apt_line = msa.aweber_apt_line 
+                        and msa.update_action =:updateAction
+                        and msa.Aweber_Subscriber_Status =:subscriberStatus)
+                        order by apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
+                       ) apts_no_email
+                           ON
+                           pr.building = apts_no_email.building_id
+                       and pr.floor_number = apts_no_email.floor_number
+                       and pr.apt_line		= apts_no_email.apt_line
+                       WHERE
+                           pr.homeowner_ins_exp_date is not null 
+                           and pr.mds_resident_category =:residentCategory 
+                       order by pr.building, pr.floor_number, pr.apt_line, pr2.mds_resident_category desc';
+
+
 
                 $statement = $this->getEntityManager()->getConnection()->prepare($query);
                 // Set parameters
