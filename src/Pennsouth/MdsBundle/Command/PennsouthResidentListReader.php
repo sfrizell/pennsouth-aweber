@@ -39,9 +39,7 @@ class PennsouthResidentListReader
         public function getPennsouthResidentsHavingEmailAddresses() {
 
         try {
-            print("\n ------- 4.1.1 -----------\n");
-
-
+           // print("\n ------- 4.1.1 -----------\n");
 
            $query = $this->getentityManager()->createQuery(
                 'Select pr 
@@ -70,10 +68,10 @@ class PennsouthResidentListReader
                                       from PennsouthMdsBundle:PennsouthResident pr 
                                       where pr.emailAddress is not NULL');*/
 
-            print("\n ------- 4.1.2 -----------\n");
+          //  print("\n ------- 4.1.2 -----------\n");
 
             $pennsouthResidentsHavingEmailAddresses = $query->getResult();
-            print("\n ------- 4.1.3 -----------\n");
+          //  print("\n ------- 4.1.3 -----------\n");
 
             $count = count($pennsouthResidentsHavingEmailAddresses); // length function obtains number of elements in a collection of objects
 

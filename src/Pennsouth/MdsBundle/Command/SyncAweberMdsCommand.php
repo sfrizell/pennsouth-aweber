@@ -230,34 +230,6 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
    //     print ("\n @@@@@@@@@  rootDir trimmed: " .  $rootDir . "\n");
 
-        // sfrizell - 10/7/2016 -- following block of code not working get a ContextErrorException running it...
-//        $input = new ArgvInput();
-//        $env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
-//        $debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(array('--no-debug', '')) && $env !== 'prod';
-//
-//        if ($debug) {
-//            Debug::enable();
-//        }
-//        $pennsouthResidentListReader = new PennsouthResidentListReaderCommand();
-//
-//        $pennsouthResidentListReader->run($input, $output);
-
-
-        // sfrizell - comment out block just for now (10/18/2016):
-
-
-
-        // sfrizell - comment out block above just for now (10/18/2016)
-
-  /*      $i = 0;
-        foreach ($residentsWithEmailAddressesArray as $emailAddress => $resident) {
-            $i++;
-            if ($i < 10) {
-                print ( "\n" . "emailAddress: " . $emailAddress . " name: " . $resident->getFirstName() . " " . $resident->getLastName());
-            }
-        }*/
-
-       // exit;
 
         /** In block below, invoke Aweber API to obtain the following:
          *   a) list of Penn South Admin email recipients, to notify about the status of the running of the MDS to Aweber update process: $adminEmailRecipients
@@ -294,7 +266,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         $aweberSubscriberTest = $mdsToAweberComparator->createAweberSubscriberFromMdsInput(MdsToAweberComparator::INSERT, $pennsouthResident);
           $emailNotificationLists = array();
-                // todo: check if the declaration of $account here below breaks functionality?
+
                 $account = null; // added this declaration 11/4/2016 when code was working without it - but then
                                  // how could call to$aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList) work without this declaration?
                                  // question is does the variable declaration here break anything???
@@ -341,7 +313,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                          // question is does the variable declaration here break anything???
 
         try {
-            $aweberSubscriberListReader = new AweberSubscriberListReader();
+            $aweberSubscriberListReader = new AweberSubscriberListReader($this->getEntityManager());
            // $aweberSubscriberListReader = new AweberSubscriberListReader($fullPathToAweber);
             $account = $aweberSubscriberListReader->connectToAWeberAccount();
 
@@ -413,8 +385,6 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         }
 
 
-       // print("\n ------- 2 -----------\n");
-
         if ($this->runReportOnAptsWithNoEmail) {
             try {
                 $phpExcel = $this->getContainer()->get('phpexcel');
@@ -438,8 +408,6 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 exit(1);
             }
         }
-
-     //   print("\n ------- 3 -----------\n");
 
 
         // block to generate spreadsheet of MDS -> Aweber updates.
@@ -471,8 +439,6 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         }
 
 
-       // print("\n ------- 4 -----------\n");
-
 
         // check whether there is anything left to do...
        if (!$this->runUpdateAweberFromMds and !$this->runReportOnAweberEmailsNotInMds) {
@@ -492,7 +458,6 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
             $pennsouthResidentListReader = new PennsouthResidentListReader($entityManager);
 
-           // print("\n ------- 4.1 -----------\n");
 
             // The following commented-out code turns on SQL logging for Doctrine - prints out the SQL that gets created from the DQL calls.
 /*            $this
@@ -503,11 +468,9 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
             $residentsWithEmailAddressesArray = $pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddressAssociativeArray();
 
-           // print("\n ------- 4.2 -----------\n");
 
             foreach ($emailNotificationLists as $emailNotificationList) {
 
-               // print("\n" . "1");
                 $listName = $emailNotificationList->data["name"];
 
                 print("\n" . " List Name: " . $listName . "\n");
@@ -515,16 +478,6 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 // returns associative array : key = name of aWeberSubscriberList ; value = array of AweberSubscriber objects
                 $aweberSubscribersByListNames[] = $aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList);
 
-
-                /*       if ($listName == "frizell_test") {
-                           print("\n" . "2");
-                           $aweberSubscriberWriter = new AweberSubscriberWriter($rootDir);
-
-                           print("\n" . "3");
-                           $subscriber = $aweberSubscriberWriter->createAweberSubscriberTest($account, $emailNotificationList);
-                           print ("\n" . "!!!!!!!!!!!   subscriber: " . "\n");
-                           print_r($subscriber);
-                       }*/
 
             }
         }
@@ -540,8 +493,6 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             throw $exception;
         }
 
-
-       // print("\n ------- 5 -----------\n");
 
         try {
             $mdsToAweberComparator = new MdsToAweberComparator($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersByListNames);
@@ -567,8 +518,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                     $aweberSubscriberListsUpdater = new AweberSubscriberListsUpdater($fullPathToAweber, $aweberApiInstance, $emailNotificationLists);
                     $errorMessages = $aweberSubscriberListsUpdater->updateAweberSubscriberLists($account, $aweberSubscriberUpdateInsertLists);
                     $aweberUpdateSummary = $mdsToAweberComparator->storeAuditTrailofUpdatesToAweberSubscribers($aweberSubscriberUpdateInsertLists);
-                    $phpExcel = $this->getContainer()->get('phpexcel');
                     // todo : evaluate whether it will be okay to create the spreadsheet reporting on the updates in the same run as the update...
+                    // $phpExcel = $this->getContainer()->get('phpexcel');
                    /* $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
                     $aweberMdsAuditListCreator->createSpreadsheetAweberUpdatesList(); */
                     $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
@@ -594,8 +545,6 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             throw $exception;
         }
 
-
-       // print("\n ------- 6 -----------\n");
 
 
         // block to generate spreadsheet of MDS -> Aweber updates.
