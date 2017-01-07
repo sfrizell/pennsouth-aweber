@@ -32,15 +32,6 @@ class AweberCredentialsPopulator
         return $this->entityManager;
     }
 
-    /*    public function __construct($consumerKey, $consumerSecret, $accessToken, $accessSecret)
-        {
-            $this->setConsumerKey($consumerKey);
-            $this->setConsumerSecret($consumerSecret);
-            $this->setAccessToken($accessToken);
-            $this->setAccessSecret($accessSecret);
-        }*/
-
-
     /**
      * @var string
      */
