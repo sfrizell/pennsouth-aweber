@@ -492,142 +492,144 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
 
 
         // check whether there is anything left to do...
-       if (!$this->runUpdateAweberFromMds and !$this->runReportOnAweberEmailsNotInMds) {
+/*       if (!$this->runUpdateAweberFromMds and !$this->runReportOnAweberEmailsNotInMds) {
            print("\n Neither the flag to run the Update Aweber from MDS nor the flag to run Reports on Aweber Emails Not in MDS is set to true. \n");
            print("\n So nothing left to do. Exiting the program. \n");
            exit(0);
-       }
+       }*/
 
 
-        /**
-         *   In block below, obtain the list of Penn South Subscribers to each of the Penn South Resident subscriber lists obtained from the block above
-         */
-        $aweberSubscribersByListNames = array();
-        try {
+        if ($this->runUpdateAweberFromMds or $this->runReportOnAweberEmailsNotInMds) {
+            /**
+             *   In block below, obtain the list of Penn South Subscribers to each of the Penn South Resident subscriber lists obtained from the block above
+             */
+            $aweberSubscribersByListNames = array();
+            try {
 
-            $entityManager = $this->getEntityManager();
+                $entityManager = $this->getEntityManager();
 
-            $pennsouthResidentListReader = new PennsouthResidentListReader($entityManager);
-
-
-            // The following commented-out code turns on SQL logging for Doctrine - prints out the SQL that gets created from the DQL calls.
-/*            $this
-                ->getEntityManager()
-                ->getConnection()
-                ->getConfiguration()
-                ->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());*/
-
-            $residentsWithEmailAddressesArray = $pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddressAssociativeArray();
+                $pennsouthResidentListReader = new PennsouthResidentListReader($entityManager);
 
 
-            foreach ($emailNotificationLists as $emailNotificationList) {
+                // The following commented-out code turns on SQL logging for Doctrine - prints out the SQL that gets created from the DQL calls.
+                /*            $this
+                                ->getEntityManager()
+                                ->getConnection()
+                                ->getConfiguration()
+                                ->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());*/
 
-                $listName = $emailNotificationList->data["name"];
-
-                print("\n" . " List Name: " . $listName . "\n");
-
-                // returns associative array : key = name of aWeberSubscriberList ; value = array of AweberSubscriber objects
-                $aweberSubscribersByListNames[] = $aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList);
-
-
-            }
-        }
-
-        catch (\Exception $exception) {
-            print("\n" . "Exception occurred when trying to call AweberSubscriberListReader->getSubscribersToEmailNotificationList! Exception->getMessage() : " . $exception->getMessage());
-            print("\n" . "Exiting from program.");
-            $subjectLine  = "Fatal exception encountered in MDS -> AWeber Update Program";
-            $messageBody  =  "\n" . "Exception occurred! Exception->getMessage() : " . $exception->getMessage();
-            $messageBody .=  "\n" . "Exception occurred! Exception->getCode() : " . $exception->getCode();
-            $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
-            $this->isExceptionRaised = TRUE;
-            $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
-            throw $exception;
-        }
+                $residentsWithEmailAddressesArray = $pennsouthResidentListReader->getPennsouthResidentsHavingEmailAddressAssociativeArray();
 
 
-        try {
-            $mdsToAweberComparator = new MdsToAweberComparator($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersByListNames);
-            if ($this->runReportOnAweberEmailsNotInMds) { // following method invoked just to allow Penn South Management Office to sync up Aweber with MDS; once done,
-                // we should not need to run the following any longer...
-                $mdsToAweberComparator->reportOnAweberSubscribersWithNoMatchInMds();
-                print("\n" . "Report on Aweber Subscribers with No Match in MDS. Processing completed successfully.");
-                $subjectLine = "Report on Aweber Subscribers with No Match in MDS: Processing Successfully Completed.";
-                $messageBody = "Results of comparison of Aweber subscriber lists with MDS are stored in the pennsouth_db database.";
-                $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
-               // $subjectLine = "Pennsouth List of Residents with Aweber.com Email Addresses not in MDS Successfully Created.";
-               // $messageBody = "\n The report on Pennsouth residents with Aweber Email addresses not found in MDS is available on the Pennsouth Ftp Server. \n";
-               // $this->sendEmailtoAdmins($subjectLine, $messageBody);
-            }
-            if ($this->runUpdateAweberFromMds) { // once in production, this should always be true...
-                $aweberSubscriberUpdateInsertLists = $mdsToAweberComparator->compareAweberWithMds();
-                $aweberUpdateSummary = null;
-                $messageBody = null;
-                if (!$aweberSubscriberUpdateInsertLists->isUpdateListAndInsertListEmpty()) { // MDS has data that is not yet reflected in Aweber; need to insert/update Aweber from MDS...
-                    // - invoke method to insert/update Aweber subscriber lists from MDS
-                    // - invoke method to create an audit trail of the inserts/updates to Aweber
-                    // - send summary statistics to Penn South Admins
-                    $aweberSubscriberListsUpdater = new AweberSubscriberListsUpdater($fullPathToAweber, $aweberApiInstance, $emailNotificationLists);
-                    $errorMessages = $aweberSubscriberListsUpdater->updateAweberSubscriberLists($account, $aweberSubscriberUpdateInsertLists);
-                    $aweberUpdateSummary = $mdsToAweberComparator->storeAuditTrailofUpdatesToAweberSubscribers($aweberSubscriberUpdateInsertLists);
-                    // todo : evaluate whether it will be okay to create the spreadsheet reporting on the updates in the same run as the update...
-                    // $phpExcel = $this->getContainer()->get('phpexcel');
-                   /* $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
-                    $aweberMdsAuditListCreator->createSpreadsheetAweberUpdatesList(); */
-                    $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
-                    $messageBody = "RunUpdateAweberFromMds: Processing completed successfully in MDS to AWeber Update program." . "\n\n";
-                    $messageBody = $this->buildMessageBodyForEmailToAdmins($messageBody, $aweberUpdateSummary, $errorMessages);
-                    $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
-                } else {
-                    $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
-                    $messageBody = "RunUpdateAweberFromMds: Processing completed successfully in MDS to AWeber Update program. However, no updates or inserts were performed.";
-                    $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
+                foreach ($emailNotificationLists as $emailNotificationList) {
+
+                    $listName = $emailNotificationList->data["name"];
+
+                    print("\n" . " List Name: " . $listName . "\n");
+
+                    // returns associative array : key = name of aWeberSubscriberList ; value = array of AweberSubscriber objects
+                    $aweberSubscribersByListNames[] = $aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList);
+
+
                 }
-
-                print("\n" . "RunUpdateAweberFromMds: Processing completed successfully.");
+            } catch (\Exception $exception) {
+                print("\n" . "Exception occurred when trying to call AweberSubscriberListReader->getSubscribersToEmailNotificationList! Exception->getMessage() : " . $exception->getMessage());
+                print("\n" . "Exiting from program.");
+                $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program";
+                $messageBody = "\n" . "Exception occurred! Exception->getMessage() : " . $exception->getMessage();
+                $messageBody .= "\n" . "Exception occurred! Exception->getCode() : " . $exception->getCode();
+                $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
+                $this->isExceptionRaised = TRUE;
+                $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
+                throw $exception;
             }
-        } catch (\Exception $exception) {
+        }
 
-            print("\n" . "Exception occurred in section of SyncAweberMdsCommand where mdstoAweberComparator is invoked! Exception->getMessage() : " . $exception->getMessage());
-            print("\n" . "Exiting from program.");
-            $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program";
-            $messageBody = "\n" . "Exception occurred in section of SyncAweberMdsCommand where mdstoAweberComparator is invoked! Exception->getMessage() : " . $exception->getMessage();
-            $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
-            $this->isExceptionRaised = TRUE;
-            $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
-            throw $exception;
+        if ($this->runUpdateAweberFromMds or $this->runReportOnAweberEmailsNotInMds) {
+            try {
+                $mdsToAweberComparator = new MdsToAweberComparator($this->getEntityManager(), $residentsWithEmailAddressesArray, $aweberSubscribersByListNames);
+                if ($this->runReportOnAweberEmailsNotInMds) { // following method invoked just to allow Penn South Management Office to sync up Aweber with MDS; once done,
+                    // we should not need to run the following any longer...
+                    $mdsToAweberComparator->reportOnAweberSubscribersWithNoMatchInMds();
+                    print("\n" . "Report on Aweber Subscribers with No Match in MDS. Processing completed successfully.");
+                    $subjectLine = "Report on Aweber Subscribers with No Match in MDS: Processing Successfully Completed.";
+                    $messageBody = "Results of comparison of Aweber subscriber lists with MDS are stored in the pennsouth_db database.";
+                    $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
+                    // $subjectLine = "Pennsouth List of Residents with Aweber.com Email Addresses not in MDS Successfully Created.";
+                    // $messageBody = "\n The report on Pennsouth residents with Aweber Email addresses not found in MDS is available on the Pennsouth Ftp Server. \n";
+                    // $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                }
+                if ($this->runUpdateAweberFromMds) { // once in production, this should always be true...
+                    $aweberSubscriberUpdateInsertLists = $mdsToAweberComparator->compareAweberWithMds();
+                    $aweberUpdateSummary = null;
+                    $messageBody = null;
+                    if (!$aweberSubscriberUpdateInsertLists->isUpdateListAndInsertListEmpty()) { // MDS has data that is not yet reflected in Aweber; need to insert/update Aweber from MDS...
+                        // - invoke method to insert/update Aweber subscriber lists from MDS
+                        // - invoke method to create an audit trail of the inserts/updates to Aweber
+                        // - send summary statistics to Penn South Admins
+                        $aweberSubscriberListsUpdater = new AweberSubscriberListsUpdater($fullPathToAweber, $aweberApiInstance, $emailNotificationLists);
+                        $errorMessages = $aweberSubscriberListsUpdater->updateAweberSubscriberLists($account, $aweberSubscriberUpdateInsertLists);
+                        $aweberUpdateSummary = $mdsToAweberComparator->storeAuditTrailofUpdatesToAweberSubscribers($aweberSubscriberUpdateInsertLists);
+                        // todo : evaluate whether it will be okay to create the spreadsheet reporting on the updates in the same run as the update...
+                        // $phpExcel = $this->getContainer()->get('phpexcel');
+                        /* $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
+                         $aweberMdsAuditListCreator->createSpreadsheetAweberUpdatesList(); */
+                        $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
+                        $messageBody = "RunUpdateAweberFromMds: Processing completed successfully in MDS to AWeber Update program." . "\n\n";
+                        $messageBody = $this->buildMessageBodyForEmailToAdmins($messageBody, $aweberUpdateSummary, $errorMessages);
+                        $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
+                    } else {
+                        $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
+                        $messageBody = "RunUpdateAweberFromMds: Processing completed successfully in MDS to AWeber Update program. However, no updates or inserts were performed.";
+                        $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
+                    }
+
+                    print("\n" . "RunUpdateAweberFromMds: Processing completed successfully.");
+                }
+            } catch (\Exception $exception) {
+
+                print("\n" . "Exception occurred in section of SyncAweberMdsCommand where mdstoAweberComparator is invoked! Exception->getMessage() : " . $exception->getMessage());
+                print("\n" . "Exiting from program.");
+                $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program";
+                $messageBody = "\n" . "Exception occurred in section of SyncAweberMdsCommand where mdstoAweberComparator is invoked! Exception->getMessage() : " . $exception->getMessage();
+                $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
+                $this->isExceptionRaised = TRUE;
+                $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
+                throw $exception;
+            }
         }
 
 
 
         // block to generate spreadsheet of MDS -> Aweber updates.
         // **** NOTE: Because of memory limitations, this step must be run by itself without other application functionality options being invoked.
-       try {
-           if ($this->runReportOnAweberEmailsNotInMds) {
-               $phpExcel = $this->getContainer()->get('phpexcel');
-               $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
-               $aweberMdsAuditListCreator->createSpreadsheetAweberEmailAddressesNotInMds();
-               $subjectLine = "Report Created of Email Addresses found in Aweber.com but not in MDS";
-               $messageBody = "\n Spreadsheet report created listing email addresses of Pennsouth residents found in Aweber but not in MDS. \n" ;
-               $messageBody .= "\n The spreadsheet is attached to this email. It is also available on the Pennsouth ftp server. \n";
-               $attachmentFilePath = $appOutputDir . "/" . AweberMdsSyncAuditListCreator::LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME;
-               $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised, $attachmentFilePath);
-               $runEndDate = new \DateTime("now");
-               print("\n" . "Program run end date/time: " . $runEndDate->format('Y-m-d H:i:s') . "\n");
-               exit(0);
-           }
+        if ($this->runReportOnAweberEmailsNotInMds) {
+            try {
 
-       }
-       catch (\Exception $exception) {
+                   $phpExcel = $this->getContainer()->get('phpexcel');
+                   $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
+                   $aweberMdsAuditListCreator->createSpreadsheetAweberEmailAddressesNotInMds();
+                   $subjectLine = "Report Created of Email Addresses found in Aweber.com but not in MDS";
+                   $messageBody = "\n Spreadsheet report created listing email addresses of Pennsouth residents found in Aweber but not in MDS. \n" ;
+                   $messageBody .= "\n The spreadsheet is attached to this email. It is also available on the Pennsouth ftp server. \n";
+                   $attachmentFilePath = $appOutputDir . "/" . AweberMdsSyncAuditListCreator::LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME;
+                   $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised, $attachmentFilePath);
+                   $runEndDate = new \DateTime("now");
+                   print("\n" . "Program run end date/time: " . $runEndDate->format('Y-m-d H:i:s') . "\n");
+                   exit(0);
+               }
+            catch (\Exception $exception) {
 
-           print("\n" . "Exception occurred in section of SyncAweberMdsCommand where spreadsheet is generated reporting on email addresses found in Aweber.com but not MDS! Exception->getMessage() : " . $exception->getMessage());
-           print("\n" . "Exiting from program.");
-           $subjectLine = "Fatal exception encountered when attempting to generate spreadsheet reporting on email addresses found in aweber.com but not in MDS!";
-           $messageBody = "\n" . "Exception occurred in section of SyncAweberMdsCommand where spreadsheet is generated reporting on email addresses found in Aweber.com but not MDS! Exception->getMessage() : " . $exception->getMessage();
-           $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
-           $this->isExceptionRaised = TRUE;
-           $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
-           throw $exception;
+                print("\n" . "Exception occurred in section of SyncAweberMdsCommand where spreadsheet is generated reporting on email addresses found in Aweber.com but not MDS! Exception->getMessage() : " . $exception->getMessage());
+                print("\n" . "Exiting from program.");
+                $subjectLine = "Fatal exception encountered when attempting to generate spreadsheet reporting on email addresses found in aweber.com but not in MDS!";
+                $messageBody = "\n" . "Exception occurred in section of SyncAweberMdsCommand where spreadsheet is generated reporting on email addresses found in Aweber.com but not MDS! Exception->getMessage() : " . $exception->getMessage();
+                $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
+                $this->isExceptionRaised = TRUE;
+                $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
+                throw $exception;
+            }
+
        }
 
         $runEndDate = new \DateTime("now");
