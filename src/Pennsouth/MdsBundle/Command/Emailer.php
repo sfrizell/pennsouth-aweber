@@ -15,6 +15,7 @@ use Swift_Transport_SpoolTransport;
 use Swift_MemorySpool;
 use Swift_Attachment;
 use Swift_Mime_SimpleMessage;
+use Pennsouth\MdsBundle\Entity\EmailNotifyParameters;
 
 class Emailer
 {
@@ -28,16 +29,18 @@ class Emailer
     private $emailBody;
     private $emailRecipients;
     private $attachmentFilePath;
+    private $isExceptionRaised;
 
 
     public function __construct(Swift_Mailer $mailer, $transportRealTime,
-                     $emailSubjectLine, $emailBody, $emailRecipients, $attachmentFilePath = null)
+                     $emailSubjectLine, $emailBody, $emailRecipients, $isExceptionRaised = null, $attachmentFilePath = null)
     {
         $this->mailer              =  $mailer;
         $this->transportRealTime   = $transportRealTime;
         $this->emailSubjectLine     = $emailSubjectLine;
         $this->emailBody           = $emailBody;
         $this->emailRecipients      = $emailRecipients;
+        $this->isExceptionRaised    = $isExceptionRaised;
         $this->attachmentFilePath   = $attachmentFilePath;
     }
 
@@ -64,9 +67,17 @@ class Emailer
             }
 
             foreach ($this->emailRecipients as $emailRecipient) {
-                foreach ($emailRecipient as $emailAddress => $emailRecipientName) {
-                    $message->addTo($emailAddress, $emailRecipientName);
+                if ($emailRecipient instanceof EmailNotifyParameters) {
+                    if (is_null($emailRecipient->getSendOnlyExceptions()) or $emailRecipient->getSendOnlyExceptions() == 'N') {
+                        $message->addTo($emailRecipient->getRecipientEmailAddress(), $emailRecipient->getRecipientName());
+                    }
+                    else {
+                        if ($this->isExceptionRaised) {
+                            $message->addTo($emailRecipient->getRecipientEmailAddress(), $emailRecipient->getRecipientName());
+                        }
+                    }
                 }
+
             }
 
             /*                    foreach ($this->emailRecipients as $emailAddress => $emailRecipientName) {
