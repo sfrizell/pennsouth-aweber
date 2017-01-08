@@ -49,7 +49,7 @@ php app/console app:sync-mds-aweber \-\-update-aweber-from-mds=n \-\-report-on-a
 Developers Section
 ------------------
 
-The main logic of the application is defined in the php class SyncAweberMdsCommand in the src/Pennsouth/MdsBundle/Command directory.
+The main logic of the application is defined in the php class ProgramExecuteCommand in the src/Pennsouth/MdsBundle/Command directory.
 
 As with other Symfony projects, configuration settings are to be found in the app/config folder.
 
