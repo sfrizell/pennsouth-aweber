@@ -13,10 +13,9 @@ use Pennsouth\MdsBundle\Entity\PennsouthResident;
 
 //use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-//extends ContainerAwareCommand
+//use Symfony\Component\HttpKernel\HttpKernelInterface;
+//use Symfony\Component\DependencyInjection\ContainerAware;
+//use Doctrine\Bundle\DoctrineBundle\Registry;
 
 
 class PennsouthResidentListReader
@@ -36,37 +35,37 @@ class PennsouthResidentListReader
     }
 
 
-        public function getPennsouthResidentsHavingEmailAddresses() {
+    public function getPennsouthResidentsHavingEmailAddresses() {
 
-        try {
-           // print("\n ------- 4.1.1 -----------\n");
+    try {
+       // print("\n ------- 4.1.1 -----------\n");
 
-           $query = $this->getentityManager()->createQuery(
-                'Select pr 
-                 from PennsouthMdsBundle:PennsouthResident pr 
-                 where pr.emailAddress is not NULL');
-/*
-            $query = $this->getentityManager()->createQuery(
-                          'Select pr.building, pr.floorNumber, pr.aptLine, pr.lastName, pr.firstName, pr.emailAddress,
-                            pr.mdsResidentCategory, pr.daytimePhone, pr.eveningPhone, pr.cellPhone, pr.fax, pr.officePhone,
-                            pr.personId, pr.toddlerRoomMember, pr.youthRoomMember, pr.ceramicsMember,
-                            pr.woodworkingMember, pr.gymMember, pr.gardenMember, pr.decalNum, pr.parkingLotLocation,
-                            pr.vehicleRegExpDate, pr.vehicleRegIntervalRemaining, pr.vehicleModel, pr.vehicleLicensePlateNum,
-                            pr.homeownerInsExpDate, pr.homeownerInsIntervalRemaining, pr.birthDate, pr.moveInDate,
-                            pr.storageLockerClosetBldgNum, pr.storageLockerNum, pr.storageClosetFloorNum,
-                            pr.dogTagNum, pr.isDogInApt, pr.bikeRackLocation, pr.bikeRackRoom, pr.bikeRackBldg, pr.lastChangedDate
-                           from PennsouthMdsBundle:PennsouthResident pr
-                           where pr.emailAddress is not NULL');
-            */
+       $query = $this->getentityManager()->createQuery(
+            'Select pr 
+             from PennsouthMdsBundle:PennsouthResident pr 
+             where pr.emailAddress is not NULL');
+        /*
+                    $query = $this->getentityManager()->createQuery(
+                                  'Select pr.building, pr.floorNumber, pr.aptLine, pr.lastName, pr.firstName, pr.emailAddress,
+                                    pr.mdsResidentCategory, pr.daytimePhone, pr.eveningPhone, pr.cellPhone, pr.fax, pr.officePhone,
+                                    pr.personId, pr.toddlerRoomMember, pr.youthRoomMember, pr.ceramicsMember,
+                                    pr.woodworkingMember, pr.gymMember, pr.gardenMember, pr.decalNum, pr.parkingLotLocation,
+                                    pr.vehicleRegExpDate, pr.vehicleRegIntervalRemaining, pr.vehicleModel, pr.vehicleLicensePlateNum,
+                                    pr.homeownerInsExpDate, pr.homeownerInsIntervalRemaining, pr.birthDate, pr.moveInDate,
+                                    pr.storageLockerClosetBldgNum, pr.storageLockerNum, pr.storageClosetFloorNum,
+                                    pr.dogTagNum, pr.isDogInApt, pr.bikeRackLocation, pr.bikeRackRoom, pr.bikeRackBldg, pr.lastChangedDate
+                                   from PennsouthMdsBundle:PennsouthResident pr
+                                   where pr.emailAddress is not NULL');
+                    */
 
-            // Looks like a memory issue. When this is run on Rose Hosting, if there are too many columns in the query, the program stops on the getResult call...
- /*           $query = $this->getentityManager()->createQuery(
-                                     'Select pr.building, pr.floorNumber, pr.aptLine, pr.lastName, pr.firstName, pr.emailAddress,
-                                       pr.mdsResidentCategory, pr.daytimePhone, pr.eveningPhone, pr.cellPhone, pr.fax, pr.officePhone,
-                                       pr.personId, pr.toddlerRoomMember, pr.youthRoomMember, pr.ceramicsMember,
-                                       pr.woodworkingMember, pr.gymMember, pr.gardenMember,  pr.vehicleRegExpDate
-                                      from PennsouthMdsBundle:PennsouthResident pr 
-                                      where pr.emailAddress is not NULL');*/
+                    // Looks like a memory issue. When this is run on Rose Hosting, if there are too many columns in the query, the program stops on the getResult call...
+         /*           $query = $this->getentityManager()->createQuery(
+                                             'Select pr.building, pr.floorNumber, pr.aptLine, pr.lastName, pr.firstName, pr.emailAddress,
+                                               pr.mdsResidentCategory, pr.daytimePhone, pr.eveningPhone, pr.cellPhone, pr.fax, pr.officePhone,
+                                               pr.personId, pr.toddlerRoomMember, pr.youthRoomMember, pr.ceramicsMember,
+                                               pr.woodworkingMember, pr.gymMember, pr.gardenMember,  pr.vehicleRegExpDate
+                                              from PennsouthMdsBundle:PennsouthResident pr
+                                              where pr.emailAddress is not NULL');*/
 
           //  print("\n ------- 4.1.2 -----------\n");
 
@@ -91,7 +90,7 @@ class PennsouthResidentListReader
             throw $exception;
         }
 
-        }
+    }
 
        public function getPennsouthResidentsHavingEmailAddressAssociativeArray() {
 

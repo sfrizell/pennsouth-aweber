@@ -1,6 +1,6 @@
 <?php
 /**
- * AweberCredentialsPopulator.php
+ * AweberCredentialsProvider.php
  * User: sfrizell
  * Date: 1/6/17
  *  Function: Obtain Aweber credentials stored in database.
@@ -10,7 +10,7 @@ namespace Pennsouth\MdsBundle\AweberEntity;
 
 use Doctrine\ORM\EntityManager;
 
-class AweberCredentialsPopulator
+class AweberCredentialsProvider
 {
     const CONSUMER_KEY_COL_NAME     = "consumer_key";
     const CONSUMER_SECRET_COL_NAME  = "consumer_secret";

@@ -10,7 +10,7 @@ use AWeberAPI;
 use AWeberAPIException;
 use AppKernel;
 use Doctrine\ORM\EntityManager;
-use Pennsouth\MdsBundle\AweberEntity\AweberCredentialsPopulator;
+use Pennsouth\MdsBundle\AweberEntity\AweberCredentialsProvider;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 //use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
@@ -48,7 +48,7 @@ class AweberSubscriberListReader
             // require_once $rootDir . '/vendor/aweber/aweber/aweber_api/aweber_api.php';
             # replace XXX with your real keys and secrets
 
-            $aweberCredentialsPopulator = new AweberCredentialsPopulator($this->getEntityManager());
+            $aweberCredentialsPopulator = new AweberCredentialsProvider($this->getEntityManager());
             $aweberCredentialsPopulator->populateAweberCredentials();
 
             $this->consumerKey      = $aweberCredentialsPopulator->getConsumerKey();
