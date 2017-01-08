@@ -56,6 +56,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
     private $runReportOnAweberUpdatesFromMds;
     private $runParkingLotReport;
     private $runHomeownersInsuranceReport;
+    private $emailNotifyReportOrProcess;
 
     protected function configure() {
         $this
@@ -176,9 +177,11 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                                         : ( strtolower($input->getOption(self::REPORT_ON_APTS_WITH_NO_EMAIL)) == 'y' ? TRUE : FALSE ) );
 
 
-
+        $processCtr = 0;
         if ($this->runUpdateAweberFromMds) {
             print ("\n" . "run update from MDS set to true. \n");
+            $emailNotifyReportOrProcess = self::UPDATE_AWEBER_FROM_MDS;
+            $processCtr++;
         }
         else {
             print ("\n" . "run update from MDS set to false. \n");
@@ -186,6 +189,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         if ($this->runReportOnAweberEmailsNotInMds) {
             print ("\n" . "run report on Aweber Emails not in MDS set to true. \n");
+            $emailNotifyReportOrProcess = self::REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS;
+            $processCtr++;
         }
         else {
             print ("\n" . "run report on Aweber Emails not in MDS set to false. \n");
@@ -193,6 +198,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         if ($this->runParkingLotReport) {
             print ("\n" . "run Parking Lot Report set to true. \n");
+            $emailNotifyReportOrProcess = self::PARKING_LOT_REPORT;
+            $processCtr++;
         }
         else {
             print ("\n" . "run Parking Lot Report set to false. \n");
@@ -201,6 +208,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         if ($this->runHomeownersInsuranceReport) {
             print ("\n" . "run Homeowners Insurance Report set to true. \n");
+            $emailNotifyReportOrProcess = self::HOMEOWNERS_INSURANCE_REPORT;
+            $processCtr++;
         }
         else {
             print ("\n" . "run Homeowners Insurance Report set to false. \n");
@@ -208,6 +217,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         if ($this->runReportOnAptsWithNoEmail) {
             print ("\n" . "Run Report on Apartments with No Email Address set to true. \n");
+            $emailNotifyReportOrProcess = self::REPORT_ON_APTS_WITH_NO_EMAIL;
+            $processCtr++;
         }
         else {
             print ("\n" . "Run Report on Apartments with No Email Address set to false. \n");
@@ -217,9 +228,17 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             print ("\n" . "run report (generate spreadsheet) on Aweber updates from MDS set to true. \n");
             print ("\n" . "Because of memory limitations it is not possible to also run the Aweber updates from MDS. It is being set to FALSE. \n");
             $this->runUpdateAweberFromMds = FALSE;
+            $emailNotifyReportOrProcess = self::REPORT_ON_AWEBER_UPDATES_FROM_MDS;
+            $processCtr++;
         }
         else {
             print ("\n" . "run report (generate spreadsheet) on Aweber updates from MDS set to false. \n");
+        }
+
+        if ($processCtr > 1) {
+            print("\n Command line parameters have been set to run more than one process / report in this run of the program. Please limit the run parameters to one process or report. \n");
+            print("\n Program is exiting. Adjust parameters and resubmit.");
+            exit(1);
         }
 
         // Seems to need 128M (32M default setting on Rose Hosting server is too little - Doctrine query runs out of memory in select from pennsouth_resident...

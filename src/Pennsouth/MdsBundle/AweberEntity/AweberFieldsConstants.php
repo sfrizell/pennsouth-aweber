@@ -11,10 +11,10 @@ namespace Pennsouth\MdsBundle\AweberEntity;
 
 class AweberFieldsConstants
 {
-       const PATH_TO_AWEBER_UNDER_VENDOR                    = '/vendor/aweber/aweber/aweber_api/aweber_api.php';
-       const PRIMARY_RESIDENT_LIST              = 'Primary Resident List'; // Unique List ID: awlist3774632
-       const EMERGENCY_NOTICES_FOR_RESIDENTS    = 'Penn South Emergency Info Only'; // Unique List ID: awlist4464610 ; list_id is stripped of the 'awlist' prefix, just the # portion
-       const FRIZELL_TEST_LIST                  = 'frizell_test';
+       const PATH_TO_AWEBER_UNDER_VENDOR                = '/vendor/aweber/aweber/aweber_api/aweber_api.php';
+       const PRIMARY_RESIDENT_LIST                      = 'Primary Resident List'; // Unique List ID: awlist3774632
+       const EMERGENCY_NOTICES_FOR_RESIDENTS            = 'Penn South Emergency Info Only'; // Unique List ID: awlist4464610 ; list_id is stripped of the 'awlist' prefix, just the # portion
+       const FRIZELL_TEST_LIST                          = 'frizell_test';
 
        const CUSTOM_FIELDS                  = array('BUILDING' => 'Penn_South_Building',
                                                     'FLOOR_NUMBER' => 'Floor_Number',
