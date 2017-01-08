@@ -1,6 +1,6 @@
 <?php
 /**
- * SyncAweberMdsCommand.php
+ * ProgramExecuteCommand.php
  * User: sfrizell
  * Date: 9/20/16
  *  Function: Command class to enable running the MDS to Aweber synchronization process from the command line.
@@ -9,6 +9,8 @@
 namespace Pennsouth\MdsBundle\Command;
 
 use Pennsouth\MdsBundle\AweberEntity\AweberUpdateSummary;
+use Pennsouth\MdsBundle\Entity\EmailNotifyParameters;
+use Pennsouth\MdsBundle\Service\EmailNotifyParametersReader;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 //use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -34,10 +36,12 @@ use Symfony\Component\Debug\DebugClassLoader;
  */
 
 
-class SyncAweberMdsCommand extends ContainerAwareCommand {
+class ProgramExecuteCommand extends ContainerAwareCommand {
 
 
     const DEFAULT_ADMINS                    =  array ( array("steve.frizell@gmail.com" => "Stephen Frizell"));
+    const DEFAULT_ADMIN_EMAIL_RECIPIENT_ADDRESS       = 'steve.frizell@gmail.com';
+    const DEFAULT_ADMIN_EMAIL_RECIPIENT_NAME          = 'Stephen Frizell';
     const UPDATE_AWEBER_FROM_MDS            = 'update-aweber-from-mds';
     const REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS = 'report-on-aweber-email-not-in-mds';
     const REPORT_ON_AWEBER_UPDATES_FROM_MDS = 'report-on-aweber-updates-from-mds';
@@ -49,14 +53,18 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
     const ENVIRONMENT_DEV                   = 'dev';
     const ENVIRONMENT_PROD                  = 'prod';
 
+    private $defaultEmailNotifyParameters;
+    private $defaultEmailNotifyParametersArray = array();
     private $adminEmailRecipients = array();
+    private $adminEmailNotifyRecipients = array();
     private $runReportOnAweberEmailsNotInMds;
     private $runReportOnAptsWithNoEmail;
     private $runUpdateAweberFromMds;
     private $runReportOnAweberUpdatesFromMds;
     private $runParkingLotReport;
     private $runHomeownersInsuranceReport;
-    private $emailNotifyReportOrProcess;
+    private $emailNotifyReportOrProcessName = null;
+    private $isExceptionRaised = FALSE;
 
     protected function configure() {
         $this
@@ -180,7 +188,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         $processCtr = 0;
         if ($this->runUpdateAweberFromMds) {
             print ("\n" . "run update from MDS set to true. \n");
-            $emailNotifyReportOrProcess = self::UPDATE_AWEBER_FROM_MDS;
+            $this->emailNotifyReportOrProcessName = self::UPDATE_AWEBER_FROM_MDS;
             $processCtr++;
         }
         else {
@@ -189,7 +197,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         if ($this->runReportOnAweberEmailsNotInMds) {
             print ("\n" . "run report on Aweber Emails not in MDS set to true. \n");
-            $emailNotifyReportOrProcess = self::REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS;
+            $this->emailNotifyReportOrProcessName = self::REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS;
             $processCtr++;
         }
         else {
@@ -198,7 +206,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         if ($this->runParkingLotReport) {
             print ("\n" . "run Parking Lot Report set to true. \n");
-            $emailNotifyReportOrProcess = self::PARKING_LOT_REPORT;
+            $this->emailNotifyReportOrProcessName = self::PARKING_LOT_REPORT;
             $processCtr++;
         }
         else {
@@ -208,7 +216,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         if ($this->runHomeownersInsuranceReport) {
             print ("\n" . "run Homeowners Insurance Report set to true. \n");
-            $emailNotifyReportOrProcess = self::HOMEOWNERS_INSURANCE_REPORT;
+            $this->emailNotifyReportOrProcessName = self::HOMEOWNERS_INSURANCE_REPORT;
             $processCtr++;
         }
         else {
@@ -217,7 +225,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
         if ($this->runReportOnAptsWithNoEmail) {
             print ("\n" . "Run Report on Apartments with No Email Address set to true. \n");
-            $emailNotifyReportOrProcess = self::REPORT_ON_APTS_WITH_NO_EMAIL;
+            $this->emailNotifyReportOrProcessName = self::REPORT_ON_APTS_WITH_NO_EMAIL;
             $processCtr++;
         }
         else {
@@ -228,7 +236,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             print ("\n" . "run report (generate spreadsheet) on Aweber updates from MDS set to true. \n");
             print ("\n" . "Because of memory limitations it is not possible to also run the Aweber updates from MDS. It is being set to FALSE. \n");
             $this->runUpdateAweberFromMds = FALSE;
-            $emailNotifyReportOrProcess = self::REPORT_ON_AWEBER_UPDATES_FROM_MDS;
+            $this->emailNotifyReportOrProcessName = self::REPORT_ON_AWEBER_UPDATES_FROM_MDS;
             $processCtr++;
         }
         else {
@@ -244,6 +252,11 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         // Seems to need 128M (32M default setting on Rose Hosting server is too little - Doctrine query runs out of memory in select from pennsouth_resident...
         $memory_limit = ini_get('memory_limit');
         print("\n memory_limit: " . $memory_limit);
+
+        $this->defaultEmailNotifyParameters = new EmailNotifyParameters();
+        $this->defaultEmailNotifyParameters->setRecipientEmailAddress(self::DEFAULT_ADMIN_EMAIL_RECIPIENT_ADDRESS);
+        $this->defaultEmailNotifyParameters->setRecipientName(self::DEFAULT_ADMIN_EMAIL_RECIPIENT_NAME);
+        $this->defaultEmailNotifyParametersArray[] = $this->defaultEmailNotifyParameters;
 
 
 
@@ -325,7 +338,21 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         // test above
 
 
-        $this->adminEmailRecipients = null;
+        try {
+            $emailNotifyParametersReader = new EmailNotifyParametersReader($this->getEntityManager());
+            $this->adminEmailNotifyRecipients = $emailNotifyParametersReader->getEmailNotifyParameters($this->emailNotifyReportOrProcessName);
+        }
+        catch( \Exception $exception) {
+            print("\n" . "Exception occurred when invoking EmailNotifyParametersReader->getEmailNotifyParameters! \n");
+            print ("Exception->getMessage() : " . $exception->getMessage() . "\n");
+            print("\n" . "Exiting from program.");
+            $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program";
+            $messageBody =  "\n" . "Exception occurred! Exception->getMessage() : " . $exception->getMessage() . "\n";
+            $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
+            $this->isExceptionRaised = TRUE;
+            $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
+            exit(1);
+        }
         //$emailNotificationLists = array();
         $account = null; // added this declaration 11/4/2016 when code was working without it - but then
                          // how could call to$aweberSubscriberListReader->getSubscribersToEmailNotificationList($account, $emailNotificationList) work without this declaration?
@@ -338,7 +365,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
 
             $aweberApiInstance = $aweberSubscriberListReader->getAweberApiInstance();
 
-            $this->adminEmailRecipients = $aweberSubscriberListReader->getSubscribersToAdminsMdsToAweberList($account);
+           //   $this->adminEmailRecipients = $aweberSubscriberListReader->getSubscribersToAdminsMdsToAweberList($account);
 
 
             $emailNotificationLists = $aweberSubscriberListReader->getEmailNotificationLists($account);
@@ -352,7 +379,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program";
                 $messageBody =  "\n" . "Exception occurred! Exception->getMessage() : " . $exception->getMessage() . "\n";
                 $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
-                $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                $this->isExceptionRaised = TRUE;
+                $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
                 exit(1);
         }
 
@@ -366,7 +394,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                  $subjectLine = "Pennsouth Parking Lot List Created.";
                  $messageBody = "\n The Pennsouth Parking Lot List spreadsheet has been created and is attached to this email. It is also available on the Pennsouth Ftp Server. \n";
                  $attachmentFilePath = $appOutputDir . "/" . ManagementReportsCreator::PARKING_LOT_LIST_FILE_NAME;
-                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $attachmentFilePath);
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised, $attachmentFilePath);
              }
              catch (\Exception $exception) {
                  print("\n Exception encountered when running the Parking Lot Report.");
@@ -376,7 +404,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                  $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program in section where Parking Lot Report is created.";
                  $messageBody =  "\n Exception->getMessage() : " . $exception->getMessage() . "\n";
                  $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
-                 $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                 $this->isExceptionRaised = TRUE;
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
                  exit(1);
              }
         }
@@ -388,7 +417,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                  $subjectLine = "Pennsouth Homeowners Insurance Report Created.";
                  $messageBody = "\n The Pennsouth Homeowners Insurance Report has been created and is attached to this email. It is also available on the Pennsouth Ftp Server. \n";
                  $attachmentFilePath = $appOutputDir . "/" . ManagementReportsCreator::HOMEOWNERS_INSURANCE_REPORT_FILE_NAME;
-                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $attachmentFilePath);
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised, $attachmentFilePath);
              }
              catch (\Exception $exception) {
                  print("\n Exception encountered when running the Homeowners Insurance Report.");
@@ -398,7 +427,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                  $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program in section where the Homeowners Insurance Report is created.";
                  $messageBody =  "\n Exception->getMessage() : " . $exception->getMessage() . "\n";
                  $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
-                 $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                 $this->isExceptionRaised = TRUE;
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
                  exit(1);
              }
         }
@@ -413,7 +443,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 $messageBody = "\n A document containing a list of apartments with no resident having an email address has been created. \n ";
                 $messageBody .= " \n The spreadsheet is attached to this email. It is also available on the Pennsouth Ftp Server. \n";
                 $attachmentFilePath = $appOutputDir . "/" . AptsWithNoResidentHavingEmailAddressListCreator::LIST_APTS_WITH_NO_EMAIL_ADDRESS_FILE_NAME;
-                $this->sendEmailtoAdmins($subjectLine, $messageBody, $attachmentFilePath);
+                $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised, $attachmentFilePath);
                 exit(0);
             } catch (\Exception $exception) {
                 print("\n Exception encountered when running the function to create a list of apartments where no resident has email.");
@@ -423,7 +453,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program in section where list of apartments with no email address is generated.";
                 $messageBody = "\n Exception->getMessage() : " . $exception->getMessage() . "\n";
                 $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
-                $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                $this->isExceptionRaised = TRUE;
+                $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
                 exit(1);
             }
         }
@@ -439,7 +470,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 $subjectLine = "Report Generated on Aweber.com updates from MDS";
                 $messageBody = "\n Spreadsheet report generated listing details of updates of Pennsouth resident subscriber lists in Aweber from MDS. \n" ;
                 $messageBody .= "\n The spreadsheet is available on the Pennsouth ftp server. \n";
-                $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
                 $runEndDate = new \DateTime("now");
                 print("\n" . "Program run end date/time: " . $runEndDate->format('Y-m-d H:i:s') . "\n");
                 exit(0);
@@ -453,7 +484,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             $subjectLine = "Fatal exception encountered when attempting to generate spreadsheet reporting on MDS to Aweber updates!";
             $messageBody = "\n" . "Exception occurred in section of SyncAweberMdsCommand where spreadsheet is generated to report on MDS to Aweber updates! Exception->getMessage() : " . $exception->getMessage();
             $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
-            $this->sendEmailtoAdmins($subjectLine, $messageBody);
+            $this->isExceptionRaised = TRUE;
+            $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
             throw $exception;
         }
 
@@ -508,7 +540,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             $messageBody  =  "\n" . "Exception occurred! Exception->getMessage() : " . $exception->getMessage();
             $messageBody .=  "\n" . "Exception occurred! Exception->getCode() : " . $exception->getCode();
             $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
-            $this->sendEmailtoAdmins($subjectLine, $messageBody);
+            $this->isExceptionRaised = TRUE;
+            $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
             throw $exception;
         }
 
@@ -521,7 +554,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                 print("\n" . "Report on Aweber Subscribers with No Match in MDS. Processing completed successfully.");
                 $subjectLine = "Report on Aweber Subscribers with No Match in MDS: Processing Successfully Completed.";
                 $messageBody = "Results of comparison of Aweber subscriber lists with MDS are stored in the pennsouth_db database.";
-                $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
                // $subjectLine = "Pennsouth List of Residents with Aweber.com Email Addresses not in MDS Successfully Created.";
                // $messageBody = "\n The report on Pennsouth residents with Aweber Email addresses not found in MDS is available on the Pennsouth Ftp Server. \n";
                // $this->sendEmailtoAdmins($subjectLine, $messageBody);
@@ -544,11 +577,11 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                     $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
                     $messageBody = "RunUpdateAweberFromMds: Processing completed successfully in MDS to AWeber Update program." . "\n\n";
                     $messageBody = $this->buildMessageBodyForEmailToAdmins($messageBody, $aweberUpdateSummary, $errorMessages);
-                    $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                    $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
                 } else {
                     $subjectLine = "MDS -> AWeber Update Program: Processing Successfully Completed.";
                     $messageBody = "RunUpdateAweberFromMds: Processing completed successfully in MDS to AWeber Update program. However, no updates or inserts were performed.";
-                    $this->sendEmailtoAdmins($subjectLine, $messageBody);
+                    $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
                 }
 
                 print("\n" . "RunUpdateAweberFromMds: Processing completed successfully.");
@@ -560,7 +593,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
             $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program";
             $messageBody = "\n" . "Exception occurred in section of SyncAweberMdsCommand where mdstoAweberComparator is invoked! Exception->getMessage() : " . $exception->getMessage();
             $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
-            $this->sendEmailtoAdmins($subjectLine, $messageBody);
+            $this->isExceptionRaised = TRUE;
+            $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
             throw $exception;
         }
 
@@ -577,7 +611,7 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
                $messageBody = "\n Spreadsheet report created listing email addresses of Pennsouth residents found in Aweber but not in MDS. \n" ;
                $messageBody .= "\n The spreadsheet is attached to this email. It is also available on the Pennsouth ftp server. \n";
                $attachmentFilePath = $appOutputDir . "/" . AweberMdsSyncAuditListCreator::LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME;
-               $this->sendEmailtoAdmins($subjectLine, $messageBody, $attachmentFilePath);
+               $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised, $attachmentFilePath);
                $runEndDate = new \DateTime("now");
                print("\n" . "Program run end date/time: " . $runEndDate->format('Y-m-d H:i:s') . "\n");
                exit(0);
@@ -591,7 +625,8 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
            $subjectLine = "Fatal exception encountered when attempting to generate spreadsheet reporting on email addresses found in aweber.com but not in MDS!";
            $messageBody = "\n" . "Exception occurred in section of SyncAweberMdsCommand where spreadsheet is generated reporting on email addresses found in Aweber.com but not MDS! Exception->getMessage() : " . $exception->getMessage();
            $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
-           $this->sendEmailtoAdmins($subjectLine, $messageBody);
+           $this->isExceptionRaised = TRUE;
+           $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
            throw $exception;
        }
 
@@ -630,20 +665,20 @@ class SyncAweberMdsCommand extends ContainerAwareCommand {
         return $messageBody;
     }
 
-    private function sendEmailtoAdmins( $subjectLine, $messageBody, $attachmentFilePath = null) {
+    private function sendEmailtoAdmins( $subjectLine, $messageBody, $isExceptionRaised = null, $attachmentFilePath = null) {
           $mailer = $this->getContainer()->get('mailer');
           $emailSubjectLine = $subjectLine;
-          if (!is_null($this->adminEmailRecipients) and !empty($this->adminEmailRecipients)) {
-              $emailRecipients = $this->adminEmailRecipients;
-              print("\n" . "Sending to recipients obtained from Aweber subscriber list admin_mds_to_aweber ");
+          if (!is_null($this->adminEmailNotifyRecipients) and !empty($this->adminEmailNotifyRecipients)) {
+              $emailRecipients = $this->adminEmailNotifyRecipients;
+              print("\n" . "Sending to recipients obtained from database table email_notify_parameters ");
           }
           else {
-              $emailRecipients = self::DEFAULT_ADMINS;
+              $emailRecipients = $this->defaultEmailNotifyParametersArray;
           }
 
           $emailBody = $messageBody;
 
-          $emailer = new Emailer($mailer, $this->getContainer()->get('swiftmailer.transport.real'), $emailSubjectLine, $emailBody, $emailRecipients, $attachmentFilePath);
+          $emailer = new Emailer($mailer, $this->getContainer()->get('swiftmailer.transport.real'), $emailSubjectLine, $emailBody, $emailRecipients, $isExceptionRaised, $attachmentFilePath);
 
 
           $emailer->sendEmailMessage();
