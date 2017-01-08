@@ -34,13 +34,13 @@ Presented below are all command line options/arguments:
 
 **Example:**
 
-php app/console app:sync-mds-aweber \-u n \-r y \-p y 
+php app/console app:sync-mds-aweber \-u n  \-p y 
 
-The above command will run the application with the option (a) (the '-u n' option) not to update the Aweber.com subscriber lists, (b) (the  '-r y' option) to generate a report of Pennsouth resident emails existing in Aweber.com but not in MDS, and (c) (the '-p y' option) create Parking Lots Report.
+The above command will run the application with the option (a) (the '-u n' option) not to update the Aweber.com subscriber lists and (b) (the '-p y' option) create Parking Lots Report.
  
 For better readability, the same command could be issued as follows:
 
-php app/console app:sync-mds-aweber \-\-update-aweber-from-mds=n \-\-report-on-aweber-email-not-in-mds=y \-\-parking-lot-report=y
+php app/console app:sync-mds-aweber \-\-update-aweber-from-mds=n \-\-parking-lot-report=y
 
 **NOTE:** The '-a' option -- to generate a report on Aweber updates from MDS -- runs into memory limitations when a large set of data is being reported on. For this reason, it is recommended that when this option is invoked it not be combined with running any of the other available application options.
 
