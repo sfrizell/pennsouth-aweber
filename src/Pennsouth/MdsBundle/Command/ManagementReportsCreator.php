@@ -461,7 +461,7 @@ class ManagementReportsCreator
                            apt.apartment_id = pr.Pennsouth_apt_apartment_id
                        and  not exists (
                        select  \'x\'
-                       from pennsouth_db.pennsouth_resident pr2 
+                       from pennsouth_resident pr2 
                         where pr.pennsouth_apt_apartment_id = pr2.pennsouth_apt_apartment_id and
                         pr2.email_address <>:emailAddress)
                         and  not exists (
