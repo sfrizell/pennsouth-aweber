@@ -6,7 +6,7 @@
  *  Function:
  */
 
-namespace Pennsouth\MdsBundle\Command;
+namespace Pennsouth\MdsBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Pennsouth\MdsBundle\AweberEntity\AweberFieldsConstants;

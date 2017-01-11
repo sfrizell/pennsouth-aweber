@@ -9,7 +9,7 @@
  *   (b) getMdsSyncAuditUpdatesAndInserts() - invoked by (a) above.
  */
 
-namespace Pennsouth\MdsBundle\Command;
+namespace Pennsouth\MdsBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use PHPExcel_Style_Fill;

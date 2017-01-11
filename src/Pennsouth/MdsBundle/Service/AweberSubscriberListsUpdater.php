@@ -6,13 +6,14 @@
  *  Function:
  */
 
-namespace Pennsouth\MdsBundle\Command;
+namespace Pennsouth\MdsBundle\Service;
 
 use AWeberAPI;
 use AWeberAPIException;
 use Pennsouth\MdsBundle\AweberEntity\AweberFieldsConstants;
 use Pennsouth\MdsBundle\AweberEntity\AweberSubscriber;
 use Pennsouth\MdsBundle\AweberEntity\AweberSubscriberUpdateInsertLists;
+use Pennsouth\MdsBundle\Service\AweberSubscriberWriter;
 
 class AweberSubscriberListsUpdater
 {

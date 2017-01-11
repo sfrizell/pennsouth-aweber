@@ -6,7 +6,7 @@
  *  Function:
  */
 
-namespace Pennsouth\MdsBundle\Command;
+namespace Pennsouth\MdsBundle\Service;
 
 use AWeberAPI;
 use AWeberAPIException;

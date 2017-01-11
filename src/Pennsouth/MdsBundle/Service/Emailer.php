@@ -6,7 +6,7 @@
  *  Function:
  */
 
-namespace Pennsouth\MdsBundle\Command;
+namespace Pennsouth\MdsBundle\Service;
 
 use Swift_Mailer;
 use Swift_Message;

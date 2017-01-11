@@ -6,7 +6,7 @@
  *  Function:
  */
 
-namespace Pennsouth\MdsBundle\Command;
+namespace Pennsouth\MdsBundle\Service;
 
 use Doctrine\DBAL\Query\QueryException;
 use Pennsouth\MdsBundle\Entity\PennsouthResident;
@@ -47,7 +47,7 @@ class PennsouthResidentListReader
         /*
                     $query = $this->getentityManager()->createQuery(
                                   'Select pr.building, pr.floorNumber, pr.aptLine, pr.lastName, pr.firstName, pr.emailAddress,
-                                    pr.mdsResidentCategory, pr.daytimePhone, pr.eveningPhone, pr.cellPhone, pr.fax, pr.officePhone,
+                                    pr.mdsResidentCategory, pr.daytimePhone, pr.eveningPhone, pr.cellPhone, pr.fax,
                                     pr.personId, pr.toddlerRoomMember, pr.youthRoomMember, pr.ceramicsMember,
                                     pr.woodworkingMember, pr.gymMember, pr.gardenMember, pr.decalNum, pr.parkingLotLocation,
                                     pr.vehicleRegExpDate, pr.vehicleRegIntervalRemaining, pr.vehicleModel, pr.vehicleLicensePlateNum,
@@ -61,7 +61,7 @@ class PennsouthResidentListReader
                     // Looks like a memory issue. When this is run on Rose Hosting, if there are too many columns in the query, the program stops on the getResult call...
          /*           $query = $this->getentityManager()->createQuery(
                                              'Select pr.building, pr.floorNumber, pr.aptLine, pr.lastName, pr.firstName, pr.emailAddress,
-                                               pr.mdsResidentCategory, pr.daytimePhone, pr.eveningPhone, pr.cellPhone, pr.fax, pr.officePhone,
+                                               pr.mdsResidentCategory, pr.daytimePhone, pr.eveningPhone, pr.cellPhone, pr.fax,
                                                pr.personId, pr.toddlerRoomMember, pr.youthRoomMember, pr.ceramicsMember,
                                                pr.woodworkingMember, pr.gymMember, pr.gardenMember,  pr.vehicleRegExpDate
                                               from PennsouthMdsBundle:PennsouthResident pr

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pennsouth\MdsBundle\Command;
+namespace Pennsouth\MdsBundle\Service;
 
 //require('./../../../../vendor/aweber/aweber/aweber_api/aweber_api.php');
 
@@ -29,7 +29,6 @@ use Pennsouth\MdsBundle\AweberEntity\AweberFieldsConstants;
  *  Function:
  */
 
-// extends ContainerAwareCommand
 class AweberSubscriberListReader
 {
 
