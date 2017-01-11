@@ -1,6 +1,6 @@
 <?php
 /**
- * ManagementReportsCreator.php
+ * ManagementReportsWriter.php
  * User: sfrizell
  * Date: 11/27/16
  *  Function:
@@ -14,7 +14,7 @@ use PHPExcel_Style_Fill;
 use PHPExcel;
 use PHPExcel_Cell;
 
-class ManagementReportsCreator
+class ManagementReportsWriter
 {
 
     const PARKING_LOT_LIST_FILE_NAME = 'parking_lot_spaces.xlsx';
@@ -416,7 +416,7 @@ class ManagementReportsCreator
             return $residentsWithParkingSpaces;
         }
         catch (\Exception $exception) {
-            print("\n" . "Fatal Exception occurred in ManagementReportsCreator->getResidentsWithParkingSpaces! ");
+            print("\n" . "Fatal Exception occurred in ManagementReportsWriter->getResidentsWithParkingSpaces! ");
             print ("\n Exception->getMessage() : " . $exception->getMessage());
             print "Type: " . $exception->getCode(). "\n";
             print("\n" . "Exiting from program.");
@@ -499,7 +499,7 @@ class ManagementReportsCreator
                 return $homeownersInsuranceReportRows;
         }
         catch (\Exception $exception) {
-            print("\n" . "Fatal Exception occurred in ManagementReportsCreator->getHomeownersInsuranceReportRows! ");
+            print("\n" . "Fatal Exception occurred in ManagementReportsWriter->getHomeownersInsuranceReportRows! ");
             print ("\n Exception->getMessage() : " . $exception->getMessage());
             print "Type: " . $exception->getCode(). "\n";
             print("\n" . "Exiting from program.");

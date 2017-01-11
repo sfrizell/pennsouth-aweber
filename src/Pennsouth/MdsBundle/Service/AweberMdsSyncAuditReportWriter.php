@@ -1,6 +1,6 @@
 <?php
 /**
- * AweberMdsSyncAuditListCreator.php
+ * AweberMdsSyncAuditReportWriter.php
  * User: sfrizell
  * Date: 11/27/16
  *  Function: Generate spreadsheets listing the audit trail data written to the pennsouth_db.aweber_mds_sync_audit table.
@@ -20,7 +20,7 @@ use PHPExcel_CachedObjectStorageFactory;
 use PHPExcel_Settings;
 use Doctrine\ORM\Query;
 
-class AweberMdsSyncAuditListCreator
+class AweberMdsSyncAuditReportWriter
 {
 
     const LIST_AWEBER_UPDATES_FILE_NAME                     = 'aweber_updates.xlsx';
@@ -613,7 +613,7 @@ class AweberMdsSyncAuditListCreator
 
         }
         catch (\Exception $exception) {
-            print("\n" . "Fatal Exception occurred in AweberMdsSyncAuditListCreator->getMdsSyncAuditUpdatesAndInserts! ");
+            print("\n" . "Fatal Exception occurred in AweberMdsSyncAuditReportWriter->getMdsSyncAuditUpdatesAndInserts! ");
             print ("\n Exception->getMessage() : " . $exception->getMessage());
             print "Type: " . $exception->getCode(). "\n";
             print("\n" . "Exiting from program.");
@@ -653,7 +653,7 @@ class AweberMdsSyncAuditListCreator
 
            }
            catch (\Exception $exception) {
-               print("\n" . "Fatal Exception occurred in AweberMdsSyncAuditListCreator->getMdsSyncAuditAweberEmailsNotInMdsQueryDb! ");
+               print("\n" . "Fatal Exception occurred in AweberMdsSyncAuditReportWriter->getMdsSyncAuditAweberEmailsNotInMdsQueryDb! ");
                print ("\n Exception->getMessage() : " . $exception->getMessage());
                print "Type: " . $exception->getCode(). "\n";
                print("\n" . "Exiting from program.");

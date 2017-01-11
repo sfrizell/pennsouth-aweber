@@ -1,6 +1,6 @@
 <?php
 /**
- * AptsWithNoResidentHavingEmailAddressListCreator.php
+ * AptsWithNoResidentHavingEmailReportWriter.php
  * User: sfrizell
  * Date: 12/8/16
  *  Function:
@@ -18,7 +18,7 @@ use PHPExcel_Settings;
 use Doctrine\ORM\Query;
 use PHPExcel;
 
-class AptsWithNoResidentHavingEmailAddressListCreator
+class AptsWithNoResidentHavingEmailReportWriter
 {
     const LIST_APTS_WITH_NO_EMAIL_ADDRESS_FILE_NAME                     = 'list_of_apts_with_no_email.xlsx';
 
@@ -216,7 +216,7 @@ class AptsWithNoResidentHavingEmailAddressListCreator
 
           }
           catch (\Exception $exception) {
-              print("\n" . "Fatal Exception occurred in ApartmentsWhereNoResidentHasEmailAddressListCreator->getApartmentsWithNoEmailAddressQueryDb! ");
+              print("\n" . "Fatal Exception occurred in ApartmentsWithNoResidentHavingEmailReportWriter->getApartmentsWithNoEmailAddressQueryDb! ");
               print ("\n Exception->getMessage() : " . $exception->getMessage());
               print "Type: " . $exception->getCode(). "\n";
               print("\n" . "Exiting from program.");
