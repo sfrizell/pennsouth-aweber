@@ -132,10 +132,6 @@ class MdsExport
      */
     private $bikeRackRoom;
 
-    /**
-     * @var string
-     */
-    private $officePhone;
 
     /**
      * @var string
@@ -793,29 +789,6 @@ class MdsExport
         return $this->bikeRackRoom;
     }
 
-    /**
-     * Set officePhone
-     *
-     * @param string $officePhone
-     *
-     * @return MdsExport
-     */
-    public function setOfficePhone($officePhone)
-    {
-        $this->officePhone = $officePhone;
-
-        return $this;
-    }
-
-    /**
-     * Get officePhone
-     *
-     * @return string
-     */
-    public function getOfficePhone()
-    {
-        return $this->officePhone;
-    }
 
     /**
      * Set statusCodes

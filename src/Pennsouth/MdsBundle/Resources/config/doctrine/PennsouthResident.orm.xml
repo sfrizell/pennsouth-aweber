@@ -62,11 +62,6 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="officePhone" type="string" column="Office_Phone" length="20" nullable="true">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
     <field name="personId" type="string" column="Person_Id" length="20" nullable="true">
       <options>
         <option name="fixed"/>

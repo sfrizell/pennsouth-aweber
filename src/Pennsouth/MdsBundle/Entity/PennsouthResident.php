@@ -62,10 +62,6 @@ class PennsouthResident
      */
     private $fax;
 
-    /**
-     * @var string
-     */
-    private $officePhone;
 
     /**
      * @var string
@@ -483,29 +479,6 @@ class PennsouthResident
         return $this->fax;
     }
 
-    /**
-     * Set officePhone
-     *
-     * @param string $officePhone
-     *
-     * @return PennsouthResident
-     */
-    public function setOfficePhone($officePhone)
-    {
-        $this->officePhone = $officePhone;
-
-        return $this;
-    }
-
-    /**
-     * Get officePhone
-     *
-     * @return string
-     */
-    public function getOfficePhone()
-    {
-        return $this->officePhone;
-    }
 
     /**
      * Set personId

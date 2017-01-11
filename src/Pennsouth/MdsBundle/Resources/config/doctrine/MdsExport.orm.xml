@@ -120,11 +120,6 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="officePhone" type="string" column="Office_Phone" length="20" nullable="true">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
     <field name="statusCodes" type="string" column="Status_Codes" length="45" nullable="true">
       <options>
         <option name="fixed"/>
