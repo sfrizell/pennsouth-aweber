@@ -3,6 +3,11 @@ pennsouth_aweber
 
 A Symfony project created in the fall of 2016 by Stephen Frizell for Penn South Coop Apartment Complex.
 
+Depending on command-line arguments passed to the program, the application performs the following functions:
++ updates lists of Pennsouth resident email addresses and associated apartment or resident attributes stored in Aweber, based on information provided in a file ftp'd nightly by Pennsouth's Property Management System (MDS)
+
++ creates reports based on MDS data and/or comparisons of MDS data with data stored in Aweber.com. See below for details of command-line arguments and their meaning.
+
 This project is written in PHP and leverages the PHP Symfony framework's Console component to implement its functionality from the command line.
 
 The application is invoked by issuing the following command from the project's root directory (i.e., pennsouth_aweber) at the command line:
