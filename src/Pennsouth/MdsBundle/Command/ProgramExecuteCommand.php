@@ -10,19 +10,23 @@ namespace Pennsouth\MdsBundle\Command;
 
 use Pennsouth\MdsBundle\AweberEntity\AweberUpdateSummary;
 use Pennsouth\MdsBundle\Entity\EmailNotifyParameters;
+use Pennsouth\MdsBundle\Service\AweberMdsSyncAuditListCreator;
+use Pennsouth\MdsBundle\Service\Emailer;
 use Pennsouth\MdsBundle\Service\EmailNotifyParametersReader;
+use Pennsouth\MdsBundle\Service\AptsWithNoResidentHavingEmailAddressListCreator;
+use Pennsouth\MdsBundle\Service\ManagementReportsCreator;
+use Pennsouth\MdsBundle\Service\MdsToAweberComparator;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-//use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Pennsouth\MdsBundle\Command\AweberSubscriberListReader;
-use Pennsouth\MdsBundle\Command\AweberSubscriberListsUpdater;
+use Pennsouth\MdsBundle\Service\AweberSubscriberListReader;
+use Pennsouth\MdsBundle\Service\AweberSubscriberListsUpdater;
 use Pennsouth\MdsBundle\AweberEntity\AweberFieldsConstants;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Input\InputOption;
 
-use Pennsouth\MdsBundle\Command\PennsouthResidentListReader;
+use Pennsouth\MdsBundle\Service\PennsouthResidentListReader;
 
 use Symfony\Component\Debug\DebugClassLoader;
 
@@ -55,7 +59,7 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
 
     private $defaultEmailNotifyParameters;
     private $defaultEmailNotifyParametersArray = array();
-    private $adminEmailRecipients = array();
+   // private $adminEmailRecipients = array();
     private $adminEmailNotifyRecipients = array();
     private $runReportOnAweberEmailsNotInMds;
     private $runReportOnAptsWithNoEmail;
@@ -498,7 +502,8 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
            exit(0);
        }*/
 
-
+        $aweberSubscribersByListNames = array();
+        $residentsWithEmailAddressesArray = array();
         if ($this->runUpdateAweberFromMds or $this->runReportOnAweberEmailsNotInMds) {
             /**
              *   In block below, obtain the list of Penn South Subscribers to each of the Penn South Resident subscriber lists obtained from the block above
