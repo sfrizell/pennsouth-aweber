@@ -12,7 +12,7 @@ Issuing the following command will display the command line options for the appl
 
  php app/console app:sync-mds-aweber -h
  
-With no command line options, the application will run with the default option to update Penn South resident subscriber lists defined in Penn South's Aweber.com account from the nightly MDS export file that is ftp'd to Pennsouth's hosting service (Rose Hosting). 
+With no command line options, the application will run with the default option to update Penn South resident subscriber lists defined in Penn South's Aweber.com account from the nightly MDS export file that is ftp'd to Pennsouth's hosting service (Rose Hosting). The scripts to process the nightly MDS export file are stored in the pennsouth-db-prep project on github (see: https://github.com/sfrizell/pennsouth-db-prep ) 
 
 Presented below are all command line options/arguments:
 
