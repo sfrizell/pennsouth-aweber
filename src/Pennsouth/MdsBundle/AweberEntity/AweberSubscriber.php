@@ -176,6 +176,13 @@ class AweberSubscriber
     private $bikeRackLocation;
 
     /**
+     * @var string
+     */
+    private $incAffidavitReceived;
+
+
+
+    /**
      *  prev custom field values
      */
 
@@ -263,6 +270,12 @@ class AweberSubscriber
      * @var string
      */
        private $prevBikeRackLocation;
+
+
+    /**
+     * @var string
+     */
+    private $prevIncAffidavitReceived;
 
     /**
      * @var string
@@ -806,6 +819,24 @@ class AweberSubscriber
     /**
      * @return string
      */
+    public function getIncAffidavitReceived()
+    {
+        return $this->incAffidavitReceived;
+    }
+
+    /**
+     * @param string $incAffidavitReceived
+     */
+    public function setIncAffidavitReceived($incAffidavitReceived)
+    {
+        $this->incAffidavitReceived = $incAffidavitReceived;
+    }
+
+
+
+    /**
+     * @return string
+     */
     public function getPrevResidentCategory()
     {
         return $this->prevResidentCategory;
@@ -1073,6 +1104,22 @@ class AweberSubscriber
     public function setPrevBikeRackLocation($prevBikeRackLocation)
     {
         $this->prevBikeRackLocation = $prevBikeRackLocation;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevIncAffidavitReceived()
+    {
+        return $this->prevIncAffidavitReceived;
+    }
+
+    /**
+     * @param string $prevIncAffidavitReceived
+     */
+    public function setPrevIncAffidavitReceived($prevIncAffidavitReceived)
+    {
+        $this->prevIncAffidavitReceived = $prevIncAffidavitReceived;
     }
 
 

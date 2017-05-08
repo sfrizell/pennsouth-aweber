@@ -513,6 +513,9 @@ class AweberSubscriberWriter
                if (strlen($aweberSubscriber->getResidentCategory()) > 0) {
                    $subscriberCustomFields[AweberFieldsConstants::RESIDENT_CATEGORY] = $singleQuote . $aweberSubscriber->getResidentCategory() . $singleQuote;
                }
+               if (strlen($aweberSubscriber->getIncAffidavitReceived()) > 0) {
+                   $subscriberCustomFields[AweberFieldsConstants::INCOME_AFFIDAVIT_RECEIVED] = $singleQuote . $aweberSubscriber->getIncAffidavitReceived() . $singleQuote;
+               }
 
                return $subscriberCustomFields;
 

@@ -42,7 +42,12 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="category" type="string" column="Category" length="45" nullable="true">
+    <field name="category" type="string" column="Category" length="100" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="categoryInterpreted" type="string" column="Category_interpreted" length="45" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
@@ -136,6 +141,22 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="shareholderFlag" type="string" column="shareholder_flag" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="incAffidavitReceiptDate" type="datetime" column="inc_affidavit_receipt_date" nullable="true"/>
+    <field name="incAffidavitReceived" type="string" column="inc_affidavit_received" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="incAffidavitDateDiscrepancy" type="string" column="inc_affidavit_date_discrepancy" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="youthRoomMember" type="string" column="Youth_Room_Member" length="1" nullable="true">
       <options>
         <option name="fixed"/>
@@ -157,6 +178,11 @@
       </options>
     </field>
     <field name="gymMember" type="string" column="Gym_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aptSurrendered" type="string" column="apt_surrendered" length="45" nullable="true">
       <options>
         <option name="fixed"/>
       </options>

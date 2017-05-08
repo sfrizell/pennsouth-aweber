@@ -162,6 +162,30 @@ class PennsouthResident
     /**
      * @var string
      */
+    private $shareholderFlag;
+
+
+    /**
+      * @var \DateTime
+      */
+     private $incAffidavitReceiptDate;
+
+
+    /**
+     * @var string
+     */
+    private $incAffidavitReceived;
+
+
+    /**
+     * @var string
+     */
+    private $incAffidavitDateDiscrepancy;
+
+
+    /**
+     * @var string
+     */
     private $storageLockerClosetBldgNum;
 
     /**
@@ -198,6 +222,13 @@ class PennsouthResident
      * @var string
      */
     private $bikeRackRoom;
+
+
+    /**
+     * @var string
+     */
+    private $aptSurrendered;
+
 
     /**
      * @var \DateTime
@@ -913,6 +944,72 @@ class PennsouthResident
     }
 
     /**
+     * @return string
+     */
+    public function getShareholderFlag()
+    {
+        return $this->shareholderFlag;
+    }
+
+    /**
+     * @param string $shareholderFlag
+     */
+    public function setShareholderFlag($shareholderFlag)
+    {
+        $this->shareholderFlag = $shareholderFlag;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getIncAffidavitReceiptDate()
+    {
+        return $this->incAffidavitReceiptDate;
+    }
+
+    /**
+     * @param \DateTime $incAffidavitReceiptDate
+     */
+    public function setIncAffidavitReceiptDate($incAffidavitReceiptDate)
+    {
+        $this->incAffidavitReceiptDate = $incAffidavitReceiptDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIncAffidavitReceived()
+    {
+        return $this->incAffidavitReceived;
+    }
+
+    /**
+     * @param string $incAffidavitReceived
+     */
+    public function setIncAffidavitReceived($incAffidavitReceived)
+    {
+        $this->incAffidavitReceived = $incAffidavitReceived;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIncAffidavitDateDiscrepancy()
+    {
+        return $this->incAffidavitDateDiscrepancy;
+    }
+
+    /**
+     * @param string $incAffidavitDateDiscrepancy
+     */
+    public function setIncAffidavitDateDiscrepancy($incAffidavitDateDiscrepancy)
+    {
+        $this->incAffidavitDateDiscrepancy = $incAffidavitDateDiscrepancy;
+    }
+
+
+
+    /**
      * Get moveInDate
      *
      * @return \DateTime
@@ -1113,6 +1210,24 @@ class PennsouthResident
     {
         return $this->bikeRackRoom;
     }
+
+    /**
+     * @return string
+     */
+    public function getAptSurrendered()
+    {
+        return $this->aptSurrendered;
+    }
+
+    /**
+     * @param string $aptSurrendered
+     */
+    public function setAptSurrendered($aptSurrendered)
+    {
+        $this->aptSurrendered = $aptSurrendered;
+    }
+
+
 
     /**
      * Set lastChangedDate

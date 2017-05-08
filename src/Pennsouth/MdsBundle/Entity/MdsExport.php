@@ -50,6 +50,12 @@ class MdsExport
     /**
      * @var string
      */
+    private $categoryInterpreted;
+
+
+    /**
+     * @var string
+     */
     private $daytimePhone;
 
     /**
@@ -156,6 +162,26 @@ class MdsExport
     /**
      * @var string
      */
+    private $shareholderFlag;
+
+    /**
+      * @var \DateTime
+      */
+     private $incAffidavitReceiptDate;
+
+    /**
+     * @var string
+     */
+    private $incAffidavitReceived;
+
+    /**
+     * @var string
+     */
+    private $incAffidavitDateDiscrepancy;
+
+    /**
+     * @var string
+     */
     private $youthRoomMember;
 
     /**
@@ -177,6 +203,11 @@ class MdsExport
      * @var string
      */
     private $gymMember;
+
+    /**
+     * @var string
+     */
+    private $aptSurrendered;
 
     /**
      * @var \DateTime
@@ -380,6 +411,24 @@ class MdsExport
     {
         return $this->category;
     }
+
+    /**
+     * @return string
+     */
+    public function getCategoryInterpreted()
+    {
+        return $this->categoryInterpreted;
+    }
+
+    /**
+     * @param string $categoryInterpreted
+     */
+    public function setCategoryInterpreted($categoryInterpreted)
+    {
+        $this->categoryInterpreted = $categoryInterpreted;
+    }
+
+
 
     /**
      * Set daytimePhone
@@ -863,6 +912,72 @@ class MdsExport
     }
 
     /**
+     * @return string
+     */
+    public function getShareholderFlag()
+    {
+        return $this->shareholderFlag;
+    }
+
+    /**
+     * @param string $shareholderFlag
+     */
+    public function setShareholderFlag($shareholderFlag)
+    {
+        $this->shareholderFlag = $shareholderFlag;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getIncAffidavitReceiptDate()
+    {
+        return $this->incAffidavitReceiptDate;
+    }
+
+    /**
+     * @param \DateTime $incAffidavitReceiptDate
+     */
+    public function setIncAffidavitReceiptDate($incAffidavitReceiptDate)
+    {
+        $this->incAffidavitReceiptDate = $incAffidavitReceiptDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIncAffidavitReceived()
+    {
+        return $this->incAffidavitReceived;
+    }
+
+    /**
+     * @param string $incAffidavitReceived
+     */
+    public function setIncAffidavitReceived($incAffidavitReceived)
+    {
+        $this->incAffidavitReceived = $incAffidavitReceived;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIncAffidavitDateDiscrepancy()
+    {
+        return $this->incAffidavitDateDiscrepancy;
+    }
+
+    /**
+     * @param string $incAffidavitDateDiscrepancy
+     */
+    public function setIncAffidavitDateDiscrepancy($incAffidavitDateDiscrepancy)
+    {
+        $this->incAffidavitDateDiscrepancy = $incAffidavitDateDiscrepancy;
+    }
+
+
+
+    /**
      * Set toddlerRoomMember
      *
      * @param string $toddlerRoomMember
@@ -1005,6 +1120,24 @@ class MdsExport
     {
         return $this->gymMember;
     }
+
+    /**
+     * @return string
+     */
+    public function getAptSurrendered()
+    {
+        return $this->aptSurrendered;
+    }
+
+    /**
+     * @param string $aptSurrendered
+     */
+    public function setAptSurrendered($aptSurrendered)
+    {
+        $this->aptSurrendered = $aptSurrendered;
+    }
+
+
 
     /**
      * Set lastChangedDate

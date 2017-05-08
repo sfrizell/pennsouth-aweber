@@ -341,6 +341,7 @@ class AweberSubscriberListReader
                              $aweberSubscriber->setYouthRoomMember($customFields[AweberFieldsConstants::YOUTH_ROOM_MEMBER]);
                              $aweberSubscriber->setWoodworkingMember($customFields[AweberFieldsConstants::WOODWORKING_MEMBER]);
                              $aweberSubscriber->setResidentCategory($customFields[AweberFieldsConstants::RESIDENT_CATEGORY]);
+                             $aweberSubscriber->setIncAffidavitReceived($customFields[AweberFieldsConstants::INCOME_AFFIDAVIT_RECEIVED]);
 
                              // Add the AweberSubscriber to the $aweberSubscribers array...
                              $aweberSubscribers[] = $aweberSubscriber;

@@ -40,6 +40,7 @@ class MdsToAweberComparator
     const UPDATE_IS_DOG_PRESENT                     = 'dog';
     const UPDATE_PARKING_LOT_LOCATION               = 'parking_lot';
     const UPDATE_RESIDENT_CATEGORY                  = 'resident_category';
+    const UPDATE_INCOME_AFFIDAVIT_RECEIVED             = 'income_affidavit_received';
     const UPDATE_ACTION_REPORTING                   = 'reporting';
 
 
@@ -165,6 +166,7 @@ class MdsToAweberComparator
             $aweberSubscriber->setGymMember(is_null($pennsouthResident->getGymMember()) ? "" : $pennsouthResident->getGymMember());
             $aweberSubscriber->setVehicleRegIntervalRemaining(is_null($pennsouthResident->getVehicleRegIntervalRemaining()) ? "" : $pennsouthResident->getVehicleRegIntervalRemaining());
             $aweberSubscriber->setToddlerRoomMember(is_null($pennsouthResident->getToddlerRoomMember()) ? "" : $pennsouthResident->getToddlerRoomMember());
+            $aweberSubscriber->setIncAffidavitReceived(is_null($pennsouthResident->getIncAffidavitReceived()) ? "" : $pennsouthResident->getIncAffidavitReceived());
             $aweberSubscriber->setName(is_null($pennsouthResident->getFirstName() . " " . $pennsouthResident->getLastName()) ? "" : $pennsouthResident->getFirstName() . " " . $pennsouthResident->getLastName());
             $aweberSubscriber->setFirstName(is_null($pennsouthResident->getFirstName()) ? "" : $pennsouthResident->getFirstName());
             $aweberSubscriber->setLastName(is_null($pennsouthResident->getLastName()) ? "" : $pennsouthResident->getLastName());
@@ -187,7 +189,8 @@ class MdsToAweberComparator
                                     AweberFieldsConstants::GARDEN_MEMBER                    => $aweberSubscriber->getGardenMember(),
                                     AweberFieldsConstants::GYM_MEMBER                       => $aweberSubscriber->getGymMember(),
                                     AweberFieldsConstants::VEHICLE_REG_INTERVAL_REMAINING   => $aweberSubscriber->getVehicleRegIntervalRemaining(),
-                                    AweberFieldsConstants::TODDLER_ROOM_MEMBER              => $aweberSubscriber->getToddlerRoomMember()
+                                    AweberFieldsConstants::TODDLER_ROOM_MEMBER              => $aweberSubscriber->getToddlerRoomMember(),
+                                    AweberFieldsConstants::INCOME_AFFIDAVIT_RECEIVED        => $aweberSubscriber->getIncAffidavitReceived()
             );
             $aweberSubscriber->setCustomFields($customFields);
             return $aweberSubscriber;
@@ -233,6 +236,9 @@ class MdsToAweberComparator
         }
         if ( trim($aweberSubscriber->getToddlerRoomMember(),$singleQuotes)       !== trim($pennsouthResident->getToddlerRoomMember()) ) {
             $actionReason .= self::UPDATE_TODDLER_ROOM . $separator;
+        }
+        if ( trim($aweberSubscriber->getIncAffidavitReceived(),$singleQuotes)       !== trim($pennsouthResident->getIncAffidavitReceived()) ) {
+            $actionReason .= self::UPDATE_INCOME_AFFIDAVIT_RECEIVED . $separator;
         }
 
         if ( trim($aweberSubscriber->getHomeownerInsIntervalRemaining(),$singleQuotes) !== trim($pennsouthResident->getHomeownerInsIntervalRemaining()) ) {
@@ -290,6 +296,7 @@ class MdsToAweberComparator
         $aweberSubscriber->setPrevBikeRackRoom( trim( $aweberSubscriber->getBikeRackRoom() , $singleQuotes ) );
         $aweberSubscriber->setPrevParkingLotLocation( trim( $aweberSubscriber->getParkingLotLocation() , $singleQuotes ) );
         $aweberSubscriber->setPrevResidentCategory( trim( $aweberSubscriber->getResidentCategory() , $singleQuotes ) );
+        $aweberSubscriber->setPrevIncAffidavitReceived( trim( $aweberSubscriber->getIncAffidavitReceived() , $singleQuotes ) );
 
         $actionReason = trim($actionReason, $separator);
         if (strlen($actionReason) > 0) {
@@ -454,6 +461,7 @@ class MdsToAweberComparator
             $aweberMdsSyncAudit->setAweberCeramicsMember( $aweberSubscriber->getPrevCeramicsMember());
             $aweberMdsSyncAudit->setAweberGardenMember( $aweberSubscriber->getPrevGardenMember() );
             $aweberMdsSyncAudit->setAweberGymMember( $aweberSubscriber->getPrevGymMember() );
+            $aweberMdsSyncAudit->setAweberIncAffidavitReceived( $aweberSubscriber->getPrevIncAffidavitReceived() );
 
 
             $prevHomeownerInsExpDaysLeft = $aweberSubscriber->getPrevHomeownerInsIntervalRemaining();
@@ -496,6 +504,7 @@ class MdsToAweberComparator
             $aweberMdsSyncAudit->setMdsCeramicsMember( $aweberSubscriber->getCeramicsMember() );
             $aweberMdsSyncAudit->setMdsGardenMember( $aweberSubscriber->getGardenMember() );
             $aweberMdsSyncAudit->setMdsGymMember( $aweberSubscriber->getGymMember() );
+            $aweberMdsSyncAudit->setMdsIncAffidavitReceived( $aweberSubscriber->getIncAffidavitReceived() );
             $homeownerInsExpDaysLeft = $aweberSubscriber->getHomeownerInsIntervalRemaining();
             $aweberMdsSyncAudit->setMdsHomeownerInsIntervalRemaining( (isset($homeownerInsExpDaysLeft) and !empty($homeownerInsExpDaysLeft)) ? $homeownerInsExpDaysLeft : NULL );
 

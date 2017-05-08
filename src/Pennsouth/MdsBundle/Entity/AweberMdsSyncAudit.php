@@ -180,6 +180,11 @@ class AweberMdsSyncAudit
     /**
      * @var string
      */
+    public $mdsIncAffidavitReceived;
+
+    /**
+     * @var string
+     */
     public $aweberToddlerRmMember;
 
     /**
@@ -261,6 +266,12 @@ class AweberMdsSyncAudit
      * @var string
      */
     public $aweberResidentCategory;
+
+
+    /**
+     * @var string
+     */
+    public $aweberIncAffidavitReceived;
 
     /**
      * @var \DateTime
@@ -682,6 +693,24 @@ class AweberMdsSyncAudit
     }
 
     /**
+     * @return string
+     */
+    public function getAweberIncAffidavitReceived()
+    {
+        return $this->aweberIncAffidavitReceived;
+    }
+
+    /**
+     * @param string $aweberIncAffidavitReceived
+     */
+    public function setAweberIncAffidavitReceived($aweberIncAffidavitReceived)
+    {
+        $this->aweberIncAffidavitReceived = $aweberIncAffidavitReceived;
+    }
+
+
+
+    /**
      * Set mdsToddlerRmMember
      *
      * @param string $mdsToddlerRmMember
@@ -1082,6 +1111,24 @@ class AweberMdsSyncAudit
     {
         return $this->mdsResidentCategory;
     }
+
+    /**
+     * @return string
+     */
+    public function getMdsIncAffidavitReceived()
+    {
+        return $this->mdsIncAffidavitReceived;
+    }
+
+    /**
+     * @param string $mdsIncAffidavitReceived
+     */
+    public function setMdsIncAffidavitReceived($mdsIncAffidavitReceived)
+    {
+        $this->mdsIncAffidavitReceived = $mdsIncAffidavitReceived;
+    }
+
+
 
     /**
      * Set aweberToddlerRmMember

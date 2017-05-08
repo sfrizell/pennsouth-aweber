@@ -46,16 +46,18 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
     const DEFAULT_ADMINS                    =  array ( array("steve.frizell@gmail.com" => "Stephen Frizell"));
     const DEFAULT_ADMIN_EMAIL_RECIPIENT_ADDRESS       = 'steve.frizell@gmail.com';
     const DEFAULT_ADMIN_EMAIL_RECIPIENT_NAME          = 'Stephen Frizell';
-    const UPDATE_AWEBER_FROM_MDS            = 'update-aweber-from-mds';
-    const REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS = 'report-on-aweber-email-not-in-mds';
-    const REPORT_ON_AWEBER_UPDATES_FROM_MDS = 'report-on-aweber-updates-from-mds';
-    const REPORT_ON_APTS_WITH_NO_EMAIL      = 'report-on-apts-where-no-resident-has-email-address';
-    const PARKING_LOT_REPORT                = 'parking-lot-report';
-    const HOMEOWNERS_INSURANCE_REPORT       = 'homeowners-insurance-report';
-    const APP_OUTPUT_DIRECTORY_DEV          = "/app_output";
-    const APP_OUTPUT_DIRECTORY_PROD         = "/home/pennsouthdata/home/mgmtoffice/public_ftp";
-    const ENVIRONMENT_DEV                   = 'dev';
-    const ENVIRONMENT_PROD                  = 'prod';
+    const UPDATE_AWEBER_FROM_MDS                        = 'update-aweber-from-mds';
+    const REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS            = 'report-on-aweber-email-not-in-mds';
+    const REPORT_ON_AWEBER_UPDATES_FROM_MDS             = 'report-on-aweber-updates-from-mds';
+    const REPORT_ON_APTS_WITH_NO_EMAIL                  = 'report-on-apts-where-no-resident-has-email-address';
+    const PARKING_LOT_REPORT                            = 'parking-lot-report';
+    const HOMEOWNERS_INSURANCE_REPORT                   = 'homeowners-insurance-report';
+    const INCOME_AFFIDAVIT_REPORT                       = 'income-affidavit-report';
+    const MDS_DATA_ENTRY_GAPS_REPORT                    = 'mds-data-entry-gaps-report';
+    const APP_OUTPUT_DIRECTORY_DEV                      = "/app_output";
+    const APP_OUTPUT_DIRECTORY_PROD                     = "/home/pennsouthdata/home/mgmtoffice/public_ftp";
+    const ENVIRONMENT_DEV                               = 'dev';
+    const ENVIRONMENT_PROD                              = 'prod';
 
     private $defaultEmailNotifyParameters;
     private $defaultEmailNotifyParametersArray = array();
@@ -67,6 +69,8 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
     private $runReportOnAweberUpdatesFromMds;
     private $runParkingLotReport;
     private $runHomeownersInsuranceReport;
+    private $runIncomeAffidavitReport;
+    private $runMDsDataEntryGapsReport;
     private $emailNotifyReportOrProcessName = null;
     private $isExceptionRaised = FALSE;
 
@@ -89,6 +93,8 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
                         new InputOption(self::REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS, 'a', InputOption::VALUE_REQUIRED, 'Option to report on subscriber email addresses in Aweber and not in MDS: y/n', 'n'),
                         new InputOption(self::PARKING_LOT_REPORT, 'p', InputOption::VALUE_REQUIRED, 'Option to create Parking Lot Report: y/n', 'n'),
                         new InputOption(self::HOMEOWNERS_INSURANCE_REPORT, 'i', InputOption::VALUE_REQUIRED, 'Option to create Homeowners Insurance Report: y/n', 'n'),
+                        new InputOption(self::INCOME_AFFIDAVIT_REPORT, 'c', InputOption::VALUE_REQUIRED, 'Option to create Income Affidavit Report: y/n', 'n'),
+                        new InputOption(self::MDS_DATA_ENTRY_GAPS_REPORT, 'd', InputOption::VALUE_REQUIRED, 'Option to create MDS Data Entry Discrepancies Report: y/n', 'n'),
                         new InputOption(self::REPORT_ON_AWEBER_UPDATES_FROM_MDS, 'r', InputOption::VALUE_REQUIRED, 'Option to create spreadsheet listing details of updates of Aweber from MDS.: y/n', 'n'),
                         new InputOption(self::REPORT_ON_APTS_WITH_NO_EMAIL, 'b', InputOption::VALUE_REQUIRED, 'Option to create spreadsheet listing apts where no resident has email address.: y/n', 'n'),
                     ))
@@ -179,6 +185,14 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
         // default is FALSE, so anything other than parameter of 'y' is interpreted as FALSE...
         $this->runHomeownersInsuranceReport = ( is_null( $input->getOption(self::HOMEOWNERS_INSURANCE_REPORT)) ? FALSE
                                         : ( strtolower($input->getOption(self::HOMEOWNERS_INSURANCE_REPORT)) == 'y' ? TRUE : FALSE ) );
+        
+        // default is FALSE, so anything other than parameter of 'y' is interpreted as FALSE...
+        $this->runIncomeAffidavitReport = ( is_null( $input->getOption(self::INCOME_AFFIDAVIT_REPORT)) ? FALSE
+                                        : ( strtolower($input->getOption(self::INCOME_AFFIDAVIT_REPORT)) == 'y' ? TRUE : FALSE ) );
+             
+        // default is FALSE, so anything other than parameter of 'y' is interpreted as FALSE...
+        $this->runMDsDataEntryGapsReport = ( is_null( $input->getOption(self::MDS_DATA_ENTRY_GAPS_REPORT)) ? FALSE
+                                        : ( strtolower($input->getOption(self::MDS_DATA_ENTRY_GAPS_REPORT)) == 'y' ? TRUE : FALSE ) );
 
         // default is FALSE, so anything other than parameter of 'y' is interpreted as FALSE...
         $this->runReportOnAweberUpdatesFromMds = ( is_null( $input->getOption(self::REPORT_ON_AWEBER_UPDATES_FROM_MDS)) ? FALSE
@@ -226,6 +240,25 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
         else {
             print ("\n" . "run Homeowners Insurance Report set to false. \n");
         }
+
+        if ($this->runIncomeAffidavitReport) {
+            print ("\n" . "run Income Affidavit Report set to true. \n");
+            $this->emailNotifyReportOrProcessName = self::INCOME_AFFIDAVIT_REPORT;
+            $processCtr++;
+        }
+        else {
+            print ("\n" . "run Income Affidavit Report set to false. \n");
+        }
+        
+        if ($this->runMDsDataEntryGapsReport) {
+            print ("\n" . "run MDS Data Entry Discrepancies Report set to true. \n");
+            $this->emailNotifyReportOrProcessName = self::MDS_DATA_ENTRY_GAPS_REPORT;
+            $processCtr++;
+        }
+        else {
+            print ("\n" . "run MDS Data Entry Discrepancies Report set to false. \n");
+        }
+
 
         if ($this->runReportOnAptsWithNoEmail) {
             print ("\n" . "Run Report on Apartments with No Email Address set to true. \n");
@@ -436,6 +469,55 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
                  exit(1);
              }
         }
+
+
+        if ($this->runIncomeAffidavitReport) {
+             try {
+                 $incomeAffidavitReportCreator = new ManagementReportsWriter($this->getEntityManager(), null, $appOutputDir, $env);
+                 $incomeAffidavitReportCreator->createIncomeAffidavitReport();
+                 $subjectLine = "Pennsouth Income Affidavit Report Created.";
+                 $messageBody = "\n The Pennsouth Income Affidavit Report has been created. It is available for download from the Pennsouth Ftp Server. \n";
+                // $attachmentFilePath = $appOutputDir . "/" . ManagementReportsWriter::INCOME_AFFIDAVIT_REPORT_FILE_NAME;
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
+             }
+             catch (\Exception $exception) {
+                 print("\n Exception encountered when running the Income Affidavit Report.");
+                 print("\n Exception->getMessage(): " . $exception->getMessage());
+                 print("\n stacktrace: " . $exception->getTraceAsString());
+                 print("\n Exiting from program.");
+                 $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program in section where the Income Affidavit Report is created.";
+                 $messageBody =  "\n Exception->getMessage() : " . $exception->getMessage() . "\n";
+                 $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
+                 $this->isExceptionRaised = TRUE;
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
+                 exit(1);
+             }
+        }
+        
+        
+        if ($this->runMDsDataEntryGapsReport) {
+             try {
+                 $mdsDataEntryDiscrepanciesReportCreator = new ManagementReportsWriter($this->getEntityManager(), null, $appOutputDir, $env);
+                 $mdsDataEntryDiscrepanciesReportCreator->createMdsDataEntryGapsReport();
+                 $subjectLine = "Pennsouth MDS Data Entry Gaps/Errors Report Created.";
+                 $messageBody = "\n The Pennsouth MDS Data Entry Gaps/Errors Report has been created and is attached to this email. It is also available on the Pennsouth Ftp Server. \n";
+                 $attachmentFilePath = $appOutputDir . "/" . ManagementReportsWriter::MDS_DATA_ENTRY_GAPS_REPORT_FILE_NAME;
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised, $attachmentFilePath);
+             }
+             catch (\Exception $exception) {
+                 print("\n Exception encountered when running the MDS Data Entry Gaps/Errors Report.");
+                 print("\n Exception->getMessage(): " . $exception->getMessage());
+                 print("\n stacktrace: " . $exception->getTraceAsString());
+                 print("\n Exiting from program.");
+                 $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program in section where the MDS Data Entry Gaps/Errors Report is created.";
+                 $messageBody =  "\n Exception->getMessage() : " . $exception->getMessage() . "\n";
+                 $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
+                 $this->isExceptionRaised = TRUE;
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
+                 exit(1);
+             }
+        }
+        
 
 
         if ($this->runReportOnAptsWithNoEmail) {

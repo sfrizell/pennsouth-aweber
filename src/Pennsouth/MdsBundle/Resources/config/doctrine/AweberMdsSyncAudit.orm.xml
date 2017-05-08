@@ -167,6 +167,11 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="mdsIncAffidavitReceived" type="string" column="mds_inc_affidavit_received" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="aweberToddlerRmMember" type="string" column="Aweber_Toddler_Rm_Member" length="1" nullable="true">
       <options>
         <option name="fixed"/>
@@ -250,6 +255,11 @@
       </options>
     </field>
     <field name="aweberResidentCategory" type="string" column="Aweber_Resident_Category" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberIncAffidavitReceived" type="string" column="aweber_inc_affidavit_received" length="1" nullable="true">
       <options>
         <option name="fixed"/>
       </options>

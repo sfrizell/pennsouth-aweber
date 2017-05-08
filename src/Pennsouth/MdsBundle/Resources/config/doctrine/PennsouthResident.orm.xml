@@ -151,6 +151,22 @@
      </field>
     <field name="birthDate" type="datetime" column="Birth_Date" nullable="true"/>
     <field name="moveInDate" type="datetime" column="Move_In_Date" nullable="true"/>
+    <field name="shareholderFlag" type="string" column="shareholder_flag" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="incAffidavitReceiptDate" type="datetime" column="inc_affidavit_receipt_date" nullable="true"/>
+    <field name="incAffidavitReceived" type="string" column="inc_affidavit_received" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="incAffidavitDateDiscrepancy" type="string" column="inc_affidavit_date_discrepancy" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="storageLockerClosetBldgNum" type="string" column="Storage_Locker_Closet_Bldg_Num" length="20" nullable="true">
       <options>
         <option name="fixed"/>
@@ -188,6 +204,11 @@
       </options>
     </field>
     <field name="bikeRackRoom" type="string" column="Bike_Rack_Room" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aptSurrendered" type="string" column="apt_surrendered" length="45" nullable="true">
       <options>
         <option name="fixed"/>
       </options>

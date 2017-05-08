@@ -27,6 +27,7 @@ class AptsWithNoResidentHavingEmailReportWriter
                'Floor Number',
                'Apt Line',
                'Apt Name',
+                'Apt Surrendered'
        );
 
     const APTS_WITH_NO_EMAIL_ADDRESSES_COL_NAMES = array(
@@ -34,6 +35,7 @@ class AptsWithNoResidentHavingEmailReportWriter
                    'floor_number',
                    'apt_line',
                    'apartment_name',
+                   'apt_surrendered'
            );
 
     private $entityManager;
@@ -179,7 +181,7 @@ class AptsWithNoResidentHavingEmailReportWriter
 
               // $query = $this->getEntityManager()->createNativeQuery
               $query =
-                  'select distinct apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
+                  'select distinct apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name, pr.apt_surrendered
                   from 
                        pennsouth_apt as apt
                        inner join pennsouth_resident as pr

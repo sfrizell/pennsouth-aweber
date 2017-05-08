@@ -21,12 +21,15 @@ class ManagementReportsWriter
     const PARKING_LOT_LIST_BATCH_SIZE = 2000;
     const OBJECT1_COLS_NUM = 14;
     const HOMEOWNERS_INSURANCE_REPORT_FILE_NAME = 'homeowners_insurance_report.csv';
+    const INCOME_AFFIDAVIT_REPORT_FILE_NAME = 'income_affidavit_report.csv';
+    const MDS_DATA_ENTRY_GAPS_REPORT_FILE_NAME = 'mds_data_entry_gaps_report.csv';
 
 
     const PARKING_LOT_LIST_HEADER_ARRAY = array(
                 'Building',
                 'Floor Number',
                 'Apt Line',
+                'Apt. Surrendered',
                 'Parking Lot',
                 'Decal Num',
                 'Gap',
@@ -52,6 +55,7 @@ class ManagementReportsWriter
                     'building',
                     'floor_number',
                     'apt_line',
+                    'apt_surrendered',
                     'parking_lot_location',
                     'decal_num',
                     'gap',
@@ -79,6 +83,7 @@ class ManagementReportsWriter
                     'City, State Zip',
                     'Floor Number',
                     'Apt Line',
+                    'Apt. Surrendered',
                     'Homeowners Insurance Exp Date (MDS)',
                     'Days Until Reg. Expires',
                     'Expiration Interval Remaining',
@@ -103,6 +108,7 @@ class ManagementReportsWriter
                      'city_state_zip',
                      'floor_number',
                      'apt_line',
+                     'apt_surrendered',
                      'homeowner_ins_exp_date',
                      'homeowner_ins_exp_countdown,',
                      'homeowner_ins_interval_remaining',
@@ -120,6 +126,99 @@ class ManagementReportsWriter
                      'cell_phone2',
                      'evening_phone2'
             );
+
+    const INCOME_AFFIDAVIT_REPORT_HEADER_ARRAY = array(
+                    'Building',
+                    'Address',
+                    'City, State Zip',
+                    'Floor Number',
+                    'Apt Line',
+                    'Apt Surrendered',
+                    'No Email for Entire Apt.',
+                    'No Email for Shareholders',
+                    'Shareholder1 Last Name',
+                    'Shareholder1 First Name',
+                    'Shareholder1 Email',
+                    'Shareholder1 Cell',
+                    'Shareholder1 Home Phone',
+                    'Resident Category',
+                    'Shareholder2 Last Name',
+                    'Shareholder2 First Name',
+                    'Shareholder2 Email',
+                    'Shareholder2 Cell',
+                    'Shareholder2 Home Phone',
+                    'Income Affidavit Receipt Date',
+                    'Income Affidavit Received',
+                    'Income Affidavit Receipt Date Discrepancy',
+                    'Income Affidavit 1st Deadline',
+                    'Income Affidavit 2nd Deadline',
+                    'Late Charge Missed 1st Deadline',
+                    'Late Charge Missed 2nd Deadline'
+           );
+
+    const INCOME_AFFIDAVIT_REPORT_COL_NAMES = array(
+                     'building',
+                     'address',
+                     'city_state_zip',
+                     'floor_number',
+                     'apt_line',
+                     'apt_surrendered',
+                     'no_email_for_apartment',
+                     'no_email_for_shareholders',
+                     'last_name',
+                     'first_name',
+                     'mds_export_email_address',
+                     'cell_phone',
+                     'evening_phone',
+                     'mds_resident_category',
+                     'last_name2',
+                     'first_name2',
+                     'mds_export_email_address2',
+                     'cell_phone2',
+                     'evening_phone2',
+                     'inc_affidavit_receipt_date',
+                     'inc_affidavit_received',
+                     'inc_affidavit_date_discrepancy',
+                     'first_annual_deadline',
+                     'second_annual_deadline',
+                     'late_charge1',
+                     'late_charge2'
+            );
+    // mds data entry discrepancies report
+    const MDS_GAPS_REPORT_HEADER_ARRAY = array(
+                        'Building',
+                        'Floor Number',
+                        'Apt Line',
+                        'Shareholder Last Name',
+                        'Shareholder First Name',
+                        'Shareholder Daytime Phone',
+                        'Shareholder Cell Phone',
+                        'Shareholder Evening Phone',
+                        'Shareholder1 Email',
+                        'Resident Category',
+                        'Shareholder Flag',
+                        'MDS Export File Category',
+                        'Apt. Surrendered'
+               );
+
+        const MDS_GAPS_REPORT_COL_NAMES = array(
+                         'building',
+                         'floor_number',
+                         'apt_line',
+                         'no_email_for_apartment',
+                         'no_email_for_shareholders',
+                         'last_name',
+                         'first_name',
+                         'daytime_phone',
+                         'evening_phone',
+                         'cell_phone',
+                         'email_address',
+                         'mds_resident_category',
+                         'shareholder_flag',
+                         'mds_export_category',
+                         'apt_surrendered'
+                );
+
 
     private $entityManager;
     private $phpExcel;
@@ -286,6 +385,69 @@ class ManagementReportsWriter
 
     }
 
+    /**
+       *
+       * @return bool
+       */
+      public function createIncomeAffidavitReport() {
+
+          $incomeAffidavitReportRows = $this->getIncomeAffidavitReportRows();
+
+         // $totalCols = count(self::HOMEOWNERS_INSURANCE_REPORT_HEADER_ARRAY)+1;
+
+          $file = fopen($this->appOutputDir . "/" . self::INCOME_AFFIDAVIT_REPORT_FILE_NAME, "w");
+
+          fputcsv($file, self::INCOME_AFFIDAVIT_REPORT_HEADER_ARRAY);
+
+          $prevBuilding = null;
+          $prevFloorNum = null;
+          $prevAptLine = null;
+          foreach($incomeAffidavitReportRows as $row){
+              if ( is_null($prevBuilding) or
+                     $row['building']      !== $prevBuilding   or
+                     $row['floor_number']  !== $prevFloorNum   or
+                     $row['apt_line']      !== $prevAptLine
+                   ) {
+                  fputcsv($file, $row);
+              }
+              $prevBuilding   = $row['building'];
+              $prevFloorNum   = $row['floor_number'];
+              $prevAptLine    = $row['apt_line'];
+          }
+          fclose($file);
+
+
+          return TRUE;
+
+      }
+
+    /**
+       *
+       * @return bool
+       */
+      public function createMdsDataEntryGapsReport() {
+
+          $dataEntryGapsReportRows = $this->getMdsDataEntryGapsReportRows();
+
+
+          $file = fopen($this->appOutputDir . "/" . self::MDS_DATA_ENTRY_GAPS_REPORT_FILE_NAME, "w");
+
+          fputcsv($file, self::MDS_GAPS_REPORT_HEADER_ARRAY);
+
+          $prevBuilding = null;
+          $prevFloorNum = null;
+          $prevAptLine = null;
+          foreach($dataEntryGapsReportRows as $row){
+                  fputcsv($file, $row);
+          }
+          fclose($file);
+
+
+          return TRUE;
+
+      }
+
+
     private function getPhpExcelObjectAndSetHeadings($headerArray, $title, $description, $category) {
 
            $phpExcelObject = $this->phpExcel->createPHPExcelObject();
@@ -384,9 +546,11 @@ class ManagementReportsWriter
              */
 
             $query =
-                'SELECT  distinct pr.building, pr.floor_number, pr.apt_line, pr.mds_resident_category as mds_resident_category1,
-                pr.parking_lot_location, \'\' gap, cast(pr.decal_num as unsigned) decal_num, pr.vehicle_reg_exp_date, pr.vehicle_reg_exp_countdown,
-                pr.vehicle_reg_interval_remaining, pr.vehicle_model, pr.vehicle_license_plate_num,
+                'SELECT  distinct pr.building, pr.floor_number, pr.apt_line, pr.apt_surrendered, pr.mds_resident_category as mds_resident_category1,
+                pr.parking_lot_location, \'\' gap, cast(pr.decal_num as unsigned) decal_num, pr.vehicle_reg_exp_date, 
+                if (length(pr.apt_surrendered) > 0, \'\', pr.vehicle_reg_exp_countdown) vehicle_reg_exp_countdown,
+                if (length(pr.apt_surrendered) > 0, \'\', pr.vehicle_reg_interval_remaining) vehicle_reg_interval_remaining, 
+                pr.vehicle_model, pr.vehicle_license_plate_num, 
                 pr.last_name, pr.first_name, pr.email_address, pr.cell_phone, pr.evening_phone, 
                 pr2.mds_resident_category as mds_resident_category2, pr2.last_name last_name2, pr2.first_name first_name2, 
                 pr2.email_address email_address2, pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2
@@ -431,17 +595,22 @@ class ManagementReportsWriter
 
             $query =
                       'SELECT  distinct pr.building, b.address, concat( b.city, \', \', b.state, \' \', b.zip) city_state_zip, 
-                           pr.floor_number, pr.apt_line,  
-                           pr.homeowner_ins_exp_date,pr.homeowner_ins_exp_countdown, pr.homeowner_ins_interval_remaining,
+                           pr.floor_number, pr.apt_line, pr.apt_surrendered, 
+                           pr.homeowner_ins_exp_date,                        
+                           if (length(pr.apt_surrendered) > 0, \'\', pr.homeowner_ins_exp_countdown) homeowner_ins_exp_countdown, 
+                           if (length(pr.apt_surrendered) > 0, \'\', pr.homeowner_ins_interval_remaining) homeowner_ins_interval_remaining,
                            if(apts_no_email.building_id is not null, \'No Email for Apartment\', \'\') no_email_for_apartment,
                            if( length(trim(pr.email_address)) = 0 and (length(trim(pr2.email_address)) = 0 or pr2.email_address is null), \'No Email for Shareholders\', \'\') no_email_for_shareholders,
-                           pr.last_name, pr.first_name, pr.email_address, pr.cell_phone, pr.evening_phone, 
-                           pr2.mds_resident_category, pr2.last_name last_name2, pr2.first_name first_name2, pr2.email_address email_address2,
+                           pr.last_name, pr.first_name, me.email_address, pr.cell_phone, pr.evening_phone, 
+                           pr2.mds_resident_category, pr2.last_name last_name2, pr2.first_name first_name2, me2.email_address email_address2,
                            pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2                                
                        FROM pennsouth_resident as pr
                            JOIN pennsouth_bldg as b
                        ON
                            pr.building = b.building_id
+                           JOIN mds_export as me
+						ON
+							pr.mds_export_id = me.mds_export_id
                            LEFT JOIN
                             pennsouth_resident as pr2
                        ON
@@ -450,8 +619,12 @@ class ManagementReportsWriter
                        and pr.apt_line	= pr2.apt_line
                        and pr.pennsouth_resident_id < pr2.pennsouth_resident_id
                        and pr.mds_resident_category = pr2.mds_resident_category
-                       and concat(pr.first_name, pr.last_name) <> concat(pr2.first_name, pr2.last_name)
-                           LEFT JOIN
+                       and concat(pr.first_name, pr.last_name) <> concat(pr2.first_name, pr2.last_name) 
+                          LEFT JOIN
+                              mds_export as me2
+                          ON
+                              pr2.mds_export_id = me2.mds_export_id
+                          LEFT JOIN
                        (
                        select  distinct apt.building_id, apt.floor_number, apt.apt_line, apt.apartment_name
                        from 
@@ -507,5 +680,156 @@ class ManagementReportsWriter
         }
 
     }
+
+    private function getIncomeAffidavitReportRows() {
+
+        try {
+
+            $query =
+                      'SELECT distinct pr.building, b.address, concat( b.city, \', \', b.state, \' \', b.zip) city_state_zip, 
+                           pr.floor_number, pr.apt_line, 
+                           pr.apt_surrendered, 
+                           if(apts_no_email.building_id is not null, \'No Email for Apartment\', \'\') no_email_for_apartment,
+                           if( length(trim(pr.email_address)) = 0 and (length(trim(pr2.email_address)) = 0 or pr2.email_address is null), \'No Email for Shareholders\', \'\') no_email_for_shareholders,
+                           pr.last_name, pr.first_name, 
+                           me.email_address mds_export_email_address, pr.cell_phone, pr.evening_phone, 
+                           pr.mds_resident_category, 
+                           if(pr2.last_name is null, \'\', pr2.last_name) last_name2, if(pr2.first_name is null, \'\', pr2.first_name) first_name2, 
+                           if(me2.email_address is null, \'\', me2.email_address) mds_export_email_address2,
+                           if(pr2.cell_phone is null, \'\', pr2.cell_phone) cell_phone2, if(pr2.evening_phone is null, \'\', pr2.evening_phone) evening_phone2,
+                           pr.inc_affidavit_receipt_date, pr.inc_affidavit_received, pr.inc_affidavit_date_discrepancy,
+                           ia.first_annual_deadline, ia.second_annual_deadline,
+                           (
+                           CASE
+                            WHEN CURDATE() > ia.first_annual_deadline and (pr.inc_affidavit_receipt_date is null or pr.inc_affidavit_receipt_date > ia.first_annual_deadline) THEN ia.first_deadline_late_charge
+                            ELSE \'\'
+                           END
+                           ) late_charge1, 
+                           (
+                           CASE
+							WHEN CURDATE() > ia.second_annual_deadline and (pr.inc_affidavit_receipt_date is null or pr.inc_affidavit_receipt_date > ia.second_annual_deadline) THEN ia.second_deadline_late_charge
+                            ELSE \'\'
+                           END
+                           ) late_charge2
+                       FROM 
+							income_affidavit as ia
+                            JOIN
+							pennsouth_resident as pr
+                            ON ia.income_affidavit_id = 1
+                           JOIN pennsouth_bldg as b
+                       ON
+                           pr.building = b.building_id
+                           JOIN mds_export as me
+						ON
+							pr.mds_export_id = me.mds_export_id
+                           LEFT JOIN
+                            pennsouth_resident as pr2
+                       ON
+                           pr.building = pr2.building
+                       and pr.floor_number = pr2.floor_number
+                       and pr.apt_line	= pr2.apt_line
+                       and pr.pennsouth_resident_id < pr2.pennsouth_resident_id
+                       and pr.mds_resident_category = pr2.mds_resident_category
+                       and concat(pr.first_name, pr.last_name) <> concat(pr2.first_name, pr2.last_name)
+                           LEFT JOIN
+                           mds_export as me2
+						ON
+                           pr2.mds_export_id = me2.mds_export_id
+                           LEFT JOIN
+                       missing_email_apt apts_no_email
+                           ON
+                           pr.building = apts_no_email.building_id
+                       and pr.floor_number = apts_no_email.floor_number
+                       and pr.apt_line		= apts_no_email.apt_line
+                       WHERE
+                           pr.homeowner_ins_exp_date is not null 
+                           and pr.mds_resident_category =:residentCategory 
+                       order by pr.building, pr.floor_number, pr.apt_line, pr2.mds_resident_category desc';
+
+
+
+                $statement = $this->getEntityManager()->getConnection()->prepare($query);
+                // Set parameters
+                $statement->bindValue( 'residentCategory', 'SHAREHOLDER');
+
+                $statement->execute();
+
+                $incomeAffidavitReportRows = $statement->fetchAll();
+
+                return $incomeAffidavitReportRows;
+        }
+        catch (\Exception $exception) {
+            print("\n" . "Fatal Exception occurred in ManagementReportsWriter->getIncomeAffidavitReportRows! ");
+            print ("\n Exception->getMessage() : " . $exception->getMessage());
+            print "Type: " . $exception->getCode(). "\n";
+            print("\n" . "Exiting from program.");
+            throw $exception;
+        }
+
+    }
+
+    /*
+     * -- 1. Find all instances where shareholder has been designated in the shareholder_flag column (tenant1/tenant2 fields in MDS)
+     * --      and the mds_resident_category is not designated 'SHAREHOLDER
+     * -- 2. Find all instances where there is no value in the mds_resident_category column
+     * -- 3. Find all instances where there are multiple values of resident_category assigned as determined by there being more than one category with the field delimiter of '+'
+     */
+    private function getMdsDataEntryGapsReportRows() {
+
+        try {
+
+            $query =
+                      'select distinct pr.building, pr.floor_number, pr.apt_line, pr.last_name, pr.first_name, pr.daytime_phone, pr.evening_phone,
+                          pr.cell_phone, me.email_address,
+                            pr.mds_resident_category, pr.shareholder_flag, me.category mds_export_category, pr.apt_surrendered
+                        from pennsouth_resident pr
+                          JOIN mds_export me
+                          ON pr.mds_export_id = me.mds_export_id
+                        where pr.shareholder_flag =:residentCategory
+                        AND pr.mds_resident_category !=:residentCategory
+                        UNION
+                        select distinct pr.building, pr.floor_number, pr.apt_line, pr.last_name, pr.first_name, pr.daytime_phone, pr.evening_phone,
+                          pr.cell_phone, me.email_address,
+                            pr.mds_resident_category, pr.shareholder_flag, me.category mds_export_category, pr.apt_surrendered
+                        from pennsouth_resident pr
+                          JOIN mds_export me
+                          ON pr.mds_export_id = me.mds_export_id
+                        where 
+                         pr.mds_resident_category =:blankResidentCategory
+                        UNION
+                        select distinct pr.building, pr.floor_number, pr.apt_line, pr.last_name, pr.first_name, pr.daytime_phone, pr.evening_phone,
+                          pr.cell_phone, me.email_address,
+                            pr.mds_resident_category, pr.shareholder_flag, me.category mds_export_category, pr.apt_surrendered
+                        from pennsouth_resident pr
+                          JOIN mds_export me
+                          ON pr.mds_export_id = me.mds_export_id
+                        where 
+                         length(me.category) - length(replace(me.category, \'+\', \'\')) > 1
+                        order by 1, 2, 3, 4, 5  ';
+
+
+
+                $statement = $this->getEntityManager()->getConnection()->prepare($query);
+                // Set parameters
+                $statement->bindValue( 'residentCategory', 'SHAREHOLDER');
+                $statement->bindValue( 'blankResidentCategory', '');
+
+                $statement->execute();
+
+                $mdsDataEntryGapsReportRows = $statement->fetchAll();
+
+                return $mdsDataEntryGapsReportRows;
+        }
+        catch (\Exception $exception) {
+            print("\n" . "Fatal Exception occurred in ManagementReportsWriter->getMdsDataEntryGapsReportRows! ");
+            print ("\n Exception->getMessage() : " . $exception->getMessage());
+            print "Type: " . $exception->getCode(). "\n";
+            print("\n" . "Exiting from program.");
+            throw $exception;
+        }
+
+    }
+
+
 
 }
