@@ -23,17 +23,21 @@ Presented below are all command line options/arguments:
 
 **Options:**
 
-+  \-u, --update-aweber-from-mds=UPDATE-AWEBER-FROM-MDS                        Option to update Aweber from MDS input: y/n \[default: "y"\]
++  \-u, --update-aweber-from-mds=y/n                             Option to update Aweber from MDS input: y/n \[default: "y"\], i.e., if the parameter is not included at all the program will run the update of aweber from MDS.
   
-+  \-r, --report-on-aweber-email-not-in-mds=REPORT-ON-AWEBER-EMAIL-NOT-IN-MDS  Option to report on subscriber email addresses in Aweber and not in MDS: y/n \[default: "n"\]
++  \-r, --report-on-aweber-email-not-in-mds=y/n                  Option to report on subscriber email addresses in Aweber and not in MDS: y/n \[default: "n"\]
   
-+  \-p, --parking-lot-report=PARKING-LOT-REPORT                                 Option to create Parking Lot Report: y/n \[default: "n"\]
++  \-p, --parking-lot-report=y/n                                 Option to create Parking Lot Report: y/n \[default: "n"\]
 
-+ \-i, --homeowners-insurance-report=HOMEOWNERS-INSURANCE-REPORT                Option to create Homeowners Insurance Report: y/n [default: "n"]
++ \-i, --homeowners-insurance-report=y/n                         Option to create Homeowners Insurance Report: y/n [default: "n"]
 
-+  \-a, --report-on-aweber-updates-from-mds=REPORT-ON-AWEBER-UPDATES-FROM-MDS  Option to generate spreadsheet listing details of updates of Aweber from MDS.: y/n \[default: "n"\]
++ \-c, --income-affidavit-report=y/n                             Option to create Income Affidavit Report: y/n [default: "n"]
 
-+  \-b, --report-on-apts-where-no-resident-has-email-address=REPORT-ON-APTS-WHERE-NO-RESIDENT-HAS-EMAIL-ADDRESS  Option to generate spreadsheet listing apts where no resident has email address.: y/n \[default: "n"\]
++ \-d, --mds-data-entry-gaps-report=y/n                             Option to create Income Affidavit Report: y/n [default: "n"]
+
++  \-a, --report-on-aweber-updates-from-mds=y/n                  Option to generate spreadsheet listing details of updates of Aweber from MDS.: y/n \[default: "n"\]
+
++  \-b, --report-on-apts-where-no-resident-has-email-address=y/n  Option to generate spreadsheet listing apts where no resident has email address.: y/n \[default: "n"\]
 
 
 
