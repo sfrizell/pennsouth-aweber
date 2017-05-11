@@ -699,18 +699,37 @@ class ManagementReportsWriter
                            if(pr2.cell_phone is null, \'\', pr2.cell_phone) cell_phone2, if(pr2.evening_phone is null, \'\', pr2.evening_phone) evening_phone2,
                            pr.inc_affidavit_receipt_date, pr.inc_affidavit_received, pr.inc_affidavit_date_discrepancy,
                            ia.first_annual_deadline, ia.second_annual_deadline,
-                           (
-                           CASE
-                            WHEN CURDATE() > ia.first_annual_deadline and (pr.inc_affidavit_receipt_date is null or pr.inc_affidavit_receipt_date > ia.first_annual_deadline) THEN ia.first_deadline_late_charge
-                            ELSE \'\'
-                           END
-                           ) late_charge1, 
-                           (
-                           CASE
-							WHEN CURDATE() > ia.second_annual_deadline and (pr.inc_affidavit_receipt_date is null or pr.inc_affidavit_receipt_date > ia.second_annual_deadline) THEN ia.second_deadline_late_charge
-                            ELSE \'\'
-                           END
-                           ) late_charge2
+                           ( CASE 
+								WHEN (CURDATE() > ia.first_annual_deadline and pr.inc_affidavit_receipt_date is not null 
+									and DATE_FORMAT(pr.inc_affidavit_receipt_date, "%Y") < DATE_FORMAT(CURDATE(), "%Y" )) THEN \'Invalid Receipt Date\' 
+								WHEN DAYOFWEEK(ia.first_annual_deadline) != 1 and DAYOFWEEK(ia.first_annual_deadline) != 7 THEN
+									if(CURDATE() > ia.first_annual_deadline 
+                                    and (pr.inc_affidavit_receipt_date is null or pr.inc_affidavit_receipt_date > ia.first_annual_deadline ), ia.first_deadline_late_charge, \'\')
+								WHEN DAYOFWEEK(ia.first_annual_deadline) = 1 THEN 
+									IF(CURDATE() > DATE_ADD(ia.first_annual_deadline, INTERVAL 1 DAY) 
+                                    and (pr.inc_affidavit_receipt_date is null or pr.inc_affidavit_receipt_date > DATE_ADD(ia.first_annual_deadline, INTERVAL 1 DAY) ), ia.first_deadline_late_charge, \'\' )
+								WHEN DAYOFWEEK(ia.first_annual_deadline) = 7 THEN 
+									IF(CURDATE() > DATE_ADD(ia.first_annual_deadline, INTERVAL 1 DAY) 
+                                    and (pr.inc_affidavit_receipt_date is null or pr.inc_affidavit_receipt_date > DATE_ADD(ia.first_annual_deadline, INTERVAL 1 DAY) ), ia.first_deadline_late_charge, \'\' )
+                                ELSE \'\'
+                                    
+                           END) LATE_CHARGE1,
+						  ( CASE 
+								WHEN (CURDATE() > ia.second_annual_deadline and pr.inc_affidavit_receipt_date is not null 
+									and DATE_FORMAT(pr.inc_affidavit_receipt_date, "%Y") < DATE_FORMAT(CURDATE(), "%Y" )) THEN \'Invalid Receipt Date\' 
+								WHEN DAYOFWEEK(ia.second_annual_deadline) != 1 and DAYOFWEEK(ia.second_annual_deadline) != 7 THEN
+									if(CURDATE() > ia.second_annual_deadline 
+                                    and (pr.inc_affidavit_receipt_date is null or pr.inc_affidavit_receipt_date > ia.second_annual_deadline ), ia.second_deadline_late_charge, \'\')
+								WHEN DAYOFWEEK(ia.second_annual_deadline) = 1 THEN 
+									IF(CURDATE() > DATE_ADD(ia.second_annual_deadline, INTERVAL 1 DAY) 
+                                    and (pr.inc_affidavit_receipt_date is null or pr.inc_affidavit_receipt_date > DATE_ADD(ia.second_annual_deadline, INTERVAL 1 DAY) ), ia.second_deadline_late_charge, \'\' )
+								WHEN DAYOFWEEK(ia.first_annual_deadline) = 7 THEN 
+									IF(CURDATE() > DATE_ADD(ia.second_annual_deadline, INTERVAL 1 DAY) 
+                                    and (pr.inc_affidavit_receipt_date is null or pr.inc_affidavit_receipt_date > DATE_ADD(ia.second_annual_deadline, INTERVAL 1 DAY) ), ia.second_deadline_late_charge, \'\' )
+								ELSE \'\'
+                                    
+                           END) LATE_CHARGE2
+	
                        FROM 
 							income_affidavit as ia
                             JOIN
@@ -743,8 +762,8 @@ class ManagementReportsWriter
                        and pr.apt_line		= apts_no_email.apt_line
                        WHERE
                            pr.homeowner_ins_exp_date is not null 
-                           and pr.mds_resident_category =:residentCategory 
-                       order by pr.building, pr.floor_number, pr.apt_line, pr2.mds_resident_category desc';
+                           and pr.mds_resident_category =:residentCategory
+                       order by pr.building, pr.floor_number, pr.apt_line ASC, pr2.mds_resident_category desc';
 
 
 
@@ -785,7 +804,7 @@ class ManagementReportsWriter
                         from pennsouth_resident pr
                           JOIN mds_export me
                           ON pr.mds_export_id = me.mds_export_id
-                        where pr.shareholder_flag =:residentCategory
+                        where pr.shareholder_flag =:residentCategoryPlus
                         AND pr.mds_resident_category !=:residentCategory
                         UNION
                         select distinct pr.building, pr.floor_number, pr.apt_line, pr.last_name, pr.first_name, pr.daytime_phone, pr.evening_phone,
@@ -811,6 +830,7 @@ class ManagementReportsWriter
 
                 $statement = $this->getEntityManager()->getConnection()->prepare($query);
                 // Set parameters
+                $statement->bindValue( 'residentCategoryPlus', 'SHAREHOLDER+');
                 $statement->bindValue( 'residentCategory', 'SHAREHOLDER');
                 $statement->bindValue( 'blankResidentCategory', '');
 

@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6b0dfb0-340b-4be3-b81b-b2d7247d6f8a" name="Default" comment="Add List Management report functionality. Add PHPExcel library to project.">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_output/homeowners_insurance_report.csv" afterPath="$PROJECT_DIR$/app_output/homeowners_insurance_report.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_output/income_affidavit_report.csv" afterPath="$PROJECT_DIR$/app_output/income_affidavit_report.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_output/mds_data_entry_gaps_report.csv" afterPath="$PROJECT_DIR$/app_output/mds_data_entry_gaps_report.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Service/ManagementReportsWriter.php" afterPath="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Service/ManagementReportsWriter.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/status.txt" afterPath="$PROJECT_DIR$/status.txt" />
     </list>
     <ignored path="pennsouth_aweber.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,22 +40,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ProgramExecuteCommand.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ProgramExecuteCommand.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/ProgramExecuteCommand.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="55" column="85" lean-forward="true" selection-start-line="55" selection-start-column="59" selection-end-line="55" selection-end-column="85" />
+            <state relative-caret-position="15">
+              <caret line="55" column="85" lean-forward="false" selection-start-line="55" selection-start-column="59" selection-end-line="55" selection-end-column="85" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="215">
-                <caret line="35" column="5" lean-forward="false" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
+              <first_editor relative-caret-position="525">
+                <caret line="35" column="35" lean-forward="false" selection-start-line="35" selection-start-column="9" selection-end-line="35" selection-end-column="35" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -61,19 +66,19 @@
       <file leaf-file-name="ManagementReportsWriter.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Service/ManagementReportsWriter.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="12180">
-              <caret line="821" column="2" lean-forward="false" selection-start-line="821" selection-start-column="2" selection-end-line="821" selection-end-column="2" />
+            <state relative-caret-position="11430">
+              <caret line="771" column="74" lean-forward="false" selection-start-line="771" selection-start-column="74" selection-end-line="771" selection-end-column="74" />
               <folding>
-                <marker date="1494090264000" expanded="true" signature="20674:22260" ph="SELECT disti... pennsouth_resident" />
-                <marker date="1494090264000" expanded="true" signature="23139:27211" ph="SELECT disti... pennsouth_resident" />
-                <marker date="1494090264000" expanded="true" signature="25474:26661" ph="select disti... pennsouth_apt" />
-                <marker date="1494090264000" expanded="true" signature="25870:26090" ph="select \'x\'... pennsouth_resident" />
-                <marker date="1494090264000" expanded="true" signature="26157:26559" ph="select \'x\'... aweber_mds_sync_audit" />
-                <marker date="1494090264000" expanded="true" signature="28307:32150" ph="SELECT disti... income_affidavit" />
-                <marker date="1494090264000" expanded="true" signature="33526:34168" ph="select disti... pennsouth_resident" />
-                <marker date="1494090264000" expanded="true" signature="34193:34768" ph="select disti... pennsouth_resident" />
-                <marker date="1494090264000" expanded="true" signature="34193:35464" ph="select disti... " />
-                <marker date="1494090264000" expanded="true" signature="34823:35417" ph="select disti... pennsouth_resident" />
+                <marker date="1494384765000" expanded="true" signature="20674:22260" ph="SELECT disti... pennsouth_resident" />
+                <marker date="1494384765000" expanded="true" signature="23139:27211" ph="SELECT disti... pennsouth_resident" />
+                <marker date="1494384765000" expanded="true" signature="25474:26661" ph="select disti... pennsouth_apt" />
+                <marker date="1494384765000" expanded="true" signature="25870:26090" ph="select \'x\'... pennsouth_resident" />
+                <marker date="1494384765000" expanded="true" signature="26157:26559" ph="select \'x\'... aweber_mds_sync_audit" />
+                <marker date="1494384765000" expanded="true" signature="28307:34176" ph="SELECT disti... income_affidavit" />
+                <marker date="1494384765000" expanded="true" signature="35552:36198" ph="select disti... pennsouth_resident" />
+                <marker date="1494384765000" expanded="true" signature="36223:36798" ph="select disti... pennsouth_resident" />
+                <marker date="1494384765000" expanded="true" signature="36223:37494" ph="select disti... " />
+                <marker date="1494384765000" expanded="true" signature="36853:37447" ph="select disti... pennsouth_resident" />
               </folding>
             </state>
           </provider>
@@ -245,8 +250,8 @@
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Resources/config/doctrine/AweberMdsSyncAudit.orm.xml" />
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Service/AptsWithNoResidentHavingEmailReportWriter.php" />
         <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/ProgramExecuteCommand.php" />
-        <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Service/ManagementReportsWriter.php" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/src/Pennsouth/MdsBundle/Service/ManagementReportsWriter.php" />
       </list>
     </option>
   </component>
@@ -317,10 +322,10 @@
     </include_path>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="77" />
-    <option name="y" value="82" />
+    <option name="x" value="85" />
+    <option name="y" value="259" />
     <option name="width" value="2327" />
-    <option name="height" value="1117" />
+    <option name="height" value="1027" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -338,6 +343,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -512,8 +519,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -760,26 +765,29 @@
       <workItem from="1493925126965" duration="5417000" />
       <workItem from="1493999251828" duration="6150000" />
       <workItem from="1494087311595" duration="4192000" />
-      <workItem from="1494208683964" duration="1141000" />
+      <workItem from="1494208683964" duration="2208000" />
+      <workItem from="1494254800272" duration="2382000" />
+      <workItem from="1494358290631" duration="2187000" />
+      <workItem from="1494459084915" duration="472000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="762734000" />
+    <option name="totallyTimeSpent" value="768842000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="77" y="82" width="2327" height="1117" extended-state="0" />
-    <editor active="true" />
+    <frame x="85" y="259" width="2327" height="1027" extended-state="0" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18862145" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19299781" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="DB Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24043716" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="DB Execution Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32752293" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32732734" sideWeight="0.23369803" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.78987896" sideWeight="0.2415755" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.065456904" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.59375" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24970132" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32732734" sideWeight="0.766302" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.78987896" sideWeight="0.7584245" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1005,7 +1013,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="20" column="56" lean-forward="false" selection-start-line="20" selection-start-column="56" selection-end-line="20" selection-end-column="56" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1027,7 +1034,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
           <caret line="30" column="47" lean-forward="false" selection-start-line="30" selection-start-column="47" selection-end-line="30" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1085,7 +1091,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="581">
           <caret line="1124" column="0" lean-forward="false" selection-start-line="1124" selection-start-column="0" selection-end-line="1124" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1115,7 +1120,44 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3915">
           <caret line="261" column="125" lean-forward="false" selection-start-line="261" selection-start-column="125" selection-end-line="261" selection-end-column="125" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/ProgramExecuteCommand.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="55" column="85" lean-forward="false" selection-start-line="55" selection-start-column="59" selection-end-line="55" selection-end-column="85" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="525">
+            <caret line="35" column="35" lean-forward="false" selection-start-line="35" selection-start-column="9" selection-end-line="35" selection-end-column="35" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Service/ManagementReportsWriter.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11430">
+          <caret line="771" column="74" lean-forward="false" selection-start-line="771" selection-start-column="74" selection-end-line="771" selection-end-column="74" />
+          <folding>
+            <marker date="1494384765000" expanded="true" signature="20674:22260" ph="SELECT disti... pennsouth_resident" />
+            <marker date="1494384765000" expanded="true" signature="23139:27211" ph="SELECT disti... pennsouth_resident" />
+            <marker date="1494384765000" expanded="true" signature="25474:26661" ph="select disti... pennsouth_apt" />
+            <marker date="1494384765000" expanded="true" signature="25870:26090" ph="select \'x\'... pennsouth_resident" />
+            <marker date="1494384765000" expanded="true" signature="26157:26559" ph="select \'x\'... aweber_mds_sync_audit" />
+            <marker date="1494384765000" expanded="true" signature="28307:34176" ph="SELECT disti... income_affidavit" />
+            <marker date="1494384765000" expanded="true" signature="35552:36198" ph="select disti... pennsouth_resident" />
+            <marker date="1494384765000" expanded="true" signature="36223:36798" ph="select disti... pennsouth_resident" />
+            <marker date="1494384765000" expanded="true" signature="36223:37494" ph="select disti... " />
+            <marker date="1494384765000" expanded="true" signature="36853:37447" ph="select disti... pennsouth_resident" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1176,44 +1218,6 @@
         <state relative-caret-position="2970">
           <caret line="210" column="21" lean-forward="false" selection-start-line="210" selection-start-column="21" selection-end-line="210" selection-end-column="21" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Service/ManagementReportsWriter.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12180">
-          <caret line="821" column="2" lean-forward="false" selection-start-line="821" selection-start-column="2" selection-end-line="821" selection-end-column="2" />
-          <folding>
-            <marker date="1494090264000" expanded="true" signature="20674:22260" ph="SELECT disti... pennsouth_resident" />
-            <marker date="1494090264000" expanded="true" signature="23139:27211" ph="SELECT disti... pennsouth_resident" />
-            <marker date="1494090264000" expanded="true" signature="25474:26661" ph="select disti... pennsouth_apt" />
-            <marker date="1494090264000" expanded="true" signature="25870:26090" ph="select \'x\'... pennsouth_resident" />
-            <marker date="1494090264000" expanded="true" signature="26157:26559" ph="select \'x\'... aweber_mds_sync_audit" />
-            <marker date="1494090264000" expanded="true" signature="28307:32150" ph="SELECT disti... income_affidavit" />
-            <marker date="1494090264000" expanded="true" signature="33526:34168" ph="select disti... pennsouth_resident" />
-            <marker date="1494090264000" expanded="true" signature="34193:34768" ph="select disti... pennsouth_resident" />
-            <marker date="1494090264000" expanded="true" signature="34193:35464" ph="select disti... " />
-            <marker date="1494090264000" expanded="true" signature="34823:35417" ph="select disti... pennsouth_resident" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Pennsouth/MdsBundle/Command/ProgramExecuteCommand.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="55" column="85" lean-forward="true" selection-start-line="55" selection-start-column="59" selection-end-line="55" selection-end-column="85" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="215">
-            <caret line="35" column="5" lean-forward="false" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
-            <folding />
-          </first_editor>
-          <second_editor />
         </state>
       </provider>
     </entry>
