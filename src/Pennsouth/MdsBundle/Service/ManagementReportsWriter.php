@@ -423,7 +423,8 @@ class ManagementReportsWriter
 
     /**
        *
-       * @return bool
+       * @return bool - TRUE: data entry gaps/errors found
+     *                  FALSE: no data entry gaps/errors found
        */
       public function createMdsDataEntryGapsReport() {
 
@@ -442,8 +443,15 @@ class ManagementReportsWriter
           }
           fclose($file);
 
+          if (count($dataEntryGapsReportRows) == 0) {
+              return false; // no errors to report on; don't generate an email
+          }
+          else {
+              return TRUE; // data entry gaps/errors were found; generate email with report as attachment
+          }
 
-          return TRUE;
+
+
 
       }
 
@@ -839,6 +847,8 @@ class ManagementReportsWriter
                 $mdsDataEntryGapsReportRows = $statement->fetchAll();
 
                 return $mdsDataEntryGapsReportRows;
+
+
         }
         catch (\Exception $exception) {
             print("\n" . "Fatal Exception occurred in ManagementReportsWriter->getMdsDataEntryGapsReportRows! ");

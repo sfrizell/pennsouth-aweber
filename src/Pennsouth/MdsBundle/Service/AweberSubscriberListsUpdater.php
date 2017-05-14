@@ -12,13 +12,13 @@ use AWeberAPI;
 use AWeberAPIException;
 use Pennsouth\MdsBundle\AweberEntity\AweberFieldsConstants;
 use Pennsouth\MdsBundle\AweberEntity\AweberSubscriber;
-use Pennsouth\MdsBundle\AweberEntity\AweberSubscriberUpdateInsertLists;
+use Pennsouth\MdsBundle\AweberEntity\AweberSubscriberUpdateInsertDeleteLists;
 use Pennsouth\MdsBundle\Service\AweberSubscriberWriter;
 
 class AweberSubscriberListsUpdater
 {
 
-    private $aweberSubscriberUpdateInsertLists;
+    private $aweberSubscriberUpdateInsertDeleteLists;
     private $account;
     public $aweberApiInstance;
    // private $pathToAweber = '/vendor/aweber/aweber/aweber_api/aweber_api.php';
@@ -42,21 +42,21 @@ class AweberSubscriberListsUpdater
      * Using results of comparison of MDS Resident information to Aweber Subscriber list (stored in AweberSubscriberUpdateInsertLists array)
      *  update Aweber Subscriber Lists (Insert new subscribers / Update existing subscribers)
      * @param $account - aWeberAccount
-     * @param AweberSubscriberUpdateInsertLists $aweberSubscriberUpdateInsertLists - container for results of comparison of MDS to Aweber
+     * @param AweberSubscriberUpdateInsertDeleteLists $aweberSubscriberUpdateInsertLists - container for results of comparison of MDS to Aweber
      */
-    public function updateAweberSubscriberLists($account, AweberSubscriberUpdateInsertLists $aweberSubscriberUpdateInsertLists) {
+    public function updateAweberSubscriberLists($account, AweberSubscriberUpdateInsertDeleteLists $aweberSubscriberUpdateInsertDeleteLists) {
 
         $this->account = $account;
-        $this->aweberSubscriberUpdateInsertLists = $aweberSubscriberUpdateInsertLists;
+        $this->aweberSubscriberUpdateInsertDeleteLists = $aweberSubscriberUpdateInsertDeleteLists;
         $errorMessages = array();
 
         // Are there resident email addresses in MDS with no match in Aweber? If so insert the subscriber into Aweber
-        if (!$this->aweberSubscriberUpdateInsertLists->isAweberSubscriberInsertListEmpty()) {
+        if (!$this->aweberSubscriberUpdateInsertDeleteLists->isAweberSubscriberInsertListEmpty()) {
             $aweberSubscriberWriter = new AweberSubscriberWriter($this->aweberApiInstance);
            // $aweberSubscriberWriter = new AweberSubscriberWriter($this->fullPathToAweber, $this->aweberApiInstance);
             $insertCtr = 0;
            // $batchSize = 30;
-            foreach ($this->aweberSubscriberUpdateInsertLists->getAweberSubscriberInsertList() as $aweberSubscriberByListName) {
+            foreach ($this->aweberSubscriberUpdateInsertDeleteLists->getAweberSubscriberInsertList() as $aweberSubscriberByListName) {
                 foreach ($aweberSubscriberByListName as $listName => $aweberSubscriber) {
                     $insertCtr++;
                     // should not need the sleep block below since we are slowing down the pace in the SubscriberWriter itself...
@@ -91,12 +91,12 @@ class AweberSubscriberListsUpdater
 
         // Check for resident email addrresses in MDS where Aweber custom fields don't match the values in MDS for the given resident?
         // If so, update Aweber subscriber
-        if (!$this->aweberSubscriberUpdateInsertLists->isAweberSubscriberUpdateListEmpty()) {
+        if (!$this->aweberSubscriberUpdateInsertDeleteLists->isAweberSubscriberUpdateListEmpty()) {
             $aweberSubscriberWriter = new AweberSubscriberWriter( $this->aweberApiInstance);
            // $aweberSubscriberWriter = new AweberSubscriberWriter($this->fullPathToAweber, $this->aweberApiInstance);
             $updateCtr = 0;
             //$batchSize = 30;
-            foreach ($this->aweberSubscriberUpdateInsertLists->getAweberSubscriberUpdateList() as $aweberSubscriberByListName ) {
+            foreach ($this->aweberSubscriberUpdateInsertDeleteLists->getAweberSubscriberUpdateList() as $aweberSubscriberByListName ) {
                 foreach ( $aweberSubscriberByListName as $listName => $aweberSubscriber) {
                     $updateCtr++;
                     // the block below to sleep should not be necessary as it is in the updateAweberSubscriber method...
@@ -124,6 +124,24 @@ class AweberSubscriberListsUpdater
                             print("\n" . "Exiting from AweberSubscriberListsUpdater->updateAweberSubscriberLists method and throwing same exception.");
                             throw $exception;
                         }
+                    }
+                }
+            }
+        }
+
+        if (!$this->aweberSubscriberUpdateInsertDeleteLists->isAweberSubscriberDeleteListEmpty()) {
+            $aweberSubscriberWriter = new AweberSubscriberWriter( $this->aweberApiInstance);
+            $deleteCtr = 0;
+            foreach ($this->aweberSubscriberUpdateInsertDeleteLists->getAweberSubscriberDeleteList() as $aweberSubscriberByListName) {
+                foreach ( $aweberSubscriberByListName as $listName => $aweberSubscriber) {
+                    $deleteCtr++;
+                    try {
+                        $aweberSubscriberWriter->deleteAweberSubscriber($listName, $aweberSubscriber);
+                    } catch (\Exception $exception) {
+                        print("\n" . "Exception caught in AweberSubscriberListsUpdater->updateAweberSubscriberLists delete subscribers section.\n");
+                        print ("Exception->getMessage() : \n" . $exception->getMessage());
+                        print("\n" . "Exiting from AweberSubscriberListsUpdater->updateAweberSubscriberLists method and throwing same exception.");
+                        throw $exception;
                     }
                 }
             }

@@ -498,11 +498,15 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
         if ($this->runMDsDataEntryGapsReport) {
              try {
                  $mdsDataEntryDiscrepanciesReportCreator = new ManagementReportsWriter($this->getEntityManager(), null, $appOutputDir, $env);
-                 $mdsDataEntryDiscrepanciesReportCreator->createMdsDataEntryGapsReport();
-                 $subjectLine = "Pennsouth MDS Data Entry Gaps/Errors Report Created.";
-                 $messageBody = "\n The Pennsouth MDS Data Entry Gaps/Errors Report has been created and is attached to this email. It is also available on the Pennsouth Ftp Server. \n";
-                 $attachmentFilePath = $appOutputDir . "/" . ManagementReportsWriter::MDS_DATA_ENTRY_GAPS_REPORT_FILE_NAME;
-                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised, $attachmentFilePath);
+                 $gapsOrErrorsFound = $mdsDataEntryDiscrepanciesReportCreator->createMdsDataEntryGapsReport();
+                 // only generate email if there were gaps/errors found; otherwise the empty report file is just saved to the ftp server.
+                // print("\n gapsOrErrorsFound: " . ($gapsOrErrorsFound ? "true" : "false"));
+                 if ($gapsOrErrorsFound) {
+                     $subjectLine = "Pennsouth MDS Data Entry Gaps/Errors Report Created.";
+                     $messageBody = "\n The Pennsouth MDS Data Entry Gaps/Errors Report has been created and is attached to this email. It is also available on the Pennsouth Ftp Server. \n";
+                     $attachmentFilePath = $appOutputDir . "/" . ManagementReportsWriter::MDS_DATA_ENTRY_GAPS_REPORT_FILE_NAME;
+                     $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised, $attachmentFilePath);
+                 }
              }
              catch (\Exception $exception) {
                  print("\n Exception encountered when running the MDS Data Entry Gaps/Errors Report.");
@@ -647,16 +651,16 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
                     // $this->sendEmailtoAdmins($subjectLine, $messageBody);
                 }
                 if ($this->runUpdateAweberFromMds) { // once in production, this should always be true...
-                    $aweberSubscriberUpdateInsertLists = $mdsToAweberComparator->compareAweberWithMds();
+                    $aweberSubscriberUpdateInsertDeleteLists = $mdsToAweberComparator->compareAweberWithMds();
                     $aweberUpdateSummary = null;
                     $messageBody = null;
-                    if (!$aweberSubscriberUpdateInsertLists->isUpdateListAndInsertListEmpty()) { // MDS has data that is not yet reflected in Aweber; need to insert/update Aweber from MDS...
+                    if (!$aweberSubscriberUpdateInsertDeleteLists->isUpdateAndInsertAndDeleteListsEmpty()) { // MDS has data that is not yet reflected in Aweber; need to insert/update Aweber from MDS...
                         // - invoke method to insert/update Aweber subscriber lists from MDS
                         // - invoke method to create an audit trail of the inserts/updates to Aweber
                         // - send summary statistics to Penn South Admins
                         $aweberSubscriberListsUpdater = new AweberSubscriberListsUpdater($fullPathToAweber, $aweberApiInstance, $emailNotificationLists);
-                        $errorMessages = $aweberSubscriberListsUpdater->updateAweberSubscriberLists($account, $aweberSubscriberUpdateInsertLists);
-                        $aweberUpdateSummary = $mdsToAweberComparator->storeAuditTrailofUpdatesToAweberSubscribers($aweberSubscriberUpdateInsertLists);
+                        $errorMessages = $aweberSubscriberListsUpdater->updateAweberSubscriberLists($account, $aweberSubscriberUpdateInsertDeleteLists);
+                        $aweberUpdateSummary = $mdsToAweberComparator->storeAuditTrailofUpdatesToAweberSubscribers($aweberSubscriberUpdateInsertDeleteLists);
                         // todo : evaluate whether it will be okay to create the spreadsheet reporting on the updates in the same run as the update...
                         // $phpExcel = $this->getContainer()->get('phpexcel');
                         /* $aweberMdsAuditListCreator = new AweberMdsSyncAuditListCreator($this->getEntityManager(), $phpExcel, $appOutputDir);
@@ -728,7 +732,7 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
 
     private function buildMessageBodyForEmailToAdmins($messageBody,  AweberUpdateSummary $aweberUpdateSummary, $errorMessages = null)
     {
-        if (!is_null($aweberUpdateSummary->getListInsertArrayCtr() and count($aweberUpdateSummary->getListInsertArrayCtr()) > 0)) {
+        if (!empty($aweberUpdateSummary->getListInsertArrayCtr() and count($aweberUpdateSummary->getListInsertArrayCtr()) > 0)) {
             $messageBody .=  "\n" . "List inserts: " . "\n";
             foreach ($aweberUpdateSummary->getListInsertArrayCtr() as $listName => $value) {
                 $messageBody .= "   " . $listName . " count: " . $value . "\n\n";
@@ -737,7 +741,7 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
             $messageBody .= "\n" . "There were no inserts in Aweber subscriber lists in this run of the program." . "\n";
         }
 
-        if (!is_null($aweberUpdateSummary->getListUpdateArrayCtr() and count($aweberUpdateSummary->getListUpdateArrayCtr()) > 0)) {
+        if (!empty($aweberUpdateSummary->getListUpdateArrayCtr() and count($aweberUpdateSummary->getListUpdateArrayCtr()) > 0)) {
             $messageBody .=  "\n" . "List updates: " . "\n";
             foreach ($aweberUpdateSummary->getListUpdateArrayCtr() as $listName => $value) {
                 $messageBody .= "   " . $listName . " count: " . $value . "\n\n";
@@ -745,6 +749,15 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
         } else {
             $messageBody .= "\n" . "There were no updates made to Aweber subscriber lists in this run of the program." . "\n";
         }
+
+        if (!empty($aweberUpdateSummary->getListDeleteArrayCtr() and count($aweberUpdateSummary->getListDeleteArrayCtr()) > 0)) {
+             $messageBody .=  "\n" . "List deletes: " . "\n";
+             foreach ($aweberUpdateSummary->getListDeleteArrayCtr() as $listName => $value) {
+                 $messageBody .= "   " . $listName . " count: " . $value . "\n\n";
+             }
+         } else {
+             $messageBody .= "\n" . "There were no deletes made to Aweber subscriber lists in this run of the program." . "\n";
+         }
 
         // if there are errorMessages, add them to the end of the message body.
         if (!is_null($errorMessages) and !empty($errorMessages)) {

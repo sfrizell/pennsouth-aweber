@@ -68,6 +68,11 @@ class AweberSubscriber
     /**
      * @var string
      */
+    private $aptSurrendered;
+
+    /**
+     * @var string
+     */
     private $subscriptionMethod;
 
     /**
@@ -461,6 +466,24 @@ class AweberSubscriber
     {
         $this->lastName = $lastName;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAptSurrendered()
+    {
+        return $this->aptSurrendered;
+    }
+
+    /**
+     * @param mixed $aptSurrendered
+     */
+    public function setAptSurrendered($aptSurrendered)
+    {
+        $this->aptSurrendered = $aptSurrendered;
+    }
+
+
 
     /**
      * @return string

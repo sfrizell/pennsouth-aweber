@@ -14,16 +14,17 @@ use Pennsouth\MdsBundle\AweberEntity\AweberSubscriber;
 use Pennsouth\MdsBundle\AweberEntity\AweberUpdateSummary;
 use Pennsouth\MdsBundle\Entity\PennsouthResident;
 use Pennsouth\MdsBundle\Entity\AweberMdsSyncAudit;
-use Pennsouth\MdsBundle\AweberEntity\AweberSubscriberUpdateInsertLists;
+use Pennsouth\MdsBundle\AweberEntity\AweberSubscriberUpdateInsertDeleteLists;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 class MdsToAweberComparator
 {
     const UPDATE = 'update';
     const INSERT = 'insert';
+    const DELETE = 'delete';
     const ACTION_REASON_NO_MATCHING_EMAIL_IN_MDS = "No matching email found in MDS";
     const UPDATE_APT                                = 'apt';
-    const UPATE_CERAMICS_CLUB                       = 'ceramics';
+    const UPDATE_CERAMICS_CLUB                       = 'ceramics';
     const UPDATE_YOUTH_MEMBER                       = 'youth_rm';
     const UPDATE_WOODWORKING_MEMBER                 = 'woodworking';
     const UPDATE_GYM_MEMBER                         = 'gym';
@@ -40,8 +41,9 @@ class MdsToAweberComparator
     const UPDATE_IS_DOG_PRESENT                     = 'dog';
     const UPDATE_PARKING_LOT_LOCATION               = 'parking_lot';
     const UPDATE_RESIDENT_CATEGORY                  = 'resident_category';
-    const UPDATE_INCOME_AFFIDAVIT_RECEIVED             = 'income_affidavit_received';
+    const UPDATE_INCOME_AFFIDAVIT_RECEIVED          = 'income_affidavit_received';
     const UPDATE_ACTION_REPORTING                   = 'reporting';
+    const ACTION_REASON_APT_SURRENDERED             = 'apt surrendered';
 
 
 
@@ -68,12 +70,13 @@ class MdsToAweberComparator
      *    if no match found, then we want to insert a new subscriber into the aweber 'Primary Resident List' subscriber list from the MDS resident data.
      *  No updates to Aweber are performed in this method. An instance of AweberSubscriberUpdateInsertLists is returned by the method, which is used subsequently
      *    to perform the inserts/update into the Aweber subscriber lists.
-     * @return AweberSubscriberUpdateInsertLists - list of Aweber subscribers to insert or update.
+     * @return AweberSubscriberUpdateInsertDeleteLists - list of Aweber subscribers to insert or update.
      */
     public function compareAweberWithMds() {
 
         $aweberSubscribersUpdateList = array();
         $aweberSubscribersInsertList = array();
+        $aweberSubscribersDeleteList = array();
        // $aweberSubscriberToSave = new AweberSubscriber();
         foreach ($this->pennsouthResidents as $pennsouthResident) {
             $foundEmailAddressInAweber = false;
@@ -87,11 +90,18 @@ class MdsToAweberComparator
                                     $foundEmailAddressInAweber = true;
                                     // $aweberSubscriber should always be instanceof AweberSubscriber
                                     if ( $aweberSubscriber->getStatus() == 'subscribed') {
-                                        // if no differences detected between current Aweber and MDS input, the function returns null
-                                        $aweberSubscriberToSave = $this->createAweberSubscriberFromMdsInput(self::UPDATE, $pennsouthResident, $aweberSubscriber);
-                                        if (!is_null($aweberSubscriberToSave)) {
-                                            $aweberSubscriberbyListName = [$listName => $aweberSubscriberToSave];
-                                            $aweberSubscribersUpdateList[] = $aweberSubscriberbyListName;
+                                        if ( (strpos($pennsouthResident->getAptSurrendered(), 'External Move') !== false)  ) {
+                                            $aweberSubscriberToDelete = $this->createAweberSubscriberToDeleteFromMdsInput( $pennsouthResident);
+                                            $aweberSubscriberbyListName = [$listName => $aweberSubscriberToDelete];
+                                            $aweberSubscribersDeleteList[] = $aweberSubscriberbyListName;
+                                        }
+                                        else {
+                                            // if no differences detected between current Aweber and MDS input, the function returns null
+                                            $aweberSubscriberToSave = $this->createAweberSubscriberFromMdsInput(self::UPDATE, $pennsouthResident, $aweberSubscriber);
+                                            if (!is_null($aweberSubscriberToSave)) {
+                                                $aweberSubscriberbyListName = [$listName => $aweberSubscriberToSave];
+                                                $aweberSubscribersUpdateList[] = $aweberSubscriberbyListName;
+                                            }
                                         }
                                     }
                                     break;
@@ -110,12 +120,13 @@ class MdsToAweberComparator
         }
 
 
-        $aweberSubscriberUpdateInsertLists = new AweberSubscriberUpdateInsertLists();
+        $aweberSubscriberUpdateInsertDeleteLists = new AweberSubscriberUpdateInsertDeleteLists();
 
-        $aweberSubscriberUpdateInsertLists->setAweberSubscriberInsertList($aweberSubscribersInsertList);
-        $aweberSubscriberUpdateInsertLists->setAweberSubscriberUpdateList($aweberSubscribersUpdateList);
+        $aweberSubscriberUpdateInsertDeleteLists->setAweberSubscriberInsertList($aweberSubscribersInsertList);
+        $aweberSubscriberUpdateInsertDeleteLists->setAweberSubscriberUpdateList($aweberSubscribersUpdateList);
+        $aweberSubscriberUpdateInsertDeleteLists->setAweberSubscriberDeleteList($aweberSubscribersDeleteList);
 
-        return $aweberSubscriberUpdateInsertLists;
+        return $aweberSubscriberUpdateInsertDeleteLists;
 
     }
 
@@ -170,6 +181,7 @@ class MdsToAweberComparator
             $aweberSubscriber->setName(is_null($pennsouthResident->getFirstName() . " " . $pennsouthResident->getLastName()) ? "" : $pennsouthResident->getFirstName() . " " . $pennsouthResident->getLastName());
             $aweberSubscriber->setFirstName(is_null($pennsouthResident->getFirstName()) ? "" : $pennsouthResident->getFirstName());
             $aweberSubscriber->setLastName(is_null($pennsouthResident->getLastName()) ? "" : $pennsouthResident->getLastName());
+            $aweberSubscriber->setAptSurrendered(is_null($pennsouthResident->getAptSurrendered()) ? "" : $pennsouthResident->getAptSurrendered());
             $customFields = array ( AweberFieldsConstants::BUILDING                         => $aweberSubscriber->getPennSouthBuilding(),
                                     AweberFieldsConstants::FLOOR_NUMBER                     => $aweberSubscriber->getFloorNumber(),
                                     AweberFieldsConstants::APARTMENT                        => $aweberSubscriber->getApartment(),
@@ -201,6 +213,33 @@ class MdsToAweberComparator
     }
 
     /**
+     *  When the Pennsouth Resident is identified as having surrendered their apartment, either for an external or internal move, the email addresses of the resident should
+     *   be deleted from Aweber subscriber lists.
+     * @param PennsouthResident $pennsouthResident
+     * @param AweberSubscriber|null $aweberSubscriber
+     * @return AweberSubscriber
+     */
+    private function createAweberSubscriberToDeleteFromMdsInput(PennsouthResident $pennsouthResident) {
+
+        $aweberSubscriber = new AweberSubscriber();
+        $aweberSubscriber->setPennSouthBuilding($pennsouthResident->getBuilding());
+        $aweberSubscriber->setFloorNumber($pennsouthResident->getFloorNumber());
+        $aweberSubscriber->setApartment($pennsouthResident->getAptLine());
+        $aweberSubscriber->setEmail($pennsouthResident->getEmailAddress());
+
+        $aweberSubscriber->setName(is_null($pennsouthResident->getFirstName() . " " . $pennsouthResident->getLastName()) ? "" : $pennsouthResident->getFirstName() . " " . $pennsouthResident->getLastName());
+        $aweberSubscriber->setFirstName(is_null($pennsouthResident->getFirstName()) ? "" : $pennsouthResident->getFirstName());
+        $aweberSubscriber->setLastName(is_null($pennsouthResident->getLastName()) ? "" : $pennsouthResident->getLastName());
+        $aweberSubscriber->setAptSurrendered(is_null($pennsouthResident->getAptSurrendered()) ? "" : $pennsouthResident->getAptSurrendered());
+
+        $aweberSubscriber->setActionReason(self::ACTION_REASON_APT_SURRENDERED);
+
+
+        return $aweberSubscriber;
+
+    }
+
+    /**
      * - Compare Aweber subscriber data ($aweberSubscriber) with MDS Export File data ($pennsouthResident) for subscriber with same email address.
      * @param $pennsouthResident
      * @param $aweberSubscriber
@@ -220,7 +259,7 @@ class MdsToAweberComparator
             $actionReason .= self::UPDATE_APT . $separator;
         }
         if ( trim( $aweberSubscriber->getCeramicsMember(),$singleQuotes )         !== trim($pennsouthResident->getCeramicsMember()) ) {
-            $actionReason .= self::UPATE_CERAMICS_CLUB . $separator;
+            $actionReason .= self::UPDATE_CERAMICS_CLUB . $separator;
         }
         if ( trim($aweberSubscriber->getGardenMember(),$singleQuotes )           !== trim($pennsouthResident->getGardenMember())  ) {
             $actionReason .= self::UPDATE_GARDEN_MEMBER . $separator;
@@ -311,21 +350,21 @@ class MdsToAweberComparator
     }
 
 
-    public function storeAuditTrailofUpdatesToAweberSubscribers(AweberSubscriberUpdateInsertLists $aweberSubscriberUpdateInsertLists) {
+    public function storeAuditTrailofUpdatesToAweberSubscribers(AweberSubscriberUpdateInsertDeleteLists $aweberSubscriberUpdateInsertDeleteLists) {
 
         $aweberUpdateSummary = new AweberUpdateSummary();
 
 
         $currDate = new \DateTime("now");
         // $isAweberMdsSyncAuditDeleted = false;
-        if (!$aweberSubscriberUpdateInsertLists->isAweberSubscriberInsertListEmpty()) {
+        if (!$aweberSubscriberUpdateInsertDeleteLists->isAweberSubscriberInsertListEmpty()) {
                     $insertCtr = 0;
                     $batchSize = 40;
                     $updateAction = self::INSERT;
                     $this->deleteAweberMdsSyncAuditByUpdateAction($updateAction);
                    // $isAweberMdsSyncAuditDeleted = true;
                     $saveListName = null;
-                    foreach ($aweberSubscriberUpdateInsertLists->getAweberSubscriberInsertList() as $aweberSubscriberByListName) {
+                    foreach ($aweberSubscriberUpdateInsertDeleteLists->getAweberSubscriberInsertList() as $aweberSubscriberByListName) {
                         foreach ($aweberSubscriberByListName as $listName => $aweberSubscriber) {
                             // $saveListName = $listName;
                             if (!array_key_exists($listName, $aweberUpdateSummary->getListInsertArrayCtr())) {
@@ -350,7 +389,7 @@ class MdsToAweberComparator
                     $this->getEntityManager()->clear();
         }
 
-        if (!$aweberSubscriberUpdateInsertLists->isAweberSubscriberUpdateListEmpty()) {
+        if (!$aweberSubscriberUpdateInsertDeleteLists->isAweberSubscriberUpdateListEmpty()) {
          /*   if (!$isAweberMdsSyncAuditDeleted) {
                 $this->truncateAweberMdsSyncAudit();
             }*/
@@ -358,7 +397,7 @@ class MdsToAweberComparator
             $this->deleteAweberMdsSyncAuditByUpdateAction($updateAction);
             $updateCtr = 0;
             $batchSize = 40;
-            foreach ($aweberSubscriberUpdateInsertLists->getAweberSubscriberUpdateList() as $aweberSubscriberByListName) {
+            foreach ($aweberSubscriberUpdateInsertDeleteLists->getAweberSubscriberUpdateList() as $aweberSubscriberByListName) {
                 foreach($aweberSubscriberByListName as $listName => $aweberSubscriber) {
                     if (!array_key_exists($listName, $aweberUpdateSummary->getListUpdateArrayCtr())) {
                         $aweberUpdateSummary->initializeListUpdateArrayCtr($listName);
@@ -377,6 +416,35 @@ class MdsToAweberComparator
             }
             $this->flushAndClearEntityManager();
         }
+
+        if (!$aweberSubscriberUpdateInsertDeleteLists->isAweberSubscriberDeleteListEmpty()) {
+               /*   if (!$isAweberMdsSyncAuditDeleted) {
+                      $this->truncateAweberMdsSyncAudit();
+                  }*/
+                  $updateAction = self::DELETE;
+                  $this->deleteAweberMdsSyncAuditByUpdateAction($updateAction);
+                  $updateCtr = 0;
+                  $batchSize = 40;
+                  foreach ($aweberSubscriberUpdateInsertDeleteLists->getAweberSubscriberDeleteList() as $aweberSubscriberByListName) {
+                      foreach($aweberSubscriberByListName as $listName => $aweberSubscriber) {
+                          if (!array_key_exists($listName, $aweberUpdateSummary->getListDeleteArrayCtr())) {
+                              $aweberUpdateSummary->initializeListDeleteArrayCtr($listName);
+                              $aweberUpdateSummary->incrementListDeleteArrayCtr($listName);
+                          } else {
+                              $aweberUpdateSummary->incrementListDeleteArrayCtr($listName);
+                          }
+                          $updateCtr++;
+                          if (($updateCtr % $batchSize) === 0) {
+                              $flush = true;
+                          } else {
+                              $flush = false;
+                          }
+                          $this->insertAweberMdsSyncAudit($aweberSubscriber, $listName, $currDate, $flush, $updateAction);
+                      }
+                  }
+                  $this->flushAndClearEntityManager();
+              }
+
 
         return $aweberUpdateSummary;
 
@@ -489,6 +557,7 @@ class MdsToAweberComparator
                 $aweberMdsSyncAudit->setAweberUnsubscribedAt($unSubscribedAtDate);
             }
             $aweberMdsSyncAudit->setAweberSubscriptionMethod($aweberSubscriber->getSubscriptionMethod());
+
 
             $aweberMdsSyncAudit->setActionReason($aweberSubscriber->getActionReason());
             $aweberMdsSyncAudit->setLastChangedDate($currDate);

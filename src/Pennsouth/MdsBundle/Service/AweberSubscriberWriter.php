@@ -236,7 +236,7 @@ class AweberSubscriberWriter
                      }
                 }
                   else {
-                     print("\n" . "AweberAPIException occurred in AweberSubscriberListReader->getSubscribersToAdminsMdsToAweberList! Exception->getMessage() : " . $exception->getMessage());
+                     print("\n" . "AweberAPIException occurred in AweberSubscriberWriter->createAweberSubscriber! Exception->getMessage() : " . $exception->getMessage());
                      print "Type: " . $exception->type . "\n";
                      print "Status: " . $exception->status . "\n";
                      print("\n" . "Exiting from program.");
@@ -248,6 +248,142 @@ class AweberSubscriberWriter
 
 
     }
+
+    /**
+         *
+         * @param $listName
+         * @param AweberSubscriber $aweberSubscriber
+         * @return null (interpreted as success) or errorMessage
+         * @throws \Exception
+         * todo : Remove test code for 'frizell' in this method...
+         */
+        public function deleteAweberSubscriber( $listName, AweberSubscriber $aweberSubscriber) {
+
+
+
+            $j = 0;
+            $maxRetries = 5;
+            $success = false;
+            $errorMessage = null;
+            while (!$success) { // allow for retry if we get rate limit or temporarily unavailable exception...
+                try {
+                    sleep(5); // sleep 5 seconds to avoid Aweber Rate Limit Exception - status code 403
+                   // $this->aweberSubscriber = $aweberSubscriber;
+
+                    // $aweberSubscriber->setEmail('steve.frizell@gmail.com');
+                    // $aweberSubscriber->setName('Stephen Frizell');
+
+
+                    $params = array();
+                    $params['name'] = $aweberSubscriber->getName();
+                    $params['ws.op'] = 'delete';
+                    $params['email'] = $aweberSubscriber->getEmail();
+
+                    $HTTP_METHOD = 'POST';
+                    $URL = null;
+                    if ($listName == AweberFieldsConstants::PRIMARY_RESIDENT_LIST) {
+                        $URL = AweberFieldsConstants::PRIMARY_RESIDENT_LIST_URL . '/subscribers';
+                   /*     if (strtolower($aweberSubscriber->getEmail()) == 'sfnyc.net@gmail.com') {
+                            $URL = AweberFieldsConstants::FRIZELL_SUBSCRIBER_LIST_TEST_URL . '/subscribers';
+                        } else {
+                            $URL = AweberFieldsConstants::PRIMARY_RESIDENT_LIST_URL . '/subscribers';
+                        }*/
+                    } else {
+                        if ($listName == AweberFieldsConstants::EMERGENCY_NOTICES_FOR_RESIDENTS) {
+                            $URL = AweberFieldsConstants::PENNSOUTH_EMERGENCY_NOTICES_LIST_URL . '/subscribers';
+                        } else {
+                            throw new \Exception('Exception in AweberSubscriberWriter->deleteAweberSubscriber function. Could not interpret \$listName! \$listName Value: ' . $listName);
+                        }
+                    }
+
+    /*                print ("\n --------- \$HTTP_METHOD: \n" . $HTTP_METHOD);
+                    print ("\n ------- \$URL: " . $URL);
+                    print ("\n ------- \$params: \n");
+                    print_r($params);*/
+
+                    $RETURN_FORMAT = array(
+                        'return' => 'headers'
+                    );
+
+     /*               print ("\n ------- \$RETURN_FORMAT: \n");
+                    print_r($RETURN_FORMAT);
+
+                    print ("\n --------- \$this->aweberApiInstance \n");
+
+                    print_r($this->aweberApiInstance);
+
+                    print ("\n ********  Issuing command: \$resp = \$this->aweberApiInstance->adapter->request(\$HTTP_METHOD, \$URL, \$params, \$RETURN_FORMAT) ");*/
+
+                    $resp = $this->aweberApiInstance->adapter->request($HTTP_METHOD, $URL, $params, $RETURN_FORMAT);
+
+                    if ($resp['Status-Code'] == 201) { // success
+                        // we will be using $subscriber_id in example 3
+                        // the following commented out line throws a ContextErrorException - Runtime Notice: Only variables should be passed by reference
+                       // $subscriber_id = array_pop(explode('/', $resp['Location']));
+                        return null; // success
+                        //  print "New subscriber added, subscriber_id: {$subscriber_id}\n";
+                    } else {
+                        print ("\n" . "Exception in AweberSubscriberWriter->deleteAweberSubscriber for subscriber with email address" . $aweberSubscriber->getEmail() . " Aweber API Status-Code: " . $resp['Status-Code']);
+                        // throw new \Exception("\n" . "Exception in AweberSubscriberWriter->createAweberSubscriber for subscriber with email address" . $aweberSubscriber->getEmail() . " Aweber API Status-Code: " . $resp['Status-Code']);
+                        throw new \Exception("\n" . "Exception in AweberSubscriberWriter->deleteAweberSubscriber for subscriber with email address" . $aweberSubscriber->getEmail() . " Aweber API Status-Code: " . $resp['Status-Code']);
+                    }
+                }
+
+                catch (AWeberAPIException $exception) {
+                     if ($exception->status == "403") { // ServiceUnavailableError
+                         $j++;
+                         if ($j < $maxRetries) { // 6 is arbitrary number of tries...
+                             print("\n" . "AweberAPIException (status = 403 - forbidden / rate limite exceeded) occurred in AweberSubscriberWriter->deleteAweberSubscriber. ");
+                             print ("\n" . "Going to sleep for 2 minutes; then will try again.");
+                             sleep(120);
+                         } else {
+                             print("\n" . "AweberAPIException (status 403) occurred in AweberSubscriberWriter->deleteAweberSubscriber! Exception->getMessage() : " . $exception->getMessage());
+                             print "Type: " . $exception->type . "\n";
+                             print("\n" . "Exiting from program.");
+                             throw $exception;
+                         }
+                     } else if ($exception->status == "503") {
+                         $j++;
+                         if ($j < $maxRetries) { // 6 is arbitrary number of tries...
+                             print("\n" . "AweberAPIException (status = 503 - service temporarily unavailable) occurred in AweberSubscriberWriter->deleteAweberSubscriber. ");
+                             print ("\n" . "Going to sleep for 2 minutes; then will try again.");
+                             sleep(120);
+                         } else {
+                             print("\n" . "AweberAPIException (status = 503 - service temporarily unavailable) occurred in AweberSubscriberWriter->deleteAweberSubscriber! Exception->getMessage() : " . $exception->getMessage());
+                             print "Type: " . $exception->type . "\n";
+                             print("\n" . "Exiting from program.");
+                             throw $exception;
+                         }
+                     } else if ($exception->status == "400") {
+
+                         print("\n" . "AweberAPIException (status = 400 - Email address blocked. Please refer to https://help.aweber.com/entries/97662366 ) occurred in AweberSubscriberWriter->deleteAweberSubscriber. ");
+                         print ("\n" . "skipping this email address: " . $aweberSubscriber->getEmail());
+                         $errorMessage = "Aweber API error - status = 400 for email_address: " . $aweberSubscriber->getEmail();
+                         return $errorMessage;
+                        // return FALSE; // todo - add logic to handle in invoking method...
+
+                     }
+                     else if ($exception->type == "APIUnreachableError") {
+                         $j++;
+                         if ($j < $maxRetries) { // 6 is arbitrary number of tries...
+                             print("\n" . "AweberAPIException (type = APIUnreachableError - service temporarily unavailable) occurred in AweberSubscriberWriter->deleteAweberSubscriber. ");
+                             print ("\n" . "Going to sleep for 2 minutes; then will try again.");
+                             sleep(120);
+                         }
+                    }
+                      else {
+                         print("\n" . "AweberAPIException occurred in AweberSubscriberWriter->deleteAweberSubscriber! Exception->getMessage() : " . $exception->getMessage());
+                         print "Type: " . $exception->type . "\n";
+                         print "Status: " . $exception->status . "\n";
+                         print("\n" . "Exiting from program.");
+                         throw $exception;
+                     }
+                 }
+            }
+
+
+
+        }
 
     /**
      * To obtain subscriber need to invoke $account->loadFromUrl( $loadUrl)

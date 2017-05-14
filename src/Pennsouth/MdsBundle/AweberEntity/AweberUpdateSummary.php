@@ -14,6 +14,7 @@ class AweberUpdateSummary
 
     private $listUpdateArrayCtr = array();
     private $listInsertArrayCtr = array();
+    private $listDeleteArrayCtr = array();
 
 
     public function getListUpdateArrayCtr(){
@@ -23,6 +24,15 @@ class AweberUpdateSummary
     public function getListInsertArrayCtr() {
         return $this->listInsertArrayCtr;
     }
+
+    /**
+     * @return array
+     */
+    public function getListDeleteArrayCtr()
+    {
+        return $this->listDeleteArrayCtr;
+    }
+
 
     public function incrementListInsertArrayCtr($listName) {
         $this->listInsertArrayCtr[$listName] = $this->listInsertArrayCtr[$listName] + 1;
@@ -46,6 +56,16 @@ class AweberUpdateSummary
         print("\n AweberUpdateSummary->initializeListUpdateArrayCtr invoked.");
         $this->listUpdateArrayCtr[$listName] = 0;
         //return $this;
+    }
+
+    public function incrementListDeleteArrayCtr($listName) {
+        $this->listDeleteArrayCtr[$listName] = $this->listDeleteArrayCtr[$listName] + 1;
+        return $this;
+    }
+
+    public function initializeListDeleteArrayCtr($listName) {
+        print("\n AweberUpdateSummary->initializeListDeleteArrayCtr invoked.");
+        $this->listDeleteArrayCtr[$listName] = 0;
     }
 
 }
