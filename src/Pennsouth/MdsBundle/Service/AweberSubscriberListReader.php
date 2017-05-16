@@ -286,7 +286,6 @@ class AweberSubscriberListReader
                              $subscriberDataEntries = $subscriberData->data;
                              // $k = 1;
                              //  print (" --------- subscriberDataEntries..." . "\n");
-                             // print_r($subscriberDataEntries);
 
                              $customFields = $subscriberDataEntries["custom_fields"];
 
@@ -470,6 +469,7 @@ class AweberSubscriberListReader
 
                            $aweberSubscriber = new AweberSubscriber();
 
+                           $aweberSubscriber->setId($subscriberDataEntries["id"]);
                            $aweberSubscriber->setEmail($subscriberDataEntries["email"]);
                            $aweberSubscriber->setName($subscriberDataEntries["name"]);
                            $aweberSubscriber->setStatus($subscriberDataEntries["status"]);

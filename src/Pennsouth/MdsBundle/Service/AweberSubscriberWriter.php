@@ -279,10 +279,12 @@ class AweberSubscriberWriter
                     $params['ws.op'] = 'delete';
                     $params['email'] = $aweberSubscriber->getEmail();
 
-                    $HTTP_METHOD = 'POST';
+                    print("\n In delete method: subscriberId: " . $aweberSubscriber->getId());
+
+                    $HTTP_METHOD = 'DELETE';
                     $URL = null;
                     if ($listName == AweberFieldsConstants::PRIMARY_RESIDENT_LIST) {
-                        $URL = AweberFieldsConstants::PRIMARY_RESIDENT_LIST_URL . '/subscribers';
+                        $URL = AweberFieldsConstants::PRIMARY_RESIDENT_LIST_URL . "/subscribers/{$aweberSubscriber->getId()}";
                    /*     if (strtolower($aweberSubscriber->getEmail()) == 'sfnyc.net@gmail.com') {
                             $URL = AweberFieldsConstants::FRIZELL_SUBSCRIBER_LIST_TEST_URL . '/subscribers';
                         } else {
@@ -290,13 +292,13 @@ class AweberSubscriberWriter
                         }*/
                     } else {
                         if ($listName == AweberFieldsConstants::EMERGENCY_NOTICES_FOR_RESIDENTS) {
-                            $URL = AweberFieldsConstants::PENNSOUTH_EMERGENCY_NOTICES_LIST_URL . '/subscribers';
+                            $URL = AweberFieldsConstants::PENNSOUTH_EMERGENCY_NOTICES_LIST_URL . "/subscribers/{$aweberSubscriber->getId()}";
                         } else {
                             throw new \Exception('Exception in AweberSubscriberWriter->deleteAweberSubscriber function. Could not interpret \$listName! \$listName Value: ' . $listName);
                         }
                     }
 
-    /*                print ("\n --------- \$HTTP_METHOD: \n" . $HTTP_METHOD);
+                   /* print ("\n --------- \$HTTP_METHOD: \n" . $HTTP_METHOD);
                     print ("\n ------- \$URL: " . $URL);
                     print ("\n ------- \$params: \n");
                     print_r($params);*/
@@ -305,7 +307,7 @@ class AweberSubscriberWriter
                         'return' => 'headers'
                     );
 
-     /*               print ("\n ------- \$RETURN_FORMAT: \n");
+               /*     print ("\n ------- \$RETURN_FORMAT: \n");
                     print_r($RETURN_FORMAT);
 
                     print ("\n --------- \$this->aweberApiInstance \n");
@@ -316,7 +318,7 @@ class AweberSubscriberWriter
 
                     $resp = $this->aweberApiInstance->adapter->request($HTTP_METHOD, $URL, $params, $RETURN_FORMAT);
 
-                    if ($resp['Status-Code'] == 201) { // success
+                    if ($resp['Status-Code'] == 200) { // success
                         // we will be using $subscriber_id in example 3
                         // the following commented out line throws a ContextErrorException - Runtime Notice: Only variables should be passed by reference
                        // $subscriber_id = array_pop(explode('/', $resp['Location']));

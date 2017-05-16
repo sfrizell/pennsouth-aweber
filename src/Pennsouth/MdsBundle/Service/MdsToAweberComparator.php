@@ -91,7 +91,7 @@ class MdsToAweberComparator
                                     // $aweberSubscriber should always be instanceof AweberSubscriber
                                     if ( $aweberSubscriber->getStatus() == 'subscribed') {
                                         if ( (strpos($pennsouthResident->getAptSurrendered(), 'External Move') !== false)  ) {
-                                            $aweberSubscriberToDelete = $this->createAweberSubscriberToDeleteFromMdsInput( $pennsouthResident);
+                                            $aweberSubscriberToDelete = $this->createAweberSubscriberToDeleteFromMdsInput( $pennsouthResident, $aweberSubscriber);
                                             $aweberSubscriberbyListName = [$listName => $aweberSubscriberToDelete];
                                             $aweberSubscribersDeleteList[] = $aweberSubscriberbyListName;
                                         }
@@ -219,17 +219,9 @@ class MdsToAweberComparator
      * @param AweberSubscriber|null $aweberSubscriber
      * @return AweberSubscriber
      */
-    private function createAweberSubscriberToDeleteFromMdsInput(PennsouthResident $pennsouthResident) {
+    private function createAweberSubscriberToDeleteFromMdsInput(PennsouthResident $pennsouthResident, AweberSubscriber $aweberSubscriber) {
 
-        $aweberSubscriber = new AweberSubscriber();
-        $aweberSubscriber->setPennSouthBuilding($pennsouthResident->getBuilding());
-        $aweberSubscriber->setFloorNumber($pennsouthResident->getFloorNumber());
-        $aweberSubscriber->setApartment($pennsouthResident->getAptLine());
-        $aweberSubscriber->setEmail($pennsouthResident->getEmailAddress());
 
-        $aweberSubscriber->setName(is_null($pennsouthResident->getFirstName() . " " . $pennsouthResident->getLastName()) ? "" : $pennsouthResident->getFirstName() . " " . $pennsouthResident->getLastName());
-        $aweberSubscriber->setFirstName(is_null($pennsouthResident->getFirstName()) ? "" : $pennsouthResident->getFirstName());
-        $aweberSubscriber->setLastName(is_null($pennsouthResident->getLastName()) ? "" : $pennsouthResident->getLastName());
         $aweberSubscriber->setAptSurrendered(is_null($pennsouthResident->getAptSurrendered()) ? "" : $pennsouthResident->getAptSurrendered());
 
         $aweberSubscriber->setActionReason(self::ACTION_REASON_APT_SURRENDERED);
