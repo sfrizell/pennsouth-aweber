@@ -706,7 +706,18 @@ class ManagementReportsWriter
                            if(me2.email_address is null, \'\', me2.email_address) mds_export_email_address2,
                            if(pr2.cell_phone is null, \'\', pr2.cell_phone) cell_phone2, if(pr2.evening_phone is null, \'\', pr2.evening_phone) evening_phone2,
                            pr.inc_affidavit_receipt_date, pr.inc_affidavit_received, pr.inc_affidavit_date_discrepancy,
-                           ia.first_annual_deadline, ia.second_annual_deadline,
+                           ( CASE 
+                            WHEN DAYOFWEEK(ia.first_annual_deadline) != 1 and DAYOFWEEK(ia.first_annual_deadline) != 7 THEN ia.first_annual_deadline
+                            WHEN DAYOFWEEK(ia.first_annual_deadline) = 1 THEN DATE_ADD(ia.first_annual_deadline, INTERVAL 1 DAY)
+                            WHEN DAYOFWEEK(ia.first_annual_deadline) = 7 THEN DATE_ADD(ia.first_annual_deadline, INTERVAL 2 DAY)
+                            ELSE ia.first_annual_deadline                                 
+                          END) first_annual_deadline,
+                          ( CASE 
+                            WHEN DAYOFWEEK(ia.second_annual_deadline) != 1 and DAYOFWEEK(ia.second_annual_deadline) != 7 THEN ia.second_annual_deadline
+                            WHEN DAYOFWEEK(ia.second_annual_deadline) = 1 THEN DATE_ADD(ia.second_annual_deadline, INTERVAL 1 DAY)
+                            WHEN DAYOFWEEK(ia.second_annual_deadline) = 7 THEN DATE_ADD(ia.second_annual_deadline, INTERVAL 2 DAY)
+                            ELSE ia.second_annual_deadline
+                          END) second_annual_deadline,
                            ( CASE 
 								WHEN (CURDATE() > ia.first_annual_deadline and pr.inc_affidavit_receipt_date is not null 
 									and DATE_FORMAT(pr.inc_affidavit_receipt_date, "%Y") < DATE_FORMAT(CURDATE(), "%Y" )) THEN \'Invalid Receipt Date\' 
