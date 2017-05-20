@@ -769,8 +769,7 @@ class ManagementReportsWriter
                        and pr.floor_number = apts_no_email.floor_number
                        and pr.apt_line		= apts_no_email.apt_line
                        WHERE
-                           pr.homeowner_ins_exp_date is not null 
-                           and pr.mds_resident_category =:residentCategory
+                           pr.mds_resident_category =:residentCategory
                        order by pr.building, pr.floor_number, pr.apt_line ASC, pr2.mds_resident_category desc';
 
 
