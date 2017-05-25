@@ -90,7 +90,7 @@ class MdsToAweberComparator
                                     $foundEmailAddressInAweber = true;
                                     // $aweberSubscriber should always be instanceof AweberSubscriber
                                     if ( $aweberSubscriber->getStatus() == 'subscribed') {
-                                        if ( (strpos($pennsouthResident->getAptSurrendered(), 'External Move') !== false)  ) {
+                                        if ( (strpos($pennsouthResident->getAptSurrendered(), 'External Move') == true)  ) { // if apt surrendered, then delete the email address from aweber
                                             $aweberSubscriberToDelete = $this->createAweberSubscriberToDeleteFromMdsInput( $pennsouthResident, $aweberSubscriber);
                                             $aweberSubscriberbyListName = [$listName => $aweberSubscriberToDelete];
                                             $aweberSubscribersDeleteList[] = $aweberSubscriberbyListName;
@@ -111,7 +111,7 @@ class MdsToAweberComparator
                    // }
                 }
             } // end foreach of loop through $aweberSubscribersByListName
-            if (!$foundEmailAddressInAweber) {
+            if (!$foundEmailAddressInAweber and (!strpos($pennsouthResident->getAptSurrendered(), 'External Move') == true)) {
                 $aweberSubscriberToSave = $this->createAweberSubscriberFromMdsInput(self::INSERT, $pennsouthResident);
                 // inserts are only to Primary Residents subscriber list...
                 $aweberSubscriberbyListName = [AweberFieldsConstants::PRIMARY_RESIDENT_LIST => $aweberSubscriberToSave];
