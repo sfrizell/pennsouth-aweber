@@ -30,6 +30,8 @@ class ManagementReportsWriter
                 'Floor Number',
                 'Apt Line',
                 'Apt. Surrendered',
+                'No Email for Entire Apt.',
+                'No Email for Shareholders',
                 'Parking Lot',
                 'Decal Num',
                 'Gap',
@@ -56,6 +58,8 @@ class ManagementReportsWriter
                     'floor_number',
                     'apt_line',
                     'apt_surrendered',
+                    'no_email_for_apartment',
+                    'no_email_for_shareholders',
                     'parking_lot_location',
                     'decal_num',
                     'gap',
@@ -554,7 +558,10 @@ class ManagementReportsWriter
              */
 
             $query =
-                'SELECT  distinct pr.building, pr.floor_number, pr.apt_line, pr.apt_surrendered, pr.mds_resident_category as mds_resident_category1,
+                'SELECT  distinct pr.building, pr.floor_number, pr.apt_line, pr.apt_surrendered, 
+				if(apts_no_email.building_id is not null, \'No Email for Apartment\', \'\') no_email_for_apartment,
+				if( length(trim(pr.email_address)) = 0 and (length(trim(pr2.email_address)) = 0 or pr2.email_address is null), \'No Email for Shareholders\', \'\') no_email_for_shareholders,
+				pr.mds_resident_category as mds_resident_category1,
                 pr.parking_lot_location, \'\' gap, cast(pr.decal_num as unsigned) decal_num, pr.vehicle_reg_exp_date, 
                 if (length(pr.apt_surrendered) > 0, \'\', pr.vehicle_reg_exp_countdown) vehicle_reg_exp_countdown,
                 if (length(pr.apt_surrendered) > 0, \'\', pr.vehicle_reg_interval_remaining) vehicle_reg_interval_remaining, 
@@ -572,6 +579,12 @@ class ManagementReportsWriter
              and pr.pennsouth_resident_id < pr2.pennsouth_resident_id
              and pr.mds_resident_category = pr2.mds_resident_category
              and concat(pr.first_name, pr.last_name) <> concat(pr2.first_name, pr2.last_name)
+                LEFT JOIN
+				missing_email_apt apts_no_email
+			ON
+				pr.building = apts_no_email.building_id
+            and pr.floor_number = apts_no_email.floor_number
+            and pr.apt_line		= apts_no_email.apt_line
              WHERE
                 pr.decal_num is not null and pr.mds_resident_category = :mdsResidentCategory
              order by cast(pr.decal_num as unsigned), pr2.mds_resident_category desc ';
@@ -660,8 +673,7 @@ class ManagementReportsWriter
                        and pr.floor_number = apts_no_email.floor_number
                        and pr.apt_line		= apts_no_email.apt_line
                        WHERE
-                           pr.homeowner_ins_exp_date is not null 
-                           and pr.mds_resident_category =:residentCategory 
+                            pr.mds_resident_category =:residentCategory 
                        order by pr.building, pr.floor_number, pr.apt_line, pr2.mds_resident_category desc';
 
 
