@@ -15,6 +15,7 @@ use Pennsouth\MdsBundle\Service\Emailer;
 use Pennsouth\MdsBundle\Service\EmailNotifyParametersReader;
 use Pennsouth\MdsBundle\Service\AptsWithNoResidentHavingEmailReportWriter;
 use Pennsouth\MdsBundle\Service\ManagementReportsWriter;
+use Pennsouth\MdsBundle\Service\MdsChangeDetectionReportWriter;
 use Pennsouth\MdsBundle\Service\MdsToAweberComparator;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -51,6 +52,7 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
     const REPORT_ON_AWEBER_UPDATES_FROM_MDS             = 'report-on-aweber-updates-from-mds';
     const REPORT_ON_APTS_WITH_NO_EMAIL                  = 'report-on-apts-where-no-resident-has-email-address';
     const PARKING_LOT_REPORT                            = 'parking-lot-report';
+    const MDS_CHANGE_DETECTION_REPORT                   = 'MDS-change-detection-report';
     const HOMEOWNERS_INSURANCE_REPORT                   = 'homeowners-insurance-report';
     const INCOME_AFFIDAVIT_REPORT                       = 'income-affidavit-report';
     const MDS_DATA_ENTRY_GAPS_REPORT                    = 'mds-data-entry-gaps-report';
@@ -68,6 +70,7 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
     private $runUpdateAweberFromMds;
     private $runReportOnAweberUpdatesFromMds;
     private $runParkingLotReport;
+    private $runMdsChangeDetectionReport;
     private $runHomeownersInsuranceReport;
     private $runIncomeAffidavitReport;
     private $runMDsDataEntryGapsReport;
@@ -92,6 +95,7 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
                         new InputOption(self::UPDATE_AWEBER_FROM_MDS, 'u', InputOption::VALUE_REQUIRED, 'Option to update Aweber from MDS input: y/n', 'y'),
                         new InputOption(self::REPORT_ON_AWEBER_EMAILS_NOT_IN_MDS, 'a', InputOption::VALUE_REQUIRED, 'Option to report on subscriber email addresses in Aweber and not in MDS: y/n', 'n'),
                         new InputOption(self::PARKING_LOT_REPORT, 'p', InputOption::VALUE_REQUIRED, 'Option to create Parking Lot Report: y/n', 'n'),
+                        new InputOption(self::MDS_CHANGE_DETECTION_REPORT, 'm', InputOption::VALUE_REQUIRED, 'Option to create MDS Change Detection Report: y/n', 'n'),
                         new InputOption(self::HOMEOWNERS_INSURANCE_REPORT, 'i', InputOption::VALUE_REQUIRED, 'Option to create Homeowners Insurance Report: y/n', 'n'),
                         new InputOption(self::INCOME_AFFIDAVIT_REPORT, 'c', InputOption::VALUE_REQUIRED, 'Option to create Income Affidavit Report: y/n', 'n'),
                         new InputOption(self::MDS_DATA_ENTRY_GAPS_REPORT, 'd', InputOption::VALUE_REQUIRED, 'Option to create MDS Data Entry Discrepancies Report: y/n', 'n'),
@@ -183,6 +187,10 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
                                         : ( strtolower($input->getOption(self::PARKING_LOT_REPORT)) == 'y' ? TRUE : FALSE ) );
 
         // default is FALSE, so anything other than parameter of 'y' is interpreted as FALSE...
+        $this->runMdsChangeDetectionReport = ( is_null( $input->getOption(self::MDS_CHANGE_DETECTION_REPORT)) ? FALSE
+                                        : ( strtolower($input->getOption(self::MDS_CHANGE_DETECTION_REPORT)) == 'y' ? TRUE : FALSE ) );
+
+        // default is FALSE, so anything other than parameter of 'y' is interpreted as FALSE...
         $this->runHomeownersInsuranceReport = ( is_null( $input->getOption(self::HOMEOWNERS_INSURANCE_REPORT)) ? FALSE
                                         : ( strtolower($input->getOption(self::HOMEOWNERS_INSURANCE_REPORT)) == 'y' ? TRUE : FALSE ) );
         
@@ -229,6 +237,15 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
         }
         else {
             print ("\n" . "run Parking Lot Report set to false. \n");
+        }
+
+        if ($this->runMdsChangeDetectionReport) {
+            print ("\n" . "run MDS Change Detection Report set to true. \n");
+            $this->emailNotifyReportOrProcessName = self::MDS_CHANGE_DETECTION_REPORT;
+            $processCtr++;
+        }
+        else {
+            print ("\n" . "run MDS Change Detection Report set to false. \n");
         }
 
 
@@ -426,8 +443,8 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
         if ($this->runParkingLotReport) {
              try {
                  $phpExcel = $this->getContainer()->get('phpexcel');
-                 $homeownersInsuranceReportCreator = new ManagementReportsWriter($this->getEntityManager(), $phpExcel, $appOutputDir, $env);
-                 $homeownersInsuranceReportCreator->generateParkingLotList();
+                 $parkingLotReportCreator = new ManagementReportsWriter($this->getEntityManager(), $phpExcel, $appOutputDir, $env);
+                 $parkingLotReportCreator->generateParkingLotList();
                  $subjectLine = "Pennsouth Parking Lot List Created.";
                  $messageBody = "\n The Pennsouth Parking Lot List spreadsheet has been created and is attached to this email. It is also available on the Pennsouth Ftp Server. \n";
                  $attachmentFilePath = $appOutputDir . "/" . ManagementReportsWriter::PARKING_LOT_LIST_FILE_NAME;
@@ -486,6 +503,29 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
                  print("\n stacktrace: " . $exception->getTraceAsString());
                  print("\n Exiting from program.");
                  $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program in section where the Income Affidavit Report is created.";
+                 $messageBody =  "\n Exception->getMessage() : " . $exception->getMessage() . "\n";
+                 $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
+                 $this->isExceptionRaised = TRUE;
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
+                 exit(1);
+             }
+        }
+
+
+        if ($this->runMdsChangeDetectionReport) {
+             try {
+                 $mdsChangeDetectionReportCreator = new MdsChangeDetectionReportWriter($this->getEntityManager(), null, $appOutputDir, $env);
+                 $mdsChangeDetectionReportCreator->createMdsChangeDetectionReport();
+                 $subjectLine = "MDS Change Detection Report Created.";
+                 $messageBody = "\n The MDS Change Detection Report has been created. It is available for download from the Pennsouth Ftp Server. \n";
+                 $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised);
+             }
+             catch (\Exception $exception) {
+                 print("\n Exception encountered when running the MDS Change Detection Report.");
+                 print("\n Exception->getMessage(): " . $exception->getMessage());
+                 print("\n stacktrace: " . $exception->getTraceAsString());
+                 print("\n Exiting from program.");
+                 $subjectLine = "Fatal exception encountered in MDS -> AWeber Update Program in section where the MDS Change Detection Report is created.";
                  $messageBody =  "\n Exception->getMessage() : " . $exception->getMessage() . "\n";
                  $messageBody .= "\n" . "Exception stack trace: " . $exception->getTraceAsString();
                  $this->isExceptionRaised = TRUE;
