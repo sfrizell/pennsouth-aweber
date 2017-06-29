@@ -50,7 +50,11 @@ class ManagementReportsWriter
                 'Shareholder2 First Name',
                 'Shareholder2 Email',
                 'Shareholder2 Cell',
-                'Shareholder2 Home Phone'
+                'Shareholder2 Home Phone',
+                'Address',
+                'City',
+                'State',
+                'Zip'
        );
 
        const PARKING_LOT_LIST_COL_NAMES = array(
@@ -78,7 +82,11 @@ class ManagementReportsWriter
                     'first_name2',
                     'email_address2',
                     'cell_phone2',
-                    'evening_phone2'
+                    'evening_phone2',
+                    'address',
+                    'city',
+                    'state',
+                    'zip'
            );
 
     const HOMEOWNERS_INSURANCE_REPORT_HEADER_ARRAY = array(
@@ -568,7 +576,8 @@ class ManagementReportsWriter
                 pr.vehicle_model, pr.vehicle_license_plate_num, 
                 pr.last_name, pr.first_name, pr.email_address, pr.cell_phone, pr.evening_phone, 
                 pr2.mds_resident_category as mds_resident_category2, pr2.last_name last_name2, pr2.first_name first_name2, 
-                pr2.email_address email_address2, pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2
+                pr2.email_address email_address2, pr2.cell_phone cell_phone2, pr2.evening_phone evening_phone2,
+                concat(pb.address, \', \', pr.floor_number, \'-\', pr.apt_line) address, pb.city, pb.state, pb.zip
              FROM pennsouth_resident as pr
                 LEFT JOIN
                  pennsouth_resident as pr2
@@ -585,6 +594,9 @@ class ManagementReportsWriter
 				pr.building = apts_no_email.building_id
             and pr.floor_number = apts_no_email.floor_number
             and pr.apt_line		= apts_no_email.apt_line
+				JOIN
+                 pennsouth_bldg pb
+			ON pr.building = pb.building_id
              WHERE
                 pr.decal_num is not null and pr.mds_resident_category = :mdsResidentCategory
              order by cast(pr.decal_num as unsigned), pr2.mds_resident_category desc ';
