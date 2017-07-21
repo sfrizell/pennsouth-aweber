@@ -134,7 +134,7 @@ class MdsChangeDetectionReportWriter
                                 on cdp.detect_change_date_parameter_id = 1
                         where 
                                 cl.change_type <> :initialLoad 
-                        and		cl.insert_date >= cdp.begin_date
+                        and		cl.insert_date > cdp.begin_date
                         order by cl.change_type, cl.building, cl.floor_number, cl.apt_line; ';
 
 
