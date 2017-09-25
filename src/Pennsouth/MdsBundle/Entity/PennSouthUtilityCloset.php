@@ -20,7 +20,7 @@ class PennSouthUtilityCloset
     /**
      * @var \Pennsouth\MdsBundle\Entity\PennsouthBldg
      */
-    private $buiilding;
+    private $building;
 
     /**
      * @var \Pennsouth\MdsBundle\Entity\AvailabilityStatus
@@ -63,27 +63,27 @@ class PennSouthUtilityCloset
     }
 
     /**
-     * Set buiilding
+     * Set building
      *
-     * @param \Pennsouth\MdsBundle\Entity\PennsouthBldg $buiilding
+     * @param \Pennsouth\MdsBundle\Entity\PennsouthBldg $building
      *
      * @return PennSouthUtilityCloset
      */
-    public function setBuiilding(\Pennsouth\MdsBundle\Entity\PennsouthBldg $buiilding = null)
+    public function setBuilding(\Pennsouth\MdsBundle\Entity\PennsouthBldg $building = null)
     {
-        $this->buiilding = $buiilding;
+        $this->building = $building;
 
         return $this;
     }
 
     /**
-     * Get buiilding
+     * Get building
      *
      * @return \Pennsouth\MdsBundle\Entity\PennsouthBldg
      */
-    public function getBuiilding()
+    public function getBuilding()
     {
-        return $this->buiilding;
+        return $this->building;
     }
 
     /**

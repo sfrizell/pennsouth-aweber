@@ -96,12 +96,13 @@
           <charset value="UTF-8" />
           <ddl-file-binding value="true" />
           <database-logging value="true" />
+          <connect-automatically value="true" />
+          <restore-workspace value="true" />
           <environment-type value="default" />
           <idle-time-to-disconnect value="30" />
           <password-expiry-time value="10" />
           <max-connection-pool-size value="7" />
           <alternative-statement-delimiter value="" />
-          <connect-automatically value="true" />
         </details>
         <object-filters hide-empty-schemas="false">
           <object-type-filter use-master-settings="true">
@@ -268,6 +269,7 @@
           <content-type name="PHP" enabled="true" />
           <content-type name="ASP" enabled="true" />
           <content-type name="YAML" enabled="true" />
+          <content-type name="Bash" enabled="true" />
         </content-types>
       </qualified-text-editor>
       <record-navigation>

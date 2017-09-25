@@ -50,6 +50,12 @@ class MdsExport
     /**
      * @var string
      */
+    private $categoryInterpreted;
+
+
+    /**
+     * @var string
+     */
     private $daytimePhone;
 
     /**
@@ -132,10 +138,6 @@ class MdsExport
      */
     private $bikeRackRoom;
 
-    /**
-     * @var string
-     */
-    private $officePhone;
 
     /**
      * @var string
@@ -156,6 +158,26 @@ class MdsExport
      * @var string
      */
     private $toddlerRoomMember;
+
+    /**
+     * @var string
+     */
+    private $shareholderFlag;
+
+    /**
+      * @var \DateTime
+      */
+     private $incAffidavitReceiptDate;
+
+    /**
+     * @var string
+     */
+    private $incAffidavitReceived;
+
+    /**
+     * @var string
+     */
+    private $incAffidavitDateDiscrepancy;
 
     /**
      * @var string
@@ -181,6 +203,11 @@ class MdsExport
      * @var string
      */
     private $gymMember;
+
+    /**
+     * @var string
+     */
+    private $aptSurrendered;
 
     /**
      * @var \DateTime
@@ -384,6 +411,24 @@ class MdsExport
     {
         return $this->category;
     }
+
+    /**
+     * @return string
+     */
+    public function getCategoryInterpreted()
+    {
+        return $this->categoryInterpreted;
+    }
+
+    /**
+     * @param string $categoryInterpreted
+     */
+    public function setCategoryInterpreted($categoryInterpreted)
+    {
+        $this->categoryInterpreted = $categoryInterpreted;
+    }
+
+
 
     /**
      * Set daytimePhone
@@ -793,29 +838,6 @@ class MdsExport
         return $this->bikeRackRoom;
     }
 
-    /**
-     * Set officePhone
-     *
-     * @param string $officePhone
-     *
-     * @return MdsExport
-     */
-    public function setOfficePhone($officePhone)
-    {
-        $this->officePhone = $officePhone;
-
-        return $this;
-    }
-
-    /**
-     * Get officePhone
-     *
-     * @return string
-     */
-    public function getOfficePhone()
-    {
-        return $this->officePhone;
-    }
 
     /**
      * Set statusCodes
@@ -888,6 +910,72 @@ class MdsExport
     {
         return $this->moveInDate;
     }
+
+    /**
+     * @return string
+     */
+    public function getShareholderFlag()
+    {
+        return $this->shareholderFlag;
+    }
+
+    /**
+     * @param string $shareholderFlag
+     */
+    public function setShareholderFlag($shareholderFlag)
+    {
+        $this->shareholderFlag = $shareholderFlag;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getIncAffidavitReceiptDate()
+    {
+        return $this->incAffidavitReceiptDate;
+    }
+
+    /**
+     * @param \DateTime $incAffidavitReceiptDate
+     */
+    public function setIncAffidavitReceiptDate($incAffidavitReceiptDate)
+    {
+        $this->incAffidavitReceiptDate = $incAffidavitReceiptDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIncAffidavitReceived()
+    {
+        return $this->incAffidavitReceived;
+    }
+
+    /**
+     * @param string $incAffidavitReceived
+     */
+    public function setIncAffidavitReceived($incAffidavitReceived)
+    {
+        $this->incAffidavitReceived = $incAffidavitReceived;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIncAffidavitDateDiscrepancy()
+    {
+        return $this->incAffidavitDateDiscrepancy;
+    }
+
+    /**
+     * @param string $incAffidavitDateDiscrepancy
+     */
+    public function setIncAffidavitDateDiscrepancy($incAffidavitDateDiscrepancy)
+    {
+        $this->incAffidavitDateDiscrepancy = $incAffidavitDateDiscrepancy;
+    }
+
+
 
     /**
      * Set toddlerRoomMember
@@ -1034,6 +1122,24 @@ class MdsExport
     }
 
     /**
+     * @return string
+     */
+    public function getAptSurrendered()
+    {
+        return $this->aptSurrendered;
+    }
+
+    /**
+     * @param string $aptSurrendered
+     */
+    public function setAptSurrendered($aptSurrendered)
+    {
+        $this->aptSurrendered = $aptSurrendered;
+    }
+
+
+
+    /**
      * Set lastChangedDate
      *
      * @param \DateTime $lastChangedDate
@@ -1067,4 +1173,3 @@ class MdsExport
         return $this->mdsExportId;
     }
 }
-

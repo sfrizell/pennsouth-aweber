@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Pennsouth\MdsBundle\Entity\AweberMdsSyncAudit" table="Aweber_Mds_Sync_Audit">
+  <entity name="Pennsouth\MdsBundle\Entity\AweberMdsSyncAudit" table="aweber_mds_sync_audit">
     <id name="syncAuditId" type="integer" column="Sync_Audit_Id">
       <generator strategy="IDENTITY"/>
     </id>
@@ -65,7 +65,7 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="actionReason" type="string" column="Action_Reason" length="45" nullable="true">
+    <field name="actionReason" type="string" column="Action_Reason" length="350" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
@@ -78,6 +78,188 @@
     <field name="aweberSubscribedAt" type="datetime" column="Aweber_Subscribed_At" nullable="true"/>
     <field name="aweberUnsubscribedAt" type="datetime" column="Aweber_Unsubscribed_At" nullable="true"/>
     <field name="aweberSubscriptionMethod" type="string" column="Aweber_Subscription_Method" length="30" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsToddlerRmMember" type="string" column="Mds_Toddler_Rm_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsYouthRmMember" type="string" column="Mds_Youth_Rm_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsCeramicsMember" type="string" column="Mds_Ceramics_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsWoodworkingMember" type="string" column="Mds_Woodworking_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsGymMember" type="string" column="Mds_Gym_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsGardenMember" type="string" column="Mds_Garden_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsParkingLotLocation" type="string" column="Mds_Parking_Lot_Location" length="5" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsVehicleRegIntervalRemaining" type="integer" column="mds_vehicle_reg_interval_remaining" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="mdsHomeownerInsIntervalRemaining" type="integer" column="mds_homeowner_ins_interval_remaining" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="mdsStorageLkrClBldg" type="string" column="Mds_Storage_Lkr_Cl_Bldg" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsStorageLkrNum" type="string" column="Mds_Storage_Lkr_Num" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsStorageClFloorNum" type="string" column="Mds_Storage_Cl_Floor_Num" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsIsDogInApt" type="string" column="Mds_Is_Dog_In_Apt" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsBikeRackBldg" type="string" column="Mds_Bike_Rack_Bldg" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsBikeRackRoom" type="string" column="mds_bike_rack_room" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsBikeRackLocation" type="string" column="Mds_Bike_Rack_Location" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsResidentCategory" type="string" column="Mds_Resident_Category" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mdsIncAffidavitReceived" type="string" column="mds_inc_affidavit_received" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberToddlerRmMember" type="string" column="Aweber_Toddler_Rm_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberYouthRmMember" type="string" column="Aweber_Youth_Rm_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberCeramicsMember" type="string" column="Aweber_Ceramics_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">	</option>
+      </options>
+    </field>
+    <field name="aweberWoodworkingMember" type="string" column="Aweber_Woodworking_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">	</option>
+      </options>
+    </field>
+    <field name="aweberGymMember" type="string" column="Aweber_Gym_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberGardenMember" type="string" column="Aweber_Garden_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberParkingLotLocation" type="string" column="Aweber_Parking_Lot_Location" length="5" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberVehicleRegIntervalRemaining" type="integer" column="aweber_vehicle_reg_interval_remaining" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="aweberHomeownerInsIntervalRemaining" type="integer" column="aweber_homeowner_ins_interval_remaining" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="aweberStorageLkrClBldg" type="string" column="Aweber_Storage_Lkr_Cl_Bldg" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberStorageLkrNum" type="string" column="Aweber_Storage_Lkr_Num" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberStorageClFloorNum" type="string" column="Aweber_Storage_Cl_Floor_Num" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberIsDogInApt" type="string" column="Aweber_Is_Dog_In_Apt" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberBikeRackBldg" type="string" column="Aweber_Bike_Rack_Bldg" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberBikeRackRoom" type="string" column="aweber_bike_rack_room" length="2" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberBikeRackLocation" type="string" column="Aweber_Bike_Rack_Location" length="10" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberResidentCategory" type="string" column="Aweber_Resident_Category" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberIncAffidavitReceived" type="string" column="aweber_inc_affidavit_received" length="1" nullable="true">
       <options>
         <option name="fixed"/>
       </options>

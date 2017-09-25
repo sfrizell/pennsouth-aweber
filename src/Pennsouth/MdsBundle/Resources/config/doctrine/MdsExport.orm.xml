@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Pennsouth\MdsBundle\Entity\MdsExport" table="Mds_Export">
+  <entity name="Pennsouth\MdsBundle\Entity\MdsExport" table="mds_export">
     <id name="mdsExportId" type="integer" column="Mds_export_id">
       <generator strategy="IDENTITY"/>
     </id>
@@ -42,7 +42,12 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="category" type="string" column="Category" length="45" nullable="true">
+    <field name="category" type="string" column="Category" length="100" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="categoryInterpreted" type="string" column="Category_interpreted" length="45" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
@@ -120,11 +125,6 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="officePhone" type="string" column="Office_Phone" length="20" nullable="true">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
     <field name="statusCodes" type="string" column="Status_Codes" length="45" nullable="true">
       <options>
         <option name="fixed"/>
@@ -137,6 +137,22 @@
     </field>
     <field name="moveInDate" type="datetime" column="Move_In_Date" nullable="true"/>
     <field name="toddlerRoomMember" type="string" column="Toddler_Room_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="shareholderFlag" type="string" column="shareholder_flag" length="45" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="incAffidavitReceiptDate" type="datetime" column="inc_affidavit_receipt_date" nullable="true"/>
+    <field name="incAffidavitReceived" type="string" column="inc_affidavit_received" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="incAffidavitDateDiscrepancy" type="string" column="inc_affidavit_date_discrepancy" length="20" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
@@ -162,6 +178,11 @@
       </options>
     </field>
     <field name="gymMember" type="string" column="Gym_Member" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aptSurrendered" type="string" column="apt_surrendered" length="45" nullable="true">
       <options>
         <option name="fixed"/>
       </options>

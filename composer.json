@@ -27,7 +27,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "hwi/oauth-bundle": "^0.4.2",
         "symfony/console": "^3.1",
-        "aweber/aweber": "^1.1"
+        "aweber/aweber": "^1.1",
+        "liuggio/excelbundle": "^2.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

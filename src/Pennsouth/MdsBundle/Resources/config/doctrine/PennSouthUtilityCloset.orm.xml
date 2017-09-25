@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Pennsouth\MdsBundle\Entity\PennSouthUtilityCloset" table="Penn_South_Utility_Closet">
+  <entity name="Pennsouth\MdsBundle\Entity\PennSouthUtilityCloset" table="penn_south_utility_closet">
     <indexes>
-      <index name="fk_Penn_South_Utility_Closet_Pennsouth_Bldg1_idx" columns="Buiilding_Id"/>
+      <index name="fk_Penn_South_Utility_Closet_Pennsouth_Bldg1_idx" columns="Building_Id"/>
       <index name="fk_Penn_South_Utility_Closet_Availability_Status1_idx" columns="Availability_status_code"/>
     </indexes>
     <id name="utilityClosetId" type="integer" column="utility_closet_id">
@@ -13,9 +13,9 @@
         <option name="fixed"/>
       </options>
     </field>
-    <many-to-one field="buiilding" target-entity="PennsouthBldg" fetch="LAZY">
+    <many-to-one field="building" target-entity="PennsouthBldg" fetch="LAZY">
       <join-columns>
-        <join-column name="Buiilding_Id" referenced-column-name="Building_Id"/>
+        <join-column name="Building_Id" referenced-column-name="Building_Id"/>
       </join-columns>
     </many-to-one>
     <many-to-one field="availabilityStatusCode" target-entity="AvailabilityStatus" fetch="LAZY">

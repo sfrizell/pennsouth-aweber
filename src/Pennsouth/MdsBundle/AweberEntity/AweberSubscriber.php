@@ -26,7 +26,7 @@ class AweberSubscriber
     private $pennSouthBuilding;
 
     /**
-     * @var integer
+     * @var string
      */
     private $floorNumber;
 
@@ -34,6 +34,21 @@ class AweberSubscriber
      * @var string
      */
     private $apartment;
+
+    /**
+     * @var string
+     */
+    private $prevPennSouthBuilding;
+
+    /**
+     * @var string
+     */
+    private $prevFloorNumber;
+
+    /**
+     * @var string
+     */
+    private $prevApartment;
 
     /**
      * @var string
@@ -49,6 +64,11 @@ class AweberSubscriber
      * @var string
      */
     private $lastName;
+
+    /**
+     * @var string
+     */
+    private $aptSurrendered;
 
     /**
      * @var string
@@ -116,14 +136,14 @@ class AweberSubscriber
     private $parkingLotLocation;
 
     /**
-     * @var integer
+     * @var string
      */
-    private $vehicleRegExpDaysLeft;
+    private $vehicleRegIntervalRemaining;
 
     /**
-     * @var integer
+     * @var string
      */
-    private $homeownerInsExpDateLeft;
+    private $homeownerInsIntervalRemaining;
 
     /**
      * @var string
@@ -154,6 +174,118 @@ class AweberSubscriber
      * @var string
      */
     private $bikeRackRoom;
+
+    /**
+     * @var string
+     */
+    private $bikeRackLocation;
+
+    /**
+     * @var string
+     */
+    private $incAffidavitReceived;
+
+
+
+    /**
+     *  prev custom field values
+     */
+
+    /**
+        * @var string
+        */
+       private $prevResidentCategory;
+
+       /**
+        * @var string
+        */
+       private $prevToddlerRoomMember;
+
+       /**
+        * @var string
+        */
+       private $prevYouthRoomMember;
+
+       /**
+        * @var string
+        */
+       private $prevCeramicsMember;
+
+       /**
+        * @var string
+        */
+       private $prevWoodworkingMember;
+
+       /**
+        * @var string
+        */
+       private $prevGymMember;
+
+       /**
+        * @var string
+        */
+       private $prevGardenMember;
+
+       /**
+        * @var string
+        */
+       private $prevParkingLotLocation;
+
+       /**
+        * @var string
+        */
+       private $prevVehicleRegIntervalRemaining;
+
+       /**
+        * @var string
+        */
+       private $prevHomeownerInsIntervalRemaining;
+
+       /**
+        * @var string
+        */
+       private $prevIsDogInApt;
+
+       /**
+        * @var string
+        */
+       private $prevStorageLockerClosetBldg;
+
+       /**
+        * @var string
+        */
+       private $prevStorageLockerNum;
+
+       /**
+        * @var string
+        */
+       private $prevStorageClosetFloorNum;
+
+       /**
+        * @var string
+        */
+       private $prevBikeRackBldg;
+
+       /**
+        * @var string
+        */
+       private $prevBikeRackRoom;
+
+    /**
+     * @var string
+     */
+       private $prevBikeRackLocation;
+
+
+    /**
+     * @var string
+     */
+    private $prevIncAffidavitReceived;
+
+    /**
+     * @var string
+     */
+    private $actionReason;
 
 
     /**
@@ -207,7 +339,7 @@ class AweberSubscriber
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getFloorNumber()
     {
@@ -215,7 +347,7 @@ class AweberSubscriber
     }
 
     /**
-     * @param int $floorNumber
+     * @param string $floorNumber
      */
     public function setFloorNumber($floorNumber)
     {
@@ -237,6 +369,55 @@ class AweberSubscriber
     {
         $this->apartment = $apartment;
     }
+
+    /**
+     * @return string
+     */
+    public function getPrevPennSouthBuilding()
+    {
+        return $this->prevPennSouthBuilding;
+    }
+
+    /**
+     * @param string $prevPennSouthBuilding
+     */
+    public function setPrevPennSouthBuilding($prevPennSouthBuilding)
+    {
+        $this->prevPennSouthBuilding = $prevPennSouthBuilding;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevFloorNumber()
+    {
+        return $this->prevFloorNumber;
+    }
+
+    /**
+     * @param string $prevFloorNumber
+     */
+    public function setPrevFloorNumber($prevFloorNumber)
+    {
+        $this->prevFloorNumber = $prevFloorNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevApartment()
+    {
+        return $this->prevApartment;
+    }
+
+    /**
+     * @param string $prevApartment
+     */
+    public function setPrevApartment($prevApartment)
+    {
+        $this->prevApartment = $prevApartment;
+    }
+
 
     /**
      * @return string
@@ -285,6 +466,24 @@ class AweberSubscriber
     {
         $this->lastName = $lastName;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAptSurrendered()
+    {
+        return $this->aptSurrendered;
+    }
+
+    /**
+     * @param mixed $aptSurrendered
+     */
+    public function setAptSurrendered($aptSurrendered)
+    {
+        $this->aptSurrendered = $aptSurrendered;
+    }
+
+
 
     /**
      * @return string
@@ -497,33 +696,33 @@ class AweberSubscriber
     /**
      * @return int
      */
-    public function getVehicleRegExpDaysLeft()
+    public function getVehicleRegIntervalRemaining()
     {
-        return $this->vehicleRegExpDaysLeft;
+        return $this->vehicleRegIntervalRemaining;
     }
 
     /**
-     * @param int $vehicleRegExpDaysLeft
+     * @param int $vehicleRegIntervalRemaining
      */
-    public function setVehicleRegExpDaysLeft($vehicleRegExpDaysLeft)
+    public function setVehicleRegIntervalRemaining($vehicleRegIntervalRemaining)
     {
-        $this->vehicleRegExpDaysLeft = $vehicleRegExpDaysLeft;
+        $this->vehicleRegIntervalRemaining = $vehicleRegIntervalRemaining;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getHomeownerInsExpDateLeft()
+    public function getHomeownerInsIntervalRemaining()
     {
-        return $this->homeownerInsExpDateLeft;
+        return $this->homeownerInsIntervalRemaining;
     }
 
     /**
-     * @param int $homeownerInsExpDateLeft
+     * @param string $homeownerInsIntervalRemaining
      */
-    public function setHomeownerInsExpDateLeft($homeownerInsExpDateLeft)
+    public function setHomeownerInsIntervalRemaining($homeownerInsIntervalRemaining)
     {
-        $this->homeownerInsExpDateLeft = $homeownerInsExpDateLeft;
+        $this->homeownerInsIntervalRemaining = $homeownerInsIntervalRemaining;
     }
 
     /**
@@ -543,7 +742,7 @@ class AweberSubscriber
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getStorageLockerClosetBldg()
     {
@@ -551,7 +750,7 @@ class AweberSubscriber
     }
 
     /**
-     * @param mixed $storageLockerClosetBldg
+     * @param string $storageLockerClosetBldg
      */
     public function setStorageLockerClosetBldg($storageLockerClosetBldg)
     {
@@ -559,7 +758,7 @@ class AweberSubscriber
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getStorageLockerNum()
     {
@@ -567,7 +766,7 @@ class AweberSubscriber
     }
 
     /**
-     * @param mixed $storageLockerNum
+     * @param string $storageLockerNum
      */
     public function setStorageLockerNum($storageLockerNum)
     {
@@ -575,7 +774,7 @@ class AweberSubscriber
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getStorageClosetFloorNum()
     {
@@ -583,7 +782,7 @@ class AweberSubscriber
     }
 
     /**
-     * @param mixed $storageClosetFloorNum
+     * @param string $storageClosetFloorNum
      */
     public function setStorageClosetFloorNum($storageClosetFloorNum)
     {
@@ -591,7 +790,7 @@ class AweberSubscriber
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBikeRackBldg()
     {
@@ -599,7 +798,7 @@ class AweberSubscriber
     }
 
     /**
-     * @param mixed $bikeRackBldg
+     * @param string $bikeRackBldg
      */
     public function setBikeRackBldg($bikeRackBldg)
     {
@@ -607,7 +806,7 @@ class AweberSubscriber
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBikeRackRoom()
     {
@@ -615,11 +814,353 @@ class AweberSubscriber
     }
 
     /**
-     * @param mixed $bikeRackRoom
+     * @return string
+     */
+    public function getBikeRackLocation()
+    {
+        return $this->bikeRackLocation;
+    }
+
+    /**
+     * @param string $bikeRackLocation
+     */
+    public function setBikeRackLocation($bikeRackLocation)
+    {
+        $this->bikeRackLocation = $bikeRackLocation;
+    }
+
+
+
+    /**
+     * @param string $bikeRackRoom
      */
     public function setBikeRackRoom($bikeRackRoom)
     {
         $this->bikeRackRoom = $bikeRackRoom;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIncAffidavitReceived()
+    {
+        return $this->incAffidavitReceived;
+    }
+
+    /**
+     * @param string $incAffidavitReceived
+     */
+    public function setIncAffidavitReceived($incAffidavitReceived)
+    {
+        $this->incAffidavitReceived = $incAffidavitReceived;
+    }
+
+
+
+    /**
+     * @return string
+     */
+    public function getPrevResidentCategory()
+    {
+        return $this->prevResidentCategory;
+    }
+
+    /**
+     * @param string $prevResidentCategory
+     */
+    public function setPrevResidentCategory($prevResidentCategory)
+    {
+        $this->prevResidentCategory = $prevResidentCategory;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevToddlerRoomMember()
+    {
+        return $this->prevToddlerRoomMember;
+    }
+
+    /**
+     * @param string $prevToddlerRoomMember
+     */
+    public function setPrevToddlerRoomMember($prevToddlerRoomMember)
+    {
+        $this->prevToddlerRoomMember = $prevToddlerRoomMember;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevYouthRoomMember()
+    {
+        return $this->prevYouthRoomMember;
+    }
+
+    /**
+     * @param string $prevYouthRoomMember
+     */
+    public function setPrevYouthRoomMember($prevYouthRoomMember)
+    {
+        $this->prevYouthRoomMember = $prevYouthRoomMember;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevCeramicsMember()
+    {
+        return $this->prevCeramicsMember;
+    }
+
+    /**
+     * @param string $prevCeramicsMember
+     */
+    public function setPrevCeramicsMember($prevCeramicsMember)
+    {
+        $this->prevCeramicsMember = $prevCeramicsMember;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevWoodworkingMember()
+    {
+        return $this->prevWoodworkingMember;
+    }
+
+    /**
+     * @param string $prevWoodworkingMember
+     */
+    public function setPrevWoodworkingMember($prevWoodworkingMember)
+    {
+        $this->prevWoodworkingMember = $prevWoodworkingMember;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevGymMember()
+    {
+        return $this->prevGymMember;
+    }
+
+    /**
+     * @param string $prevGymMember
+     */
+    public function setPrevGymMember($prevGymMember)
+    {
+        $this->prevGymMember = $prevGymMember;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevGardenMember()
+    {
+        return $this->prevGardenMember;
+    }
+
+    /**
+     * @param string $prevGardenMember
+     */
+    public function setPrevGardenMember($prevGardenMember)
+    {
+        $this->prevGardenMember = $prevGardenMember;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevParkingLotLocation()
+    {
+        return $this->prevParkingLotLocation;
+    }
+
+    /**
+     * @param string $prevParkingLotLocation
+     */
+    public function setPrevParkingLotLocation($prevParkingLotLocation)
+    {
+        $this->prevParkingLotLocation = $prevParkingLotLocation;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevVehicleRegIntervalRemaining()
+    {
+        return $this->prevVehicleRegIntervalRemaining;
+    }
+
+    /**
+     * @param string $prevVehicleRegIntervalRemaining
+     */
+    public function setPrevVehicleRegIntervalRemaining($prevVehicleRegIntervalRemaining)
+    {
+        $this->prevVehicleRegIntervalRemaining = $prevVehicleRegIntervalRemaining;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevHomeownerInsIntervalRemaining()
+    {
+        return $this->prevHomeownerInsIntervalRemaining;
+    }
+
+    /**
+     * @param string $prevHomeownerInsIntervalRemaining
+     */
+    public function setPrevHomeownerInsIntervalRemaining($prevHomeownerInsIntervalRemaining)
+    {
+        $this->prevHomeownerInsIntervalRemaining = $prevHomeownerInsIntervalRemaining;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevIsDogInApt()
+    {
+        return $this->prevIsDogInApt;
+    }
+
+    /**
+     * @param string $prevIsDogInApt
+     */
+    public function setPrevIsDogInApt($prevIsDogInApt)
+    {
+        $this->prevIsDogInApt = $prevIsDogInApt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevStorageLockerClosetBldg()
+    {
+        return $this->prevStorageLockerClosetBldg;
+    }
+
+    /**
+     * @param string $prevStorageLockerClosetBldg
+     */
+    public function setPrevStorageLockerClosetBldg($prevStorageLockerClosetBldg)
+    {
+        $this->prevStorageLockerClosetBldg = $prevStorageLockerClosetBldg;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevStorageLockerNum()
+    {
+        return $this->prevStorageLockerNum;
+    }
+
+    /**
+     * @param string $prevStorageLockerNum
+     */
+    public function setPrevStorageLockerNum($prevStorageLockerNum)
+    {
+        $this->prevStorageLockerNum = $prevStorageLockerNum;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevStorageClosetFloorNum()
+    {
+        return $this->prevStorageClosetFloorNum;
+    }
+
+    /**
+     * @param string $prevStorageClosetFloorNum
+     */
+    public function setPrevStorageClosetFloorNum($prevStorageClosetFloorNum)
+    {
+        $this->prevStorageClosetFloorNum = $prevStorageClosetFloorNum;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevBikeRackBldg()
+    {
+        return $this->prevBikeRackBldg;
+    }
+
+    /**
+     * @param string $prevBikeRackBldg
+     */
+    public function setPrevBikeRackBldg($prevBikeRackBldg)
+    {
+        $this->prevBikeRackBldg = $prevBikeRackBldg;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevBikeRackRoom()
+    {
+        return $this->prevBikeRackRoom;
+    }
+
+    /**
+     * @param string $prevBikeRackRoom
+     */
+    public function setPrevBikeRackRoom($prevBikeRackRoom)
+    {
+        $this->prevBikeRackRoom = $prevBikeRackRoom;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevBikeRackLocation()
+    {
+        return $this->prevBikeRackLocation;
+    }
+
+    /**
+     * @param string $prevBikeRackLocation
+     */
+    public function setPrevBikeRackLocation($prevBikeRackLocation)
+    {
+        $this->prevBikeRackLocation = $prevBikeRackLocation;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevIncAffidavitReceived()
+    {
+        return $this->prevIncAffidavitReceived;
+    }
+
+    /**
+     * @param string $prevIncAffidavitReceived
+     */
+    public function setPrevIncAffidavitReceived($prevIncAffidavitReceived)
+    {
+        $this->prevIncAffidavitReceived = $prevIncAffidavitReceived;
+    }
+
+
+
+    /**
+     * @return string
+     */
+    public function getActionReason()
+    {
+        return $this->actionReason;
+    }
+
+    /**
+     * @param string $actionReason
+     */
+    public function setActionReason($actionReason)
+    {
+        $this->actionReason = $actionReason;
     }
 
 

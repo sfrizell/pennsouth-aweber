@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Pennsouth\MdsBundle\Entity\AptResidentAttributes" table="Apt_Resident_Attributes">
+  <entity name="Pennsouth\MdsBundle\Entity\AptResidentAttributes" table="apt_resident_attributes">
     <id name="pennsouthAptApartment" association-key="true"/>
     <field name="building" type="string" column="Building" length="2" nullable="true">
       <options>

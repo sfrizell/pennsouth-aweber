@@ -62,10 +62,6 @@ class PennsouthResident
      */
     private $fax;
 
-    /**
-     * @var string
-     */
-    private $officePhone;
 
     /**
      * @var string
@@ -103,7 +99,7 @@ class PennsouthResident
     private $gardenMember;
 
     /**
-     * @var string
+     * @var integer
      */
     private $decalNum;
 
@@ -123,6 +119,22 @@ class PennsouthResident
     private $vehicleRegExpCountdown;
 
     /**
+     * @var integer
+     */
+    private $vehicleRegIntervalRemaining;
+
+
+    /**
+     * @var string
+     */
+    private $vehicleModel;
+
+    /**
+     * @var string
+     */
+    private $vehicleLicensePlateNum;
+
+    /**
      * @var \DateTime
      */
     private $homeownerInsExpDate;
@@ -131,6 +143,11 @@ class PennsouthResident
      * @var integer
      */
     private $homeownerInsExpCountdown;
+
+    /**
+     * @var integer
+     */
+    private $homeownerInsIntervalRemaining;
 
     /**
      * @var \DateTime
@@ -145,6 +162,30 @@ class PennsouthResident
     /**
      * @var string
      */
+    private $shareholderFlag;
+
+
+    /**
+      * @var \DateTime
+      */
+     private $incAffidavitReceiptDate;
+
+
+    /**
+     * @var string
+     */
+    private $incAffidavitReceived;
+
+
+    /**
+     * @var string
+     */
+    private $incAffidavitDateDiscrepancy;
+
+
+    /**
+     * @var string
+     */
     private $storageLockerClosetBldgNum;
 
     /**
@@ -153,7 +194,7 @@ class PennsouthResident
     private $storageLockerNum;
 
     /**
-     * @var integer
+     * @var string
      */
     private $storageClosetFloorNum;
 
@@ -181,6 +222,13 @@ class PennsouthResident
      * @var string
      */
     private $bikeRackRoom;
+
+
+    /**
+     * @var string
+     */
+    private $aptSurrendered;
+
 
     /**
      * @var \DateTime
@@ -462,29 +510,6 @@ class PennsouthResident
         return $this->fax;
     }
 
-    /**
-     * Set officePhone
-     *
-     * @param string $officePhone
-     *
-     * @return PennsouthResident
-     */
-    public function setOfficePhone($officePhone)
-    {
-        $this->officePhone = $officePhone;
-
-        return $this;
-    }
-
-    /**
-     * Get officePhone
-     *
-     * @return string
-     */
-    public function getOfficePhone()
-    {
-        return $this->officePhone;
-    }
 
     /**
      * Set personId
@@ -657,7 +682,7 @@ class PennsouthResident
     /**
      * Set decalNum
      *
-     * @param string $decalNum
+     * @param integer $decalNum
      *
      * @return PennsouthResident
      */
@@ -671,7 +696,7 @@ class PennsouthResident
     /**
      * Get decalNum
      *
-     * @return string
+     * @return integer
      */
     public function getDecalNum()
     {
@@ -727,11 +752,15 @@ class PennsouthResident
     }
 
     /**
-     * Set vehicleRegExpCountdown
-     *
-     * @param integer $vehicleRegExpCountdown
-     *
-     * @return PennsouthResident
+     * @return int
+     */
+    public function getVehicleRegExpCountdown()
+    {
+        return $this->vehicleRegExpCountdown;
+    }
+
+    /**
+     * @param int $vehicleRegExpCountdown
      */
     public function setVehicleRegExpCountdown($vehicleRegExpCountdown)
     {
@@ -740,15 +769,71 @@ class PennsouthResident
         return $this;
     }
 
+
+
     /**
-     * Get vehicleRegExpCountdown
+     * Set vehicleRegIntervalRemaining
+     *
+     * @param integer $vehicleRegIntervalRemaining
+     *
+     * @return PennsouthResident
+     */
+    public function setVehicleRegIntervalRemaining($vehicleRegIntervalRemaining)
+    {
+        $this->vehicleRegIntervalRemaining = $vehicleRegIntervalRemaining;
+
+        return $this;
+    }
+
+    /**
+     * Get vehicleRegIntervalRemaining
      *
      * @return integer
      */
-    public function getVehicleRegExpCountdown()
+    public function getVehicleRegIntervalRemaining()
     {
-        return $this->vehicleRegExpCountdown;
+        return $this->vehicleRegIntervalRemaining;
     }
+
+
+
+    /**
+     * @return string
+     */
+    public function getVehicleModel()
+    {
+        return $this->vehicleModel;
+    }
+
+    /**
+     * @param string $vehicleModel
+     */
+    public function setVehicleModel($vehicleModel)
+    {
+        $this->vehicleModel = $vehicleModel;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVehicleLicensePlateNum()
+    {
+        return $this->vehicleLicensePlateNum;
+    }
+
+    /**
+     * @param string $vehicleLicensePlateNum
+     */
+    public function setVehicleLicensePlateNum($vehicleLicensePlateNum)
+    {
+        $this->vehicleLicensePlateNum = $vehicleLicensePlateNum;
+
+        return $this;
+    }
+
+
 
     /**
      * Set homeownerInsExpDate
@@ -775,11 +860,15 @@ class PennsouthResident
     }
 
     /**
-     * Set homeownerInsExpCountdown
-     *
-     * @param integer $homeownerInsExpCountdown
-     *
-     * @return PennsouthResident
+     * @return int
+     */
+    public function getHomeownerInsExpCountdown()
+    {
+        return $this->homeownerInsExpCountdown;
+    }
+
+    /**
+     * @param int $homeownerInsExpCountdown
      */
     public function setHomeownerInsExpCountdown($homeownerInsExpCountdown)
     {
@@ -788,15 +877,33 @@ class PennsouthResident
         return $this;
     }
 
+
+
     /**
-     * Get homeownerInsExpCountdown
+     * Set homeownerInsIntervalRemaining
+     *
+     * @param integer $homeownerInsIntervalRemaining
+     *
+     * @return PennsouthResident
+     */
+    public function setHomeownerInsIntervalRemaining($homeownerInsIntervalRemaining)
+    {
+        $this->homeownerInsIntervalRemaining = $homeownerInsIntervalRemaining;
+
+        return $this;
+    }
+
+    /**
+     * Get homeownerInsIntervalRemaining
      *
      * @return integer
      */
-    public function getHomeownerInsExpCountdown()
+    public function getHomeownerInsIntervalRemaining()
     {
-        return $this->homeownerInsExpCountdown;
+        return $this->homeownerInsIntervalRemaining;
     }
+
+
 
     /**
      * Set birthDate
@@ -835,6 +942,72 @@ class PennsouthResident
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getShareholderFlag()
+    {
+        return $this->shareholderFlag;
+    }
+
+    /**
+     * @param string $shareholderFlag
+     */
+    public function setShareholderFlag($shareholderFlag)
+    {
+        $this->shareholderFlag = $shareholderFlag;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getIncAffidavitReceiptDate()
+    {
+        return $this->incAffidavitReceiptDate;
+    }
+
+    /**
+     * @param \DateTime $incAffidavitReceiptDate
+     */
+    public function setIncAffidavitReceiptDate($incAffidavitReceiptDate)
+    {
+        $this->incAffidavitReceiptDate = $incAffidavitReceiptDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIncAffidavitReceived()
+    {
+        return $this->incAffidavitReceived;
+    }
+
+    /**
+     * @param string $incAffidavitReceived
+     */
+    public function setIncAffidavitReceived($incAffidavitReceived)
+    {
+        $this->incAffidavitReceived = $incAffidavitReceived;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIncAffidavitDateDiscrepancy()
+    {
+        return $this->incAffidavitDateDiscrepancy;
+    }
+
+    /**
+     * @param string $incAffidavitDateDiscrepancy
+     */
+    public function setIncAffidavitDateDiscrepancy($incAffidavitDateDiscrepancy)
+    {
+        $this->incAffidavitDateDiscrepancy = $incAffidavitDateDiscrepancy;
+    }
+
+
 
     /**
      * Get moveInDate
@@ -1039,6 +1212,24 @@ class PennsouthResident
     }
 
     /**
+     * @return string
+     */
+    public function getAptSurrendered()
+    {
+        return $this->aptSurrendered;
+    }
+
+    /**
+     * @param string $aptSurrendered
+     */
+    public function setAptSurrendered($aptSurrendered)
+    {
+        $this->aptSurrendered = $aptSurrendered;
+    }
+
+
+
+    /**
      * Set lastChangedDate
      *
      * @param \DateTime $lastChangedDate
@@ -1096,4 +1287,3 @@ class PennsouthResident
         return $this->pennsouthAptApartment;
     }
 }
-
