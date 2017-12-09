@@ -180,6 +180,11 @@ class AweberMdsSyncAudit
     /**
      * @var string
      */
+    public $mdsHPersonId;
+
+    /**
+     * @var string
+     */
     public $mdsIncAffidavitReceived;
 
     /**
@@ -267,6 +272,10 @@ class AweberMdsSyncAudit
      */
     public $aweberResidentCategory;
 
+    /**
+     * @var string
+     */
+    public $aweberHpersonId;
 
     /**
      * @var string
@@ -708,6 +717,23 @@ class AweberMdsSyncAudit
         $this->aweberIncAffidavitReceived = $aweberIncAffidavitReceived;
     }
 
+    /**
+     * @return string
+     */
+    public function getAweberHpersonId()
+    {
+        return $this->aweberHpersonId;
+    }
+
+    /**
+     * @param string $aweberHpersonId
+     */
+    public function setAweberHpersonId($aweberHpersonId)
+    {
+        $this->aweberHpersonId = $aweberHpersonId;
+    }
+
+
 
 
     /**
@@ -853,6 +879,24 @@ class AweberMdsSyncAudit
     {
         return $this->mdsGardenMember;
     }
+
+    /**
+     * @return string
+     */
+    public function getMdsHPersonId()
+    {
+        return $this->mdsHPersonId;
+    }
+
+    /**
+     * @param string $mdsHPersonId
+     */
+    public function setMdsHPersonId($mdsHPersonId)
+    {
+        $this->mdsHPersonId = $mdsHPersonId;
+    }
+
+
 
     /**
      * Set mdsParkingLotLocation

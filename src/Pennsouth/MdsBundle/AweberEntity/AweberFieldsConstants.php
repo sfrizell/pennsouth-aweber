@@ -34,6 +34,7 @@ class AweberFieldsConstants
        const VEHICLE_REG_INTERVAL_REMAINING                     = 'vehicle_reg_interval_remaining';
        const HOMEOWNER_INS_INTERVAL_REMAINING                   = 'homeowner_ins_interval_remaining';
        const IS_DOG_IN_APT                                      = 'is_dog_in_apt';
+       const HPERSON_ID                                         = 'hperson_id';
        const STORAGE_LOCKER_CLOSET_BLDG_NUM                     = 'storage_locker_closet_bldg';
        const STORAGE_LOCKER_NUM                                 = 'storage_locker_num';
        const STORAGE_CLOSET_FLOOR_NUM                           = 'storage_closet_floor_num';

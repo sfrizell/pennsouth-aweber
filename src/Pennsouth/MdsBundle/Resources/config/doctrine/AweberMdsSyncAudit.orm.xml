@@ -172,6 +172,11 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="mdsHPersonId" type="string" column="mds_hperson_id" length="80" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="aweberToddlerRmMember" type="string" column="Aweber_Toddler_Rm_Member" length="1" nullable="true">
       <options>
         <option name="fixed"/>
@@ -260,6 +265,11 @@
       </options>
     </field>
     <field name="aweberIncAffidavitReceived" type="string" column="aweber_inc_affidavit_received" length="1" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="aweberHpersonId" type="string" column="aweber_hperson_id" length="80" nullable="true">
       <options>
         <option name="fixed"/>
       </options>

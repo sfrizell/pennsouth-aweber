@@ -185,6 +185,11 @@ class AweberSubscriber
      */
     private $incAffidavitReceived;
 
+    /**
+     * @var string
+     */
+    private $hpersonId;
+
 
 
     /**
@@ -281,6 +286,13 @@ class AweberSubscriber
      * @var string
      */
     private $prevIncAffidavitReceived;
+
+    /**
+     * @var string
+     */
+    private $prevHpersonId;
+
+
 
     /**
      * @var string
@@ -855,6 +867,22 @@ class AweberSubscriber
         $this->incAffidavitReceived = $incAffidavitReceived;
     }
 
+    /**
+     * @return string
+     */
+    public function getHpersonId()
+    {
+        return $this->hpersonId;
+    }
+
+    /**
+     * @param string $hpersonId
+     */
+    public function setHpersonId($hpersonId)
+    {
+        $this->hpersonId = $hpersonId;
+    }
+
 
 
     /**
@@ -1143,6 +1171,22 @@ class AweberSubscriber
     public function setPrevIncAffidavitReceived($prevIncAffidavitReceived)
     {
         $this->prevIncAffidavitReceived = $prevIncAffidavitReceived;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevHpersonId()
+    {
+        return $this->prevHpersonId;
+    }
+
+    /**
+     * @param string $prevHpersonId
+     */
+    public function setPrevHpersonId($prevHpersonId)
+    {
+        $this->prevHpersonId = $prevHpersonId;
     }
 
 

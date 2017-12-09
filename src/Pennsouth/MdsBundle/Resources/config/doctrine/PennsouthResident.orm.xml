@@ -213,6 +213,11 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="hpersonId" type="string" column="hperson_id" length="80" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="lastChangedDate" type="datetime" column="Last_Changed_Date" nullable="true"/>
     <many-to-one field="pennsouthAptApartment" target-entity="PennsouthApt" fetch="LAZY">
       <join-columns>

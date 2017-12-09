@@ -229,6 +229,11 @@ class PennsouthResident
      */
     private $aptSurrendered;
 
+    /**
+     * @var string
+     */
+    private $hpersonId;
+
 
     /**
      * @var \DateTime
@@ -1225,6 +1230,22 @@ class PennsouthResident
     public function setAptSurrendered($aptSurrendered)
     {
         $this->aptSurrendered = $aptSurrendered;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHpersonId()
+    {
+        return $this->hpersonId;
+    }
+
+    /**
+     * @param string $hpersonId
+     */
+    public function setHpersonId($hpersonId)
+    {
+        $this->hpersonId = $hpersonId;
     }
 
 
