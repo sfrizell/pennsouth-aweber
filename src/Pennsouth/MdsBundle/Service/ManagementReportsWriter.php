@@ -774,7 +774,7 @@ class ManagementReportsWriter
 								ELSE \'\'
                                     
                            END) LATE_CHARGE2,
-                          date_format(pr.move_in_date, \'%m/%d/%Y\') move_in_date
+                          date_format(pr.move_in_date, \'%m/%d/%Y\') move_in_date 
                        FROM 
 							income_affidavit as ia
                             JOIN
