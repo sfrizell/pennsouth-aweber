@@ -149,7 +149,7 @@ class AweberSubscriberListReader
              try {
                  $emailNotificationlists = $account->lists;
                  foreach ($emailNotificationlists as $emailNotificationlist) {
-                     if ($emailNotificationlist->data['name'] == AweberFieldsConstants::PRIMARY_RESIDENT_LIST or
+                    if ($emailNotificationlist->data['name'] == AweberFieldsConstants::PRIMARY_RESIDENT_LIST or
                          $emailNotificationlist->data['name'] == AweberFieldsConstants::EMERGENCY_NOTICES_FOR_RESIDENTS or
                          $emailNotificationlist->data['name'] == AweberFieldsConstants::FRIZELL_TEST_LIST) {
                          $selectedEmailNotificationLists[$emailNotificationlist->data['name']] = $emailNotificationlist;
@@ -341,6 +341,7 @@ class AweberSubscriberListReader
                              $aweberSubscriber->setWoodworkingMember($customFields[AweberFieldsConstants::WOODWORKING_MEMBER]);
                              $aweberSubscriber->setResidentCategory($customFields[AweberFieldsConstants::RESIDENT_CATEGORY]);
                              $aweberSubscriber->setIncAffidavitReceived($customFields[AweberFieldsConstants::INCOME_AFFIDAVIT_RECEIVED]);
+                             $aweberSubscriber->setHpersonId($customFields[AweberFieldsConstants::HPERSON_ID]);
 
                              // Add the AweberSubscriber to the $aweberSubscribers array...
                              $aweberSubscribers[] = $aweberSubscriber;

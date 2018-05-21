@@ -165,7 +165,8 @@ class ManagementReportsWriter
                     'Income Affidavit 1st Deadline',
                     'Income Affidavit 2nd Deadline',
                     'Late Charge Missed 1st Deadline',
-                    'Late Charge Missed 2nd Deadline'
+                    'Late Charge Missed 2nd Deadline',
+                    'Move-In Date'
            );
 
     const INCOME_AFFIDAVIT_REPORT_COL_NAMES = array(
@@ -194,7 +195,8 @@ class ManagementReportsWriter
                      'first_annual_deadline',
                      'second_annual_deadline',
                      'late_charge1',
-                     'late_charge2'
+                     'late_charge2',
+                     'move_in_date'
             );
     // mds data entry discrepancies report
     const MDS_GAPS_REPORT_HEADER_ARRAY = array(
@@ -729,7 +731,7 @@ class ManagementReportsWriter
                            if(pr2.last_name is null, \'\', pr2.last_name) last_name2, if(pr2.first_name is null, \'\', pr2.first_name) first_name2, 
                            if(me2.email_address is null, \'\', me2.email_address) mds_export_email_address2,
                            if(pr2.cell_phone is null, \'\', pr2.cell_phone) cell_phone2, if(pr2.evening_phone is null, \'\', pr2.evening_phone) evening_phone2,
-                           pr.inc_affidavit_receipt_date, pr.inc_affidavit_received, pr.inc_affidavit_date_discrepancy,
+                           date_format(pr.inc_affidavit_receipt_date, \'%m/%d/%Y\') inc_affidavit_receipt_date, pr.inc_affidavit_received, pr.inc_affidavit_date_discrepancy,
                            ( CASE 
                             WHEN DAYOFWEEK(ia.first_annual_deadline) != 1 and DAYOFWEEK(ia.first_annual_deadline) != 7 THEN ia.first_annual_deadline
                             WHEN DAYOFWEEK(ia.first_annual_deadline) = 1 THEN DATE_ADD(ia.first_annual_deadline, INTERVAL 1 DAY)
@@ -771,8 +773,8 @@ class ManagementReportsWriter
                                     and (pr.inc_affidavit_receipt_date is null or pr.inc_affidavit_receipt_date > DATE_ADD(ia.second_annual_deadline, INTERVAL 1 DAY) ), ia.second_deadline_late_charge, \'\' )
 								ELSE \'\'
                                     
-                           END) LATE_CHARGE2
-	
+                           END) LATE_CHARGE2,
+                          date_format(pr.move_in_date, \'%m/%d/%Y\') move_in_date
                        FROM 
 							income_affidavit as ia
                             JOIN

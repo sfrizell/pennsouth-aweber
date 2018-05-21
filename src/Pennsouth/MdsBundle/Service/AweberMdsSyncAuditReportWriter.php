@@ -110,6 +110,7 @@ class AweberMdsSyncAuditReportWriter
             'Aweber Bike Rack Bldg',
             'Aweber Bike Rack Location',
             'Aweber Resident Category',
+            'Aweber HPerson Id',
             'Last Changed Date'
     );
 
@@ -163,6 +164,7 @@ class AweberMdsSyncAuditReportWriter
                         'aweberBikeRackBldg',
                         'aweberBikeRackLocation',
                         'aweberResidentCategory',
+                        'aweberHPersonId',
                         'lastChangedDate'
                     );
 
@@ -503,6 +505,7 @@ class AweberMdsSyncAuditReportWriter
                                  'Aweber Bike Rack Bldg' => 				'aweberBikeRackBldg',
                                  'Aweber Bike Rack Location' => 			'aweberBikeRackLocation',
                                  'Aweber Resident Category'=> 			'aweberResidentCategory',
+                                 'Aweber HPerson Id'=> 			        'aweberHPersonId',
                                  'Last Changed Date' =>					'lastChangedDate'
                          );
 

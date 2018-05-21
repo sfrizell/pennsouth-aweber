@@ -580,6 +580,9 @@ class AweberSubscriberWriter
            if (strlen($aweberSubscriber->getResidentCategory()) > 0) {
                $subscriberCustomFields[AweberFieldsConstants::RESIDENT_CATEGORY] = $aweberSubscriber->getResidentCategory();
            }
+           if (strlen($aweberSubscriber->getHpersonId()) > 0) {
+               $subscriberCustomFields[AweberFieldsConstants::HPERSON_ID] = $aweberSubscriber->getHpersonId();
+           }
 
            return $subscriberCustomFields;
 
@@ -653,6 +656,9 @@ class AweberSubscriberWriter
                }
                if (strlen($aweberSubscriber->getIncAffidavitReceived()) > 0) {
                    $subscriberCustomFields[AweberFieldsConstants::INCOME_AFFIDAVIT_RECEIVED] = $singleQuote . $aweberSubscriber->getIncAffidavitReceived() . $singleQuote;
+               }
+               if (strlen($aweberSubscriber->getHpersonId()) > 0) {
+                   $subscriberCustomFields[AweberFieldsConstants::HPERSON_ID] = $singleQuote . $aweberSubscriber->getHpersonId() . $singleQuote;
                }
 
                return $subscriberCustomFields;

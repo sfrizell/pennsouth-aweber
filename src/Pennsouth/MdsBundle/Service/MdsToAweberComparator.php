@@ -41,6 +41,7 @@ class MdsToAweberComparator
     const UPDATE_IS_DOG_PRESENT                     = 'dog';
     const UPDATE_PARKING_LOT_LOCATION               = 'parking_lot';
     const UPDATE_RESIDENT_CATEGORY                  = 'resident_category';
+    const UPDATE_HPERSON_ID                         = 'hperson_id';
     const UPDATE_INCOME_AFFIDAVIT_RECEIVED          = 'income_affidavit_received';
     const UPDATE_ACTION_REPORTING                   = 'reporting';
     const ACTION_REASON_APT_SURRENDERED             = 'apt surrendered';
@@ -178,6 +179,7 @@ class MdsToAweberComparator
             $aweberSubscriber->setVehicleRegIntervalRemaining(is_null($pennsouthResident->getVehicleRegIntervalRemaining()) ? "" : $pennsouthResident->getVehicleRegIntervalRemaining());
             $aweberSubscriber->setToddlerRoomMember(is_null($pennsouthResident->getToddlerRoomMember()) ? "" : $pennsouthResident->getToddlerRoomMember());
             $aweberSubscriber->setIncAffidavitReceived(is_null($pennsouthResident->getIncAffidavitReceived()) ? "" : $pennsouthResident->getIncAffidavitReceived());
+            $aweberSubscriber->setHpersonId(is_null($pennsouthResident->getHpersonId()) ? "" : $pennsouthResident->getHpersonId());
             $aweberSubscriber->setName(is_null($pennsouthResident->getFirstName() . " " . $pennsouthResident->getLastName()) ? "" : $pennsouthResident->getFirstName() . " " . $pennsouthResident->getLastName());
             $aweberSubscriber->setFirstName(is_null($pennsouthResident->getFirstName()) ? "" : $pennsouthResident->getFirstName());
             $aweberSubscriber->setLastName(is_null($pennsouthResident->getLastName()) ? "" : $pennsouthResident->getLastName());
@@ -202,7 +204,8 @@ class MdsToAweberComparator
                                     AweberFieldsConstants::GYM_MEMBER                       => $aweberSubscriber->getGymMember(),
                                     AweberFieldsConstants::VEHICLE_REG_INTERVAL_REMAINING   => $aweberSubscriber->getVehicleRegIntervalRemaining(),
                                     AweberFieldsConstants::TODDLER_ROOM_MEMBER              => $aweberSubscriber->getToddlerRoomMember(),
-                                    AweberFieldsConstants::INCOME_AFFIDAVIT_RECEIVED        => $aweberSubscriber->getIncAffidavitReceived()
+                                    AweberFieldsConstants::INCOME_AFFIDAVIT_RECEIVED        => $aweberSubscriber->getIncAffidavitReceived(),
+                                    AweberFieldsConstants::HPERSON_ID                       => $aweberSubscriber->getHpersonId()
             );
             $aweberSubscriber->setCustomFields($customFields);
             return $aweberSubscriber;
@@ -306,7 +309,13 @@ class MdsToAweberComparator
         if ( trim($aweberSubscriber->getResidentCategory() ,$singleQuotes )       !== trim($pennsouthResident->getMdsResidentCategory()) ) {
             $actionReason .= self::UPDATE_RESIDENT_CATEGORY . $separator;
         }
-
+        // comparing values for some reason always evaluates to having changed even when values are same! Since the hPersonId once set should
+        // never change, the following logic is used just to check if we need to assign a value to AweberSubscriber, i.e., new assignments
+        if ( (strlen(trim($aweberSubscriber->getHpersonId() ,$singleQuotes )) == 0) and  (strlen(trim($pennsouthResident->getHpersonId())) > 0) ) {
+            $actionReason .= self::UPDATE_HPERSON_ID . $separator;
+        }
+        //print ("\n" . " aweberSubscriber->getHpersonId(): " . trim($aweberSubscriber->getHpersonId() ,$singleQuotes));
+        //print ("\n" . " pennsouthResident->getHpersonId(): " . trim($pennsouthResident->getHpersonId()));
 
         $aweberSubscriber->setPrevApartment( trim( $aweberSubscriber->getApartment(), $singleQuotes) );
         $aweberSubscriber->setPrevPennSouthBuilding(trim($aweberSubscriber->getPennSouthBuilding(),$singleQuotes));
@@ -328,6 +337,7 @@ class MdsToAweberComparator
         $aweberSubscriber->setPrevParkingLotLocation( trim( $aweberSubscriber->getParkingLotLocation() , $singleQuotes ) );
         $aweberSubscriber->setPrevResidentCategory( trim( $aweberSubscriber->getResidentCategory() , $singleQuotes ) );
         $aweberSubscriber->setPrevIncAffidavitReceived( trim( $aweberSubscriber->getIncAffidavitReceived() , $singleQuotes ) );
+        $aweberSubscriber->setPrevHpersonId( trim( $aweberSubscriber->getHpersonId() , $singleQuotes ) );
 
         $actionReason = trim($actionReason, $separator);
         if (strlen($actionReason) > 0) {
@@ -522,6 +532,8 @@ class MdsToAweberComparator
             $aweberMdsSyncAudit->setAweberGardenMember( $aweberSubscriber->getPrevGardenMember() );
             $aweberMdsSyncAudit->setAweberGymMember( $aweberSubscriber->getPrevGymMember() );
             $aweberMdsSyncAudit->setAweberIncAffidavitReceived( $aweberSubscriber->getPrevIncAffidavitReceived() );
+            $aweberMdsSyncAudit->setAweberHpersonId( $aweberSubscriber->getPrevHpersonId() );
+
 
 
             $prevHomeownerInsExpDaysLeft = $aweberSubscriber->getPrevHomeownerInsIntervalRemaining();
@@ -566,6 +578,7 @@ class MdsToAweberComparator
             $aweberMdsSyncAudit->setMdsGardenMember( $aweberSubscriber->getGardenMember() );
             $aweberMdsSyncAudit->setMdsGymMember( $aweberSubscriber->getGymMember() );
             $aweberMdsSyncAudit->setMdsIncAffidavitReceived( $aweberSubscriber->getIncAffidavitReceived() );
+            $aweberMdsSyncAudit->setMdsHPersonId( $aweberSubscriber->getHpersonId() );
             $homeownerInsExpDaysLeft = $aweberSubscriber->getHomeownerInsIntervalRemaining();
             $aweberMdsSyncAudit->setMdsHomeownerInsIntervalRemaining( (isset($homeownerInsExpDaysLeft) and !empty($homeownerInsExpDaysLeft)) ? $homeownerInsExpDaysLeft : NULL );
 
