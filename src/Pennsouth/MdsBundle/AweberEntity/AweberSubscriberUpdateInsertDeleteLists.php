@@ -17,7 +17,7 @@ class AweberSubscriberUpdateInsertDeleteLists
 
     private $aweberSubscriberInsertList = array(); // associative array of AweberSubscribers consisting of array of list name => AweberSubscriber object to be used to insert new subscribers into Aweber Subscriber list
     private $aweberSubscriberUpdateList = array(); // associative array of AweberSubscribers consisting of array of list name => AweberSubscriber object to be used to update existing subscribers in Aweber Subscriber list
-    private $aweberSubscriberDeleteList = array(); // associative array of AweberSubscribers consisting of array of list name => AweberSubscriber object to be used to update existing subscribers in Aweber Subscriber list
+    private $aweberSubscriberDeleteList = array(); // associative array of AweberSubscribers consisting of array of list name => AweberSubscriber object to be used to delete existing subscribers in Aweber Subscriber list
 
     /**
      * @return array
