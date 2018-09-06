@@ -78,6 +78,8 @@ class MdsToAweberComparator
         $aweberSubscribersUpdateList = array();
         $aweberSubscribersInsertList = array();
         $aweberSubscribersDeleteList = array();
+        $aweberSubscribersMissingFromMds = array();
+        $aweberSubscribersCompleteDeleteList = array();
        // $aweberSubscriberToSave = new AweberSubscriber();
         foreach ($this->pennsouthResidents as $pennsouthResident) {
             $foundEmailAddressInAweber = false;
@@ -125,7 +127,11 @@ class MdsToAweberComparator
 
         $aweberSubscriberUpdateInsertDeleteLists->setAweberSubscriberInsertList($aweberSubscribersInsertList);
         $aweberSubscriberUpdateInsertDeleteLists->setAweberSubscriberUpdateList($aweberSubscribersUpdateList);
-        $aweberSubscriberUpdateInsertDeleteLists->setAweberSubscriberDeleteList($aweberSubscribersDeleteList);
+
+        $aweberSubscribersMissingFromMds = $this->reportOnAweberSubscribersWithNoMatchInMds();
+        $aweberSubscribersCompleteDeleteList = array_merge($aweberSubscribersDeleteList, $aweberSubscribersMissingFromMds);
+
+        $aweberSubscriberUpdateInsertDeleteLists->setAweberSubscriberDeleteList($aweberSubscribersCompleteDeleteList);
 
         return $aweberSubscriberUpdateInsertDeleteLists;
 
@@ -456,10 +462,12 @@ class MdsToAweberComparator
     /**
       *  Find all subscribers with email addresses in Aweber where there is no match on email address in MDS Export.
       *  For each such instance write a row to the Aweber_Mds_Sync_Audit table
+     *   Return list of aweber subscribers to delete by listName. I.e., any that are missing in MDS input and that have no designated building/floor-num/apt line
       *
       */
      public function reportOnAweberSubscribersWithNoMatchInMds() {
 
+         $aweberSubscribersDeleteList = array();
          $this->deleteAweberMdsSyncAuditByUpdateAction(self::ACTION_REASON_NO_MATCHING_EMAIL_IN_MDS); // first delete any entries in the Audit table from a previous run for this actionReason...
          $currDate = new \DateTime("now");
          $j = 0;
@@ -471,8 +479,7 @@ class MdsToAweberComparator
                  $batchSize = 20; // call entityManager->flush after this # of inserts...
                  $insertBatchCtr = 0;
                  foreach ($aweberSubscriberList as $aweberSubscriber) {
-                    // print("\n" . "!!!!!!!!!!!   aweberSubscriber in MdsToAweberComparator... !!!!!!!!!!" . "\n");
-                    // print_r($aweberSubscriber);
+
                      if ($aweberSubscriber instanceof AweberSubscriber and $aweberSubscriber->getStatus() == 'subscribed') {
                          $is_subscriber_in_mds = FALSE;
                          foreach ($this->pennsouthResidents as $pennsouthResident) {
@@ -489,13 +496,20 @@ class MdsToAweberComparator
 
                          }
                          if (!$is_subscriber_in_mds) {
-                             $insertBatchCtr++;
-                             if (($insertBatchCtr % $batchSize) === 0) {
-                                 $flush = TRUE;
-                             } else {
-                                 $flush = FALSE;
+                             if ($listName == AweberFieldsConstants::PRIMARY_RESIDENT_LIST or $listName == AweberFieldsConstants::EMERGENCY_NOTICES_FOR_RESIDENTS) {
+                                 $insertBatchCtr++;
+                                 if (($insertBatchCtr % $batchSize) === 0) {
+                                     $flush = TRUE;
+                                 } else {
+                                     $flush = FALSE;
+                                 }
+                                $this->createAweberMdsSyncAuditNoMdsSubscriber($aweberSubscriber, $listName, $currDate, $flush);
+                                if (strlen($aweberSubscriber->getPennSouthBuilding() . $aweberSubscriber->getFloorNumber() . $aweberSubscriber->getApartment()) > 0) {
+                                     $aweberSubscriber->setActionReason(self::ACTION_REASON_NO_MATCHING_EMAIL_IN_MDS);
+                                     $aweberSubscriberbyListName = [$listName => $aweberSubscriber];
+                                     $aweberSubscribersDeleteList[] = $aweberSubscriberbyListName;
+                                }
                              }
-                             $this->createAweberMdsSyncAuditNoMdsSubscriber($aweberSubscriber, $listName, $currDate, $flush);
                          }
                      }
                  }
@@ -503,6 +517,8 @@ class MdsToAweberComparator
               } // foreach aweberSubscribers
          } // foreach aweberSubscribersWithListNameKeys...
          $this->flushAndClearEntityManager();
+
+         return $aweberSubscribersDeleteList;
 
      }
 

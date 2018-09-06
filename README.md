@@ -19,6 +19,10 @@ Issuing the following command will display the command line options for the appl
  
 With no command line options, the application will run with the default option to update Penn South resident subscriber lists defined in Penn South's Aweber.com account from the nightly MDS export file that is ftp'd to Pennsouth's hosting service (Rose Hosting). The scripts to process the nightly MDS export file are stored in the pennsouth-db-prep project on github (see: https://github.com/sfrizell/pennsouth-db-prep ) 
 
+9/3/2018: The MDS to Aweber sync program has been updated to delete any subscribers defined in Aweber where there is no corresponding email address found in the MDS input, providing the Aweber subscriber does not have a values set for building or floor-number or apt-line.
+ 
+ This update was implemented by invoking the same method used to report on Aweber email addresses not found in MDS. This report is now generated whenever the sync process runs (i.e., the Aweber update process).
+
 Presented below are all command line options/arguments:
 
 **Options:**

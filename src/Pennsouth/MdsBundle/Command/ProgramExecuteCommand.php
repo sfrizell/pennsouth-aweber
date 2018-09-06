@@ -29,6 +29,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 use Pennsouth\MdsBundle\Service\PennsouthResidentListReader;
 
+use Pennsouth\MdsBundle\AweberEntity\AweberSubscriber;
+
 use Symfony\Component\Debug\DebugClassLoader;
 
 //DebugClassLoader::enable();
@@ -122,17 +124,27 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
             ]);
 
         // just a little test
-/*        $updateCtr = 0;
-        $batchSize = 30;
-        while ($updateCtr < 35)
-        {
-        	$updateCtr++;
+/*        $array1 = array();
+        $array2 = array();
 
-        	$modulo = $updateCtr % $batchSize;
-        	print("\n" . "\$updateCtr: " . $updateCtr . " \$modulo: " . $modulo );
-        }
+        $aweberSubscriber = new AweberSubscriber();
+        $aweberSubscriber->setEmail("email1");
+        $aweberSubscriber->setName("alan");
 
+        $array1[] = [ "delete" => $aweberSubscriber];
+
+        $aweberSubscriber2 = new AweberSubscriber();
+        $aweberSubscriber2->setEmail("email2");
+        $aweberSubscriber2->setName("betty");
+
+         $array2[] = ["delete" => $aweberSubscriber2];
+        //$array2 = array("id2" => "value2", "id3" => "value3", "id4" => "value4");
+        $array3 = array_merge($array2, $array1);
+        print_r($array3);
         exit(0);*/
+
+
+
 
         $runStartDate = new \DateTime("now");
         print("\n" . "Program run start date/time: " . $runStartDate->format('Y-m-d H:i:s') . "\n");
@@ -734,7 +746,7 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
 
         // block to generate spreadsheet of MDS -> Aweber updates.
         // **** NOTE: Because of memory limitations, this step must be run by itself without other application functionality options being invoked.
-        if ($this->runReportOnAweberEmailsNotInMds) {
+        if ($this->runReportOnAweberEmailsNotInMds or $this->runUpdateAweberFromMds) {
             try {
 
                    $phpExcel = $this->getContainer()->get('phpexcel');
