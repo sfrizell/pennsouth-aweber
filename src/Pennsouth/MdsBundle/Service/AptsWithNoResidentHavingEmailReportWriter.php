@@ -57,6 +57,10 @@ class AptsWithNoResidentHavingEmailReportWriter
      }
 
 
+    /**
+     * NOTE: Set page break whenever there is a break on buildingId.
+     * @return bool
+     */
     public function createSpreadsheetAptsWithNoEmailAddresses() {
 
         $apartmentsWithNoEmailAddresses = $this->getApartmentsWithNoEmailAddressQueryDb();
@@ -76,21 +80,33 @@ class AptsWithNoResidentHavingEmailReportWriter
 
 
                 $rowCtr = 1;
+                $breakRow = 1;
 
                 $colLimit = count(self::APTS_WITH_NO_EMAIL_ADDRESSES_COL_NAMES);
                 $phpExcelObject->setActiveSheetIndex(0);
+                $prevBuildingId = "";
                 foreach ($apartmentsWithNoEmailAddresses as $apartmentWithNoEmailAddressRow) {
                     $rowCtr++;
 
-                        for ($i = 0; $i < $colLimit; $i++) {
-                            $currentLetter = PHPExcel_Cell::stringFromColumnIndex($i);
-                            $cellId = $currentLetter . $rowCtr;
-                          //  print ("\$cellId: " . $cellId . "\n");
-                           // if (!$key == 'Last Changed Date') {
-                                $phpExcelObject->getActiveSheet()
-                                    ->setCellValue($cellId, $apartmentWithNoEmailAddressRow[self::APTS_WITH_NO_EMAIL_ADDRESSES_COL_NAMES[$i]]);
-                           // }
+                    if ($prevBuildingId !== "" and $prevBuildingId !== $apartmentWithNoEmailAddressRow[self::APTS_WITH_NO_EMAIL_ADDRESSES_COL_NAMES[0]]) {
+                        if ($rowCtr > 2) {
+                            $breakRow = $rowCtr - 1;
                         }
+                        else {
+                            $breakRow = $rowCtr;
+                        }
+                        $phpExcelObject->getActiveSheet()->setBreak('A' . $breakRow, \PHPExcel_Worksheet::BREAK_ROW);
+                    }
+                    for ($i = 0; $i < $colLimit; $i++) {
+                        $currentLetter = PHPExcel_Cell::stringFromColumnIndex($i);
+                        $cellId = $currentLetter . $rowCtr;
+                      //  print ("\$cellId: " . $cellId . "\n");
+                       // if (!$key == 'Last Changed Date') {
+                            $phpExcelObject->getActiveSheet()
+                                ->setCellValue($cellId, $apartmentWithNoEmailAddressRow[self::APTS_WITH_NO_EMAIL_ADDRESSES_COL_NAMES[$i]]);
+                       // }
+                    }
+                     $prevBuildingId =  $apartmentWithNoEmailAddressRow[self::APTS_WITH_NO_EMAIL_ADDRESSES_COL_NAMES[0]];
 
                 // }
 
