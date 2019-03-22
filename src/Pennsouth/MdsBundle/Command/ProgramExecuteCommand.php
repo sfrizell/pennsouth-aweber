@@ -756,7 +756,8 @@ class ProgramExecuteCommand extends ContainerAwareCommand {
                    $messageBody = "\n Spreadsheet report created listing email addresses of Pennsouth residents found in Aweber but not in MDS. \n" ;
                    $messageBody .= "\n The spreadsheet is attached to this email. It is also available on the Pennsouth ftp server. \n";
                    $attachmentFilePath = $appOutputDir . "/" . AweberMdsSyncAuditReportWriter::LIST_AWEBER_EMAILS_NOT_IN_MDS_FILE_NAME;
-                   $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised, $attachmentFilePath);
+                  // No need to send email notification when there is no exception...
+                // $this->sendEmailtoAdmins($subjectLine, $messageBody, $this->isExceptionRaised, $attachmentFilePath);
                    $runEndDate = new \DateTime("now");
                    print("\n" . "Program run end date/time: " . $runEndDate->format('Y-m-d H:i:s') . "\n");
                    exit(0);
